@@ -1,0 +1,22 @@
+{
+  "name": "nyaakobot",
+  "version": "1.0.0",
+  "description": "nyaako discord bot",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "kskarthik5",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.2.0",
+    "node": "^16.10.0",
+    "nodemon": "^2.0.13"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.1"
+  }
+}
