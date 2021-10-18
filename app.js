@@ -42,9 +42,18 @@ client.on('messageCreate', (message) => {
 			}			
 			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
 			console.log("fin "+t);
-			//if(t.length!=0)
-			//message.channel.send({content: t});
+			try{
+			for(i=0;i<t.length;i++)
+			{
+				
+				message.channel.send({content: t[i]});
+				
+			}
+		}catch(e){
+			message.channel.send("Some Error Occured");
 		}
+		}
+
 	}})
 
 // Login to Discord with your client's token
@@ -61,17 +70,17 @@ async function scrapNyaa(url){
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
 			//var temp=$(el2).children("a").text();
-			var temp1=$(el2).children("a  title").text();
+			var temp=$(el2).children("a").text();
 			if(temp.trim().length!=0&&temp!=null)
 			{
-				console.log(temp+temp1);
-				resu=resu+temp+'\n'+temp1;
-			}
-			
+				console.log(temp);
+				resu=resu+'\n'+temp;
+				results.push(temp);
+			}		
 		})
 		
 	})
-		console.log("RESULTS = "+resu);
-		return resu;
+		//console.log("RESULTS = "+resu);
+		return results;
 	
 }
