@@ -17,7 +17,7 @@ client.once('ready', () => {
   console.log('Ready!');
 });
 
-client.on('messageCreate', async function(message) {
+client.on('messageCreate',async function(message) {
 	if (message.content ==='hello')
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
 	if (message.content ==='help')
@@ -43,14 +43,13 @@ client.on('messageCreate', async function(message) {
 			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
 			console.log("fin "+t);
 			try{
-			for(i=0;i<t.length;i++)
-			{
-				await message.channel.send({content: t[i]});			
-			}
-		}catch(e){
+			t.forEach(element => {
+				message.channel.send({content: t[i]});			
+			});
+			}catch(e){
 			await message.channel.send({content: "Some Error Occured"});
 			console.log(e);
-		}
+			}
 		}
 
 	}})
@@ -70,11 +69,9 @@ async function scrapNyaa(url){
 		row.each(function(idx, el2){
 			//var temp=$(el2).children("a").text();
 			var temp=$(el2).children("a").text();
-			console.log($(el).attr("href"));
-			if(temp.trim().length!=0&&temp!=null)
-			{
-				results.push(temp);
-		}});
+			results.push(temp);
+			console.log(temp);
+	});
 		
 	})
 		//console.log("RESULTS = "+resu);
