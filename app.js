@@ -52,8 +52,13 @@ async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
+	const count = 0;
     tabl.each(function(idx, el){
-		console.log($(el).html());
+		const row= $(".table-responsive table tbody tr td");
+		row.each(function(idx,el){
+			const temp=($(el).getElementsbyTagName("a").getAttribute("title"));
+			message.channel.send({content : temp});
+		});
 	})
 
 }
