@@ -42,7 +42,6 @@ client.on('messageCreate', (message) => {
 			}
 			message.channel.send({content: "searching "+ns})
 			const Sc=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
-			message.channel.send({content: Sc.html()});
 		}
 	}})
 
@@ -52,7 +51,9 @@ client.login(token);
 async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
-	const tabl = $(".table-responsive table tbody");
-    return tabl;
+	const tabl = $(".table-responsive table tbody tr");
+    tabl.each(function(idx, el){
+		console.log($(el).text());
+	})
 
 }
