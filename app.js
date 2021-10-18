@@ -8,7 +8,7 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const { table } = require('console');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
-
+const nyaaresults="No Results"
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -41,22 +41,20 @@ client.on('messageCreate', (message) => {
 				}
 			}
 			message.channel.send({content: "searching "+ns})
-			const url=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
-			async function scrapNyaa(){
-				const { data } = await axios.get(url);
-				const $ = cheerio.load(data);
-				const tabl = $(".table-responsive table tbody tr");
-				const count = 0;
-				tabl.each(function(idx, el){
-					var inputs = $(".table-responsive table tbody tr td a title").get();
-					message.channel.send({content : inputs.text()});
-				})
-			
-			}
-			scrapNyaa();
+			scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
 		}
 	}})
 
-
 // Login to Discord with your client's token
 client.login(token);
+async function scrapNyaa(url){
+	const { data } = await axios.get(url);
+	const $ = cheerio.load(data);
+	const tabl = $(".table-responsive table tbody tr");
+	const count = 0;
+    tabl.each(function(idx, el){
+		const row= $(".table-responsive table tbody tr td a title");
+		console.log(row.text());
+	})
+
+}
