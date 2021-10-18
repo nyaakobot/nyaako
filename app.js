@@ -41,21 +41,22 @@ client.on('messageCreate', (message) => {
 				}
 			}
 			message.channel.send({content: "searching "+ns})
-			const Sc=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
+			const url=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
+			async function scrapNyaa(url){
+				const { data } = await axios.get(url);
+				const $ = cheerio.load(data);
+				const tabl = $(".table-responsive table tbody tr");
+				const count = 0;
+				tabl.each(function(idx, el){
+					var inputs = $(".table-responsive table tbody tr td a title").get();
+					message.channel.send({content : inputs.text()});
+				})
+			
+			}
+			scrapNyaa(url);
 		}
 	}})
 
 
 // Login to Discord with your client's token
 client.login(token);
-async function scrapNyaa(url){
-	const { data } = await axios.get(url);
-	const $ = cheerio.load(data);
-	const tabl = $(".table-responsive table tbody tr");
-	const count = 0;
-    tabl.each(function(idx, el){
-		var inputs = $(".table-responsive table tbody tr td a title").get();
-		message.channel.send({content : inputs.text()});
-	})
-
-}
