@@ -59,17 +59,17 @@ async function scrapNyaa(url){
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
 			var temp=$(el2).children("a").text();
-			var temp=$(el2).children("a  title").text();
+			var temp1=$(el2).children("a  title").text();
 			if(temp.trim().length!=0&&temp!=null)
 			{
-				console.log(temp);
-				resu=resu+"\n"+temp;
+				console.log(temp+temp1);
+				resu=resu+temp+"\n"+temp1;
 			}
 			
 		})
 		
 	})
-		console.log("RESULTS = \n"+resu);
+		console.log("RESULTS = "+resu);
 		return resu;
 	
 }
