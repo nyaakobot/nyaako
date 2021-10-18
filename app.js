@@ -42,7 +42,7 @@ client.on('messageCreate', (message) => {
 			}
 			message.channel.send({content: "searching "+ns})
 			const Sc=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
-			message.channel.send({content: Sc});
+			message.channel.send({content: Sc.html()});
 		}
 	}})
 
