@@ -53,9 +53,9 @@ async function scrapNyaa(url){
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
 	const count = 0;
-    tabl.each(function(idx, el){
+    tabl.each(async function(idx, el){
 		var inputs = $(".table-responsive table tbody tr td a title").get();
-		message.channel.send({content : inputs.text()});
+		await message.channel.send({content : inputs.text()});
 		
 	})
 
