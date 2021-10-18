@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 5000;
 const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
+const { table } = require('console');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 // Create a new client instance
@@ -50,10 +51,7 @@ client.login(token);
 async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
-	const tabl=$(".table-responsive");
-	const listItems = $(".table-responsive table tbody");
-    
-    
+	const tabl = $(".table-responsive table tbody");
+    message.send({content: table.html()});
 
-	console.log(listItems.html());
 }
