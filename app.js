@@ -40,9 +40,10 @@ client.on('messageCreate', (message) => {
 					ns=ns+s.charAt(i);
 				}
 			}			
-			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
-			if(t.length!=0)
-			message.channel.send({content: t});
+			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s).text();
+			console.log("fin "+t);
+			//if(t.length!=0)
+			//message.channel.send({content: t});
 		}
 	}})
 
