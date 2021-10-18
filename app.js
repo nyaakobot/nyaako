@@ -55,7 +55,7 @@ async function scrapNyaa(url){
 	const count = 0;
     tabl.each(function(idx, el){
 		var inputs = $(".table-responsive table tbody tr td a title").get();
-		await message.channel.send({content : inputs.text()});
+		message.channel.send({content : inputs.text()});
 	})
 
 }
