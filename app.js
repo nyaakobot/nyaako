@@ -8,7 +8,7 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const { table } = require('console');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
-const nyaaresults="No Results"
+var nyaaresults="No Results";
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -60,6 +60,7 @@ async function scrapNyaa(url){
 			var temp=$(el2).children("a title").text();
 			if(temp.trim().length!=0&&temp!=null)
 			{
+				nyaaresults="";
 				nyaaresults=nyaaresults+"\n"+temp;
 			}
 			
