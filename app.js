@@ -53,8 +53,14 @@ async function scrapNyaa(url){
 	const tabl = $(".table-responsive table tbody tr");
 	const count = 0;
     tabl.each(function(idx, el){
-		const row= $(el).children("a title");
-		console.log(row.text());
+
+		const row= $(el).children("td");
+		row.each(function(idx, el2){
+			console.log($(el2).children("a tilte").text());
+			console.log($(el2).children("a tilte").html());
+			console.log($(el2).children("a").html());
+			
+		})
 	})
 
 }
