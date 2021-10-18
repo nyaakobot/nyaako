@@ -40,35 +40,32 @@ client.on('messageCreate',async function(message) {
 					ns=ns+s.charAt(i);
 				}
 			}			
-			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
-			console.log("fin "+t);
-			try{
-			t.forEach(async element => {
-				await message.channel.send({content: t[i]});			
-			});
-			}catch(e){
-			await message.channel.send({content: "Some Error Occured"});
-			console.log(e);
-			}
+			scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
+			
 		}
 
 	}})
 
 
 client.login(token);
-async function scrapNyaa(url){
+async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
 	var results=[];
     tabl.each(function(idx, el){
 		const row= $(el).children("td");
-		row.each(function(idx, el2){
+		row.each(async function(idx, el2){
 			//var temp=$(el2).children("a").text();
 			var temp=$(el2).children("a").text();
 			if(temp.trim().length!=0)
 			{
 			console.log(temp);
+			try{
+			await message.channel({content: temp});
+			}catch(err){
+				await message.channel({content: 'e'});
+			}
 			results.push(temp);
 			}
 	});
