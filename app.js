@@ -51,7 +51,7 @@ async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl=$(".table-responsive");
-	const listItems = $(".table-responsive tr");
+	const listItems = $(".table-responsive td tr");
     
     
 
