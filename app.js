@@ -3,7 +3,9 @@ const { token } = require('./config.json');
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
-
+const axios = require("axios");
+const cheerio = require("cheerio");
+const fs = require("fs");
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 // Create a new client instance
@@ -15,19 +17,39 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', (message) => {
-	if (message.content ==='=greet')
+	if (message.content ==='hello')
 		message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
-	if (message.content ==='=help')
-		message.channel.send({content: 'Commands - \n=greet\n=nyaa'});
-	if (message.content.startsWith('=nyaa'))
+	if (message.content ==='help')
+		message.channel.send({content: 'no'});
+	if (message.content.startsWith('nyaa'))
 	{	
-		var s=message.content.substring(6);
+		var s=message.content.substring(5);
 		if(s.trim().length==0)
 			message.channel.send({content: 'no search parameters entered'});
 		else
-			message.channel.send({content: s});
+		{
+			var ns="";
+			for(i=0;i<s.length;i++)
+			{
+				if(s.charAt(i)==' ')
+				{
+					ns=ns+"+";
+				}
+				else{
+					ns=ns+s.charAt(i);
+				}
+			}
+			message.channel.send({content: "searching "+ns})
+			const Sc=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
+		}
 	}})
 
 
 // Login to Discord with your client's token
 client.login(token);
+async function scrapNyaa(url){
+	const { data } = await axios.get(url);
+	const $ = cheerio.load(data);
+	const tabl=$(".table-responsive");
+	console.log(tabl.html());
+}
