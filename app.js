@@ -62,7 +62,7 @@ async function scrapNyaa(url,message){
 			{
 			console.log(temp);
 			try{
-			await message.channel({content: temp});
+			await message.channel.send({content: temp});
 			}catch(err){
 				await message.channel.send({content: 'e'});
 				console.log(err);
