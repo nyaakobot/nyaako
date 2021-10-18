@@ -9,14 +9,13 @@ const fs = require("fs");
 const { table } = require('console');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 var nyaaresults="No Results";
-// Create a new client instance
+
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES] });
 
-// When the client is ready, run this code (only once)
+
 client.once('ready', () => {
   console.log('Ready!');
 });
-var result=[];
 
 client.on('messageCreate',async function(message) {
 	if (message.content ==='hello')
@@ -55,12 +54,13 @@ client.on('messageCreate',async function(message) {
 
 	}})
 
-// Login to Discord with your client's token
+
 client.login(token);
 async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
+	var results=[];
     tabl.each(function(idx, el){
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
@@ -72,7 +72,6 @@ async function scrapNyaa(url){
 			results.push(temp);
 			}
 	});
-		
 	})
-		//console.log("RESULTS = "+resu);	
+	return results;
 }
