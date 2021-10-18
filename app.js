@@ -41,7 +41,7 @@ client.on('messageCreate', (message) => {
 				}
 			}
 			message.channel.send({content: "searching "+ns})
-			const url=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
+			const link=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
 			async function scrapNyaa(url){
 				const { data } = await axios.get(url);
 				const $ = cheerio.load(data);
@@ -53,7 +53,7 @@ client.on('messageCreate', (message) => {
 				})
 			
 			}
-			scrapNyaa(url);
+			scrapNyaa(link);
 		}
 	}})
 
