@@ -64,11 +64,11 @@ async function scrapNyaa(url,message){
 			try{
 			await message.channel({content: temp});
 			}catch(err){
-				await message.channel({content: 'e'});
+				await message.channel.send({content: 'e'});
+				console.log(err);
 			}
 			results.push(temp);
 			}
 	});
 	})
-	return results;
 }
