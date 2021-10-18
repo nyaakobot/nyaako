@@ -45,9 +45,7 @@ client.on('messageCreate', async function(message) {
 			try{
 			for(i=0;i<t.length;i++)
 			{
-				if(t[i].trim().length!=0)
-				await message.channel.send({content: t[i]});
-				
+				await message.channel.send({content: t[i]});			
 			}
 		}catch(e){
 			await message.channel.send({content: "Some Error Occured"});
@@ -72,12 +70,10 @@ async function scrapNyaa(url){
 		row.each(function(idx, el2){
 			//var temp=$(el2).children("a").text();
 			var temp=$(el2).children("a").text();
-			console.log($(el).children("a").attr("href"));
+			console.log($(el).attr("href"));
 			if(temp.trim().length!=0&&temp!=null)
 			{
-				resu=resu+'\n'+temp;
 				results.push(temp);
-
 		}});
 		
 	})
