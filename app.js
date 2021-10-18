@@ -56,8 +56,8 @@ async function scrapNyaa(url){
 
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
-			console.log($(el2).children("a tilte").text());
-			console.log($(el2).children("a tilte").html());
+			console.log($(el2).children("a title").text());
+			console.log($(el2).children("a href").text());
 			console.log($(el2).children("a").html());
 			
 		})
