@@ -40,7 +40,8 @@ client.on('messageCreate', (message) => {
 					ns=ns+s.charAt(i);
 				}
 			}			
-			message.channel.send({content: scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s)});
+			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
+			message.channel.send({content: t.text()});
 		}
 	}})
 
@@ -56,7 +57,7 @@ async function scrapNyaa(url){
 
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
-			var temp=$(el2).children("a title").text();
+			var temp=$(el2).children("a").text();
 			if(temp.trim().length!=0&&temp!=null)
 			{
 				console.log(temp);
