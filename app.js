@@ -39,10 +39,8 @@ client.on('messageCreate', (message) => {
 				else{
 					ns=ns+s.charAt(i);
 				}
-			}
-			
-			scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
-			message.channel.send({content: nyaaresults});
+			}			
+			message.channel.send({content: scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s)});
 		}
 	}})
 
@@ -51,6 +49,7 @@ client.login(token);
 async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
+	var resu="";
 	const tabl = $(".table-responsive table tbody tr");
 	const count = 0;
     tabl.each(function(idx, el){
@@ -60,11 +59,14 @@ async function scrapNyaa(url){
 			var temp=$(el2).children("a title").text();
 			if(temp.trim().length!=0&&temp!=null)
 			{
-				nyaaresults="";
-				nyaaresults=nyaaresults+"\n"+temp;
+				console.log(temp);
+				resu=resu+"\n"+temp;
 			}
 			
 		})
+		
 	})
-
+		console.log("RESULTS = \n"+resu);
+		return resu;
+	
 }
