@@ -16,6 +16,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_M
 client.once('ready', () => {
   console.log('Ready!');
 });
+var result=[];
 
 client.on('messageCreate',async function(message) {
 	if (message.content ==='hello')
@@ -43,8 +44,8 @@ client.on('messageCreate',async function(message) {
 			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
 			console.log("fin "+t);
 			try{
-			t.forEach(element => {
-				message.channel.send({content: t[i]});			
+			t.forEach(async element => {
+				await message.channel.send({content: t[i]});			
 			});
 			}catch(e){
 			await message.channel.send({content: "Some Error Occured"});
@@ -59,22 +60,19 @@ client.login(token);
 async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
-	var resu='';
 	const tabl = $(".table-responsive table tbody tr");
-	const count = 0;
-	var results=[]
     tabl.each(function(idx, el){
-
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
 			//var temp=$(el2).children("a").text();
 			var temp=$(el2).children("a").text();
-			results.push(temp);
+			if(temp.trim().length!=0)
+			{
 			console.log(temp);
+			results.push(temp);
+			}
 	});
 		
 	})
-		//console.log("RESULTS = "+resu);
-		return results;
-	
+		//console.log("RESULTS = "+resu);	
 }
