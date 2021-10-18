@@ -53,7 +53,7 @@ async function scrapNyaa(url){
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
     tabl.each(function(idx, el){
-		console.log($(el).text());
+		console.log($(el).html());
 	})
 
 }
