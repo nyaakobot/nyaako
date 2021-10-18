@@ -1,5 +1,10 @@
 const { Client, Intents } = require('discord.js');
 const { token } = require('./config.json');
+const express = require('express');
+const path = require('path');
+const PORT = process.env.PORT || 5000;
+
+express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES] });
