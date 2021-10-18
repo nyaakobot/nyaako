@@ -54,7 +54,7 @@ async function scrapNyaa(url){
 	const count = 0;
     tabl.each(function(idx, el){
 		const row= $(".table-responsive table tbody tr td a title");
-		console.log(row.text());
+		console.log(row.html());
 	})
 
 }
