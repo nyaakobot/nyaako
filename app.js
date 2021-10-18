@@ -76,7 +76,7 @@ async function scrapNyaa(url){
 				console.log(temp);
 				resu=resu+'\n'+temp;
 				results.push(temp);
-		})
+		}});
 		
 	})
 		//console.log("RESULTS = "+resu);
