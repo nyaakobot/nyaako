@@ -52,19 +52,20 @@ client.login(token);
 async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
-	var resu="";
+	var resu='';
 	const tabl = $(".table-responsive table tbody tr");
 	const count = 0;
+	var results=[]
     tabl.each(function(idx, el){
 
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
-			var temp=$(el2).children("a").text();
+			//var temp=$(el2).children("a").text();
 			var temp1=$(el2).children("a  title").text();
 			if(temp.trim().length!=0&&temp!=null)
 			{
 				console.log(temp+temp1);
-				resu=resu+temp+"\n"+temp1;
+				resu=resu+temp+'\n'+temp1;
 			}
 			
 		})
