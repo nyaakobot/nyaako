@@ -41,6 +41,7 @@ client.on('messageCreate', (message) => {
 				}
 			}			
 			var t=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s);
+			if(t.length!=0)
 			message.channel.send({content: t});
 		}
 	}})
@@ -58,6 +59,7 @@ async function scrapNyaa(url){
 		const row= $(el).children("td");
 		row.each(function(idx, el2){
 			var temp=$(el2).children("a").text();
+			var temp=$(el2).children("a  title").text();
 			if(temp.trim().length!=0&&temp!=null)
 			{
 				console.log(temp);
