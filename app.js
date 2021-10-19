@@ -118,6 +118,7 @@ async function scrapNyaa(url,message){
 		)
 		}
 	}
+	client.on('messageCreate', (message)=>{
 	message.channel.send({embeds : [output]});
 	console.log(results);
 	if (message.content === 'more nyaa'){
@@ -142,6 +143,8 @@ async function scrapNyaa(url,message){
 		}
 		else
 		message.channel.send({embeds : [output]});
+
+		}
+		});
 	}
-}
 }
