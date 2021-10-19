@@ -93,6 +93,7 @@ async function scrapNyaa(url,message){
 	const category=arr[0].substring(i1,arr[0].indexOf("\"",i1+2));
 	var i1=arr[2].indexOf("\"magnet:")+1;
 	const mlink=arr[2].substring(i1,arr[2].indexOf("\"",i1+2));
+	const size=arr[3];
 	const dateAdded=arr[4];
 	const seeds=arr[5];
 	const leechers=arr[6];
