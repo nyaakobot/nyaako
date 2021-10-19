@@ -9,7 +9,7 @@ const fs = require("fs");
 const { table } = require('console');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES]});
+const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
 
 
 client.once('ready', () => {
@@ -98,5 +98,5 @@ async function scrapNyaa(url,message){
 	});
 
 	})
-	message.channel.send({ embeds: [exampleEmbed] });
+	message.channel.send({ embeds: [results] });
 }
