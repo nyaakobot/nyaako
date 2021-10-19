@@ -74,37 +74,21 @@ async function scrapNyaa(url,message){
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
 	var total="";
-	const results = new MessageEmbed()
+    tabl.each(function(idx, el){
+		const results = new MessageEmbed()
 		.setColor('#0099ff')
 		.setTitle('Search Results')
-    tabl.each(function(idx, el){
 		const row= $(el).children("td");
+		const arr=[];
 		row.each(async function(idx, el2){
-			console.log($(el2).html());
-			var temp=$(el2).children("a").text();
-			if(temp.trim().length!=0)
-			{
-			console.log(temp);
-				//try{
-				//await message.channel.send({content: temp});	
-				total=total+temp;
-				if(total.length>=5000)
-				{
-					total="";
-					message.channel.send({ embeds: [results] });
-					results=new MessageEmbed()
-					.setColor('#0099ff')
-					.setTitle('Search Results')
-				}
-				results.addField(temp, true);
-			//}catch(err){
-			//await message.channel.send({content: 'e'});
-				//console.log(err);
-			//}
+			var temp=$(el2).html();
+			if(temp.trim.length!=0){
+				arr.push(temp);
+				
+				results.addField({name: temp});
 			}
-
 	});
-
-	})
+	console.log(arr);
 	message.channel.send({ embeds: [results] });
+	})
 }
