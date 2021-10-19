@@ -43,8 +43,9 @@ client.on('messageCreate',async function(message) {
 		.setFooter('Some footer text here', 'https://i.imgur.com/AfFp7pu.png');
 		message.channel.send({ embeds: [exampleEmbed] });
 	}
-	if (message.content.startsWith('nyaa '))
+	if (message.content.startsWith('nyaa'))
 	{	
+		
 		var s=message.content.substring(5);
 		if(s.trim().length==0)
 			await message.channel.send({content: 'no search parameters entered'});
@@ -61,8 +62,8 @@ client.on('messageCreate',async function(message) {
 					ns=ns+s.charAt(i);
 				}
 			}			
-			//scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			scrapNyaa('./temp.html',message);				
+			scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
+			//scrapNyaa('./temp.html',message);				
 		}
 
 	}})
