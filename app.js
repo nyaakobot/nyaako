@@ -72,10 +72,11 @@ client.login(token);
 async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
+	const results=[];
 	const tabl = $(".table-responsive table tbody tr");
 	var total="";
 	var i=0;
-	const results = new MessageEmbed().setTitle('Search Results').setColor('#3497ff');
+	const output = new MessageEmbed().setTitle('Search Results').setColor('#3497ff');
     tabl.each(function(idx, el){
 		const row= $(el).children("td");
 		const arr=[];
@@ -85,11 +86,21 @@ async function scrapNyaa(url,message){
 				arr.push(temp);		}
 			
 	});
-	const i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
-	const i2=arr[1].indexOf("\"",i1+2);
+	 //Tille
+	var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
+	var i2=arr[1].indexOf("\"",i1+2);
 	const title=arr[1].substring(i1,i2);
-	console.log("TIle = ="+title);
-	console.log(arr);
+	var i1=arr[0].indexOf("title=\"")+7;
+	const category=arr[0].substring(i1,arr[0].indexOf("\"",i1+2));
+	var i1=arr[2].indexOf("\"magnet:")+1;
+	const mlink=arr[2].substring(i1,arr[2].indexOf("\""));
+	const size=arr[3];
+	const dateAdded=arr[4];
+	const seeds=arr[5];
+	const leechers=arr[6];
+	const result={title: title,category: category ,mlink: mlink,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
+	results.push(result);
+	console.log(result);
 	i++;
 	if(i==10)
 		return false;
