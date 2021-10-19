@@ -109,7 +109,7 @@ async function scrapNyaa(url,message){
 			{ name: 'Size', value: head.size, inline: true },
 			{ name: 'Seeders/Leechers', value: head.seeders+"/"+head.leechers, inline: true },
 			{ name: 'Date Added', value: head.dateAdded, inline: true },
-			{ name: 'Magnet', value: +head.mlink},
+			{ name: 'Magnet', value: +'link -'+head.mlink},
 		)
 	}
 	message.channel.send({embeds : [output]});
