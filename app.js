@@ -8,7 +8,6 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const { table } = require('console');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
-var nyaaresults="No Results";
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES]});
 
@@ -74,7 +73,7 @@ async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
-	const exampleEmbed = new MessageEmbed()
+	const results = new MessageEmbed()
 		.setColor('#0099ff')
 		.setTitle('Search Results')
     tabl.each(function(idx, el){
