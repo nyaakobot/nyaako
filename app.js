@@ -82,12 +82,10 @@ async function scrapNyaa(url,message){
 		row.each(async function(idx, el2){
 			var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
 			if(temp.trim().length!=0){
-				arr.push(temp);
-			console.log(temp);
-			}
+				arr.push(temp);		}
 			
 	});
-	const i1=arr[1].indexOf("title",arr[1].indexOf("</a>"))+7;
+	const i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
 	const i2=arr[1].indexOf("\"",i1+2);
 	const title=arr[1].substring(i1,i2);
 	console.log("TIle = ="+title);
