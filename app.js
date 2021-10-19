@@ -114,7 +114,7 @@ async function scrapNyaa(url,message){
 			{ name: 'Size', value: head.size, inline: true },
 			{ name: 'Seeders/Leechers', value: head.seeders+"/"+head.leechers, inline: true },
 			{ name: 'Date Added', value: head.dateAdded, inline: true },
-			{ name: '[Magnet]('+head.mlink+')', value: '\u200B'},
+			{ name: 'Magnet', value: '[link]('+head.mlink+')'},
 		)
 		}
 	}
