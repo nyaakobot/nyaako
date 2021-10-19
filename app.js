@@ -75,6 +75,7 @@ async function scrapNyaa(url,message){
 	const results=[];
 	const tabl = $(".table-responsive table tbody tr");
 	var i=0;
+	var content="";
 	var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
     tabl.each(function(idx, el){
 			const row= $(el).children("td");
@@ -96,7 +97,6 @@ async function scrapNyaa(url,message){
 			const dateAdded=arr[4];
 			const seeds=arr[5];
 			const leechers=arr[6];
-			var content="";
 			const result={title: title,category: category ,mlink: mlink,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 			results.push(result);
 	});
