@@ -75,7 +75,7 @@ async function scrapNyaa(url,message){
 	const results=[];
 	const tabl = $(".table-responsive table tbody tr");
 	var i=0;
-	const output = new MessageEmbed().setTitle('Search Results').setColor('#3497ff');
+	const output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff');
     tabl.each(function(idx, el){
 		const row= $(el).children("td");
 		const arr=[];
@@ -106,11 +106,10 @@ async function scrapNyaa(url,message){
 		head=results[c];
 		output.addFields(
 			{ name: head.title, value: 'Category : '+head.category },
-			{ name: 'Size : ', value: head.size, inline: true },
+			{ name: 'Size', value: head.size, inline: true },
 			{ name: 'Seeders/Leechers', value: head.seeders+"/"+head.leechers, inline: true },
 			{ name: 'Date Added', value: head.dateAdded, inline: true },
-			{ name: 'Magnet', value: '[link]('+head.mlink+')'},
-			{ name: '\u200B', value: '\u200B' },
+			{ name: 'Magnet', value: +head.mlink},
 		)
 	}
 	message.channel.send({embeds : [output]});
