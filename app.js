@@ -105,9 +105,9 @@ async function scrapNyaa(url,message){
 		else{
 	for(let c=i+1;c<i+15;c++)
 	{	
-		if(results.length>c){
-		head=results[c];
-		content=content+"**"+c+". "+head.title+"**\n"+"*Seeds/Leeches:* "+head.seeders+"/"+head.leechers+" *Size:* "+head.size+"\n\n";
+		if(results.length>=c){
+		head=results[c-1];
+		content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
 		}
 		else
 		break;
