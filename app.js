@@ -75,22 +75,22 @@ async function scrapNyaa(url,message){
 	const tabl = $(".table-responsive table tbody tr");
 	var total="";
 	var i=0;
+	const results = new MessageEmbed().setTitle('Search Results').setColor('#3497ff');
     tabl.each(function(idx, el){
-		const results = new MessageEmbed()
-		.setColor('#0099ff')
 		const row= $(el).children("td");
 		const arr=[];
-		 var bla="";
 		row.each(async function(idx, el2){
 			var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
 			if(temp.trim().length!=0){
 				arr.push(temp);
-				console.log("pushed")
-				bla=bla+temp+"\n";
+			console.log("pushed")
 			}
+			
 	});
-	message.channel.send({ content : bla });
-	console.log(arr);
+	const i1=a[1].indexOf("title",a[1].indexOf("</a>"))+7;
+	const i2=a[1].indexOf("\"",i1+2);
+	const title=a[1].substring(i1,i2);
+	console.log(title);
 	i++;
 	if(i==10)
 		return false;
