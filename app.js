@@ -80,16 +80,17 @@ async function scrapNyaa(url,message){
 		.setColor('#0099ff')
 		const row= $(el).children("td");
 		const arr=[];
+		 var bla="";
 		row.each(async function(idx, el2){
 			var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
 			if(temp.trim().length!=0){
 				arr.push(temp);
 				console.log("pushed")
-				results.addField({name: temp.trim()});
+				bla=bla+temp+"\n";
 			}
 	});
+	message.channel.send({ content : bla });
 	console.log(arr);
-	message.channel.send({ embeds: [results] });
 	i++;
 	if(i==10)
 		return false;
