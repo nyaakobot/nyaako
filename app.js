@@ -74,21 +74,24 @@ async function scrapNyaa(url,message){
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
 	var total="";
+	var i=0;
     tabl.each(function(idx, el){
 		const results = new MessageEmbed()
 		.setColor('#0099ff')
-		.setTitle('Search Results')
 		const row= $(el).children("td");
 		const arr=[];
 		row.each(async function(idx, el2){
 			var temp=$(el2).html();
-			if(temp.trim.length!=0){
+			if(temp.trim().length!=0){
 				arr.push(temp);
-				
+				console.log("pushed")
 				results.addField({name: temp});
 			}
 	});
 	console.log(arr);
 	message.channel.send({ embeds: [results] });
+	i++;
+	if(i==10)
+		return false;
 	})
 }
