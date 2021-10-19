@@ -106,7 +106,7 @@ async function scrapNyaa(url,message){
 		else{
 	for(let c=i;c<i+5;c++)
 	{
-		if(c!=results.length){
+		if(c<results.length-1){
 		head=results[c];
 
 		output.addFields(
@@ -126,7 +126,7 @@ async function scrapNyaa(url,message){
 		output = new MessageEmbed().setTitle('More Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 		for(let c=i;c<i+5;c++)
 		{
-			if(c!=results.length){
+			if(c<results.length-1){
 			head=results[c];
 			output.addFields(
 			{ name: head.title, value: 'Category : '+head.category },
