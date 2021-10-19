@@ -86,7 +86,7 @@ async function scrapNyaa(url,message){
 			if(temp.trim().length!=0)
 			{
 			console.log(temp);
-				try{
+				//try{
 				//await message.channel.send({content: temp});	
 				total=total+temp;
 				if(total.length>=5000)
@@ -98,10 +98,10 @@ async function scrapNyaa(url,message){
 					.setTitle('Search Results')
 				}
 				results.addField(temp, true);
-				}catch(err){
-				await message.channel.send({content: 'e'});
-				console.log(err);
-			}
+			//}catch(err){
+			//await message.channel.send({content: 'e'});
+				//console.log(err);
+			//}
 			}
 
 	});
