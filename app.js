@@ -118,37 +118,5 @@ async function scrapNyaa(url,message){
 		)
 		}
 	}
-	client.on('messageCreate', (message)=>{
-	message.channel.send({embeds : [output]});
-	console.log(results);
-	if (message.content === 'more nyaa'){
-		i=i+5;
-		output = new MessageEmbed().setTitle('More Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
-		for(let c=i;c<i+5;c++)
-		{
-			if(c<results.length-1){
-			head=results[c];
-			output.addFields(
-			{ name: head.title, value: 'Category : '+head.category },
-			{ name: 'Size', value: head.size, inline: true },
-			{ name: 'Seeders/Leechers', value: head.seeders+"/"+head.leechers, inline: true },
-			{ name: 'Date Added', value: head.dateAdded, inline: true },
-			{ name: '[Magnet]('+head.mlink+')', value: '\u200B'},
-		)
-			}
-		}
-		if(i==results.length)
-		{
-			message.channel.send({content: 'No more results'});
-		}
-		else
-		message.channel.send({embeds : [output]});
-
-		}
-		else{
-			return false;
-		}
-		});
-	}
-
+	
 }
