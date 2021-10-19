@@ -83,14 +83,15 @@ async function scrapNyaa(url,message){
 			var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
 			if(temp.trim().length!=0){
 				arr.push(temp);
-			console.log("pushed")
+			console.log(temp);
 			}
 			
 	});
 	const i1=arr[1].indexOf("title",arr[1].indexOf("</a>"))+7;
 	const i2=arr[1].indexOf("\"",i1+2);
 	const title=arr[1].substring(i1,i2);
-	console.log(title);
+	console.log("TIle = ="+title);
+	console.log(arr);
 	i++;
 	if(i==10)
 		return false;
