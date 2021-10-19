@@ -75,7 +75,7 @@ async function scrapNyaa(url,message){
 	const results=[];
 	const tabl = $(".table-responsive table tbody tr");
 	var i=0;
-	const output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+	var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
     tabl.each(function(idx, el){
 		const row= $(el).children("td");
 		const arr=[];
@@ -145,6 +145,10 @@ async function scrapNyaa(url,message){
 		message.channel.send({embeds : [output]});
 
 		}
+		else{
+			return false;
+		}
 		});
 	}
+
 }
