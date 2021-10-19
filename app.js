@@ -75,7 +75,7 @@ async function scrapNyaa(url,message){
 	const results=[];
 	const tabl = $(".table-responsive table tbody tr");
 	var i=0;
-	const output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter more nyaa for more results");
+	const output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
     tabl.each(function(idx, el){
 		const row= $(el).children("td");
 		const arr=[];
@@ -93,6 +93,7 @@ async function scrapNyaa(url,message){
 	const category=arr[0].substring(i1,arr[0].indexOf("\"",i1+2));
 	var i1=arr[2].indexOf("\"magnet:")+1;
 	const mlink=arr[2].substring(i1,arr[2].indexOf("\"",i1+2));
+	mlink=mlink.subs
 	const size=arr[3];
 	const dateAdded=arr[4];
 	const seeds=arr[5];
@@ -101,17 +102,48 @@ async function scrapNyaa(url,message){
 	results.push(result);
 	
 	});
+	if(results.length==0)
+		message.channel.send({content: 'No results'});
+		else{
 	for(let c=i;c<i+5;c++)
 	{
+		if(c!=results.length){
 		head=results[c];
+
 		output.addFields(
 			{ name: head.title, value: 'Category : '+head.category },
 			{ name: 'Size', value: head.size, inline: true },
 			{ name: 'Seeders/Leechers', value: head.seeders+"/"+head.leechers, inline: true },
 			{ name: 'Date Added', value: head.dateAdded, inline: true },
-			{ name: 'Magnet', value: +'link -'+head.mlink},
+			{ name: '[Magnet]('+head.mlink+')', value: '\u200B'},
 		)
+		}
 	}
 	message.channel.send({embeds : [output]});
 	console.log(results);
+	if (message.content === 'more nyaa'){
+		i=i+5;
+		output = new MessageEmbed().setTitle('More Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+		for(let c=i;c<i+5;c++)
+		{
+			if(c!=results.length){
+			head=results[c];
+			output.addFields(
+			{ name: head.title, value: 'Category : '+head.category },
+			{ name: 'Size', value: head.size, inline: true },
+			{ name: 'Seeders/Leechers', value: head.seeders+"/"+head.leechers, inline: true },
+			{ name: 'Date Added', value: head.dateAdded, inline: true },
+			{ name: '[Magnet]('+head.mlink+')', value: '\u200B'},
+		)
+			}
+		}
+		if(i==results.length)
+		{
+			message.channel.send({content: 'No more results'});
+		}
+		else
+		message.channel.send({embeds : [output]});
+
+	}
+}
 }
