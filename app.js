@@ -77,46 +77,43 @@ async function scrapNyaa(url,message){
 	var i=0;
 	var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
     tabl.each(function(idx, el){
-		const row= $(el).children("td");
-		const arr=[];
-		row.each(async function(idx, el2){
-			var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
-			if(temp.trim().length!=0){
-				arr.push(temp);		}
-			
-	});
-	 //Tille
-	var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
-	var i2=arr[1].indexOf("\"",i1+2);
-	const title=arr[1].substring(i1,i2);
-	var i1=arr[0].indexOf("title=\"")+7;
-	const category=arr[0].substring(i1,arr[0].indexOf("\"",i1+2));
-	var i1=arr[2].indexOf("\"magnet:")+1;
-	const mlink=arr[2].substring(i1,arr[2].indexOf("\"",i1+2));
-	const size=arr[3];
-	const dateAdded=arr[4];
-	const seeds=arr[5];
-	const leechers=arr[6];
-	const result={title: title,category: category ,mlink: mlink,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
-	results.push(result);
-	
+			const row= $(el).children("td");
+			const arr=[];
+			row.each(async function(idx, el2){
+				var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
+				if(temp.trim().length!=0){
+					arr.push(temp);		}
+				
+			});
+			var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
+			var i2=arr[1].indexOf("\"",i1+2);
+			const title=arr[1].substring(i1,i2);
+			var i1=arr[0].indexOf("title=\"")+7;
+			const category=arr[0].substring(i1,arr[0].indexOf("\"",i1+2));
+			var i1=arr[2].indexOf("\"magnet:")+1;
+			const mlink=arr[2].substring(i1,arr[2].indexOf("\"",i1+2));
+			const size=arr[3];
+			const dateAdded=arr[4];
+			const seeds=arr[5];
+			const leechers=arr[6];
+			var content="";
+			const result={title: title,category: category ,mlink: mlink,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
+			results.push(result);
 	});
 	if(results.length==0)
 		message.channel.send({content: 'No results'});
 		else{
-	for(let c=i;c<i+5;c++)
-	{
-		if(c<results.length-1){
+	for(let c=i;c<i+10;c++)
+	{	
+		if(results.length>c){
 		head=results[c];
-
-		output.addFields(
-			{ name: head.title, value: 'Category : '+head.category },
-			{ name: 'Size', value: head.size, inline: true },
-			{ name: 'Seeders/Leechers', value: head.seeders+"/"+head.leechers, inline: true },
-			{ name: 'Date Added', value: head.dateAdded, inline: true },
-			{ name: 'Magnet', value: '[link]('+head.mlink+')'},
-		)
+		content=content+"**"+c+". "+head.title+"**\n"+"*Seeds/Leeches: *"+head.seeders+"/"+head.leechers+" *Size: *"+head.size+"\n[Magnet]("+head.mlink+")\n\n";
 		}
+		else
+		break;
 	}
+	output.setDescription(content);
+	message.channel.send({embeds : [output]});
 	
+}
 }
