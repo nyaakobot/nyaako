@@ -81,11 +81,11 @@ async function scrapNyaa(url,message){
 		const row= $(el).children("td");
 		const arr=[];
 		row.each(async function(idx, el2){
-			var temp=$(el2).html();
+			var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
 			if(temp.trim().length!=0){
 				arr.push(temp);
 				console.log("pushed")
-				results.addField({name: temp});
+				results.addField({name: temp.trim()});
 			}
 	});
 	console.log(arr);
