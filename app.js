@@ -73,16 +73,15 @@ async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
-	const total="";
+	var total="";
 	const results = new MessageEmbed()
 		.setColor('#0099ff')
 		.setTitle('Search Results')
     tabl.each(function(idx, el){
 		const row= $(el).children("td");
 		row.each(async function(idx, el2){
-			//var temp=$(el2).children("a").text();
+			console.log($(el2).html());
 			var temp=$(el2).children("a").text();
-			console.log()
 			if(temp.trim().length!=0)
 			{
 			console.log(temp);
