@@ -51,7 +51,7 @@ client.on('messageCreate',async function(message) {
   				response.pipe(torf);			
 				});
 				const att = new MessageAttachment(torf);
-				message.channel.send(att)
+				message.channel.sendFile(att)
 			}
 			catch(e)
 			{
