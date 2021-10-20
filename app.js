@@ -51,15 +51,16 @@ client.on('messageCreate',async function(message) {
 				}
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
+			var file;
 			try{
-			const file = await readFile('fetchedData.json', 'utf8');
+			file = await readFile('fetchedData.json', 'utf8');
 			console.log(file);
-			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
-			var content="";
-			const results=file.results;
 			}catch (e) {
 				console.error(e);
 			}
+			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+			var content="";
+			const results=file.results;
 			if(results.length==0)
 			await message.channel.send({content: 'No results'});
 			else{
