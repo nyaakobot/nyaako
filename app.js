@@ -45,6 +45,7 @@ client.on('messageCreate',async function(message) {
 				}
 			}			
 			var results=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
+			console.log(results);
 			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 			var content="";
 			if(results.length==0)
@@ -72,8 +73,8 @@ async function scrapNyaa(url,message){
 	const $ = cheerio.load(data);
 	var results=[];
 	const tabl = $(".table-responsive table tbody tr");
-    tabl.each(function(idx, el){
-			const row= $(el).children("td");
+    tabl.each(async function(idx, el){
+			const row=  $(el).children("td");
 			const arr=[];
 			row.each(async function(idx, el2){
 				var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
@@ -81,15 +82,15 @@ async function scrapNyaa(url,message){
 					arr.push(temp);		}
 				
 			});
-			var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
-			var i2=arr[1].indexOf("\"",i1+2);
-			const title=arr[1].substring(i1,i2);
-			var i1=arr[0].indexOf("title=\"")+7;
-			console.log(arr[2]);
-			const size=arr[3];
-			const dateAdded=arr[4];
-			const seeds=arr[5];
-			const leechers=arr[6];
+			var i1=await arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
+			var i2=await arr[1].indexOf("\"",i1+2);
+			const title=await arr[1].substring(i1,i2);
+			var i1=await arr[0].indexOf("title=\"")+7;
+			//console.log(arr[2]);
+			const size=await arr[3];
+			const dateAdded=await arr[4];
+			const seeds=await arr[5];
+			const leechers=await arr[6];
 			const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 			results.push(result);
 	});
