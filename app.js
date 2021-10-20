@@ -25,11 +25,11 @@ client.on('messageCreate',async function(message) {
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
 	if (message.content ==='help')
 		await message.channel.send({content: 'no'});
-	if (message.content.startsWith('nyaa'))
+	if (message.content.startsWith('nyaa '))
 	{	
 
 		var s=message.content.substring(5);
-		if(s.trim.startsWith('-l '))
+		if(s.trim().startsWith('-l '))
 		{
 			await message.channel.send({content: 'test log'+json.stringify(file.results[1])});
 		}
@@ -101,7 +101,6 @@ client.on('messageCreate',async function(message) {
 			}
 }
 }
-console.log(scrap.length);
 })
 
 
