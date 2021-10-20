@@ -1,4 +1,4 @@
-const { Client, Intents, MessageEmbed } = require('discord.js');
+const { Client, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
 const { token } = require('./config.json');
 const express = require('express');
 const path = require('path');
@@ -20,7 +20,6 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate',async function(message) {
-	var scrap;
 	var i=0;
 	if (message.content ==='hello')
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
@@ -30,7 +29,7 @@ client.on('messageCreate',async function(message) {
 	{	
 
 		var s=message.content.substring(5);
-		if(s.startsWith('nyaa -l'))
+		if(s.trim.startsWith('-l '))
 		{
 			await message.channel.send({content: 'test log'+json.stringify(file.results[1])});
 		}
@@ -38,6 +37,26 @@ client.on('messageCreate',async function(message) {
 		{
 			await message.channel.send({content: 'https://64.media.tumblr.com/eff67a0dca33bdf7d1c56150859c75ba/tumblr_mm6p2zCCxR1ra0sfio1_500.gif'});
 			await message.channel.send({content: 'sup'});
+		}
+		else if(s.startsWith('-d '))
+		{
+			var s2=s.substring(s.indexOf('-d')+3);
+			try{
+				const file = await readFile('fetchedData.json', 'utf8');
+				const scrap=JSON.parse(file);
+				const downl=scrap.results[s2].dlink;
+				console.log(downl);
+				const torf = fs.createWriteStream(scrap.results[s2].title+".torrent");
+				const request = http.get(downl, function(response) {
+  				response.pipe(torf);			
+				});
+				const att = new MessageAttachment(torf);
+				message.channel.send(att)
+			}
+			catch(e)
+			{
+				await message.channel.send({content: 'Errrrrrrr'});
+			}
 		}
 		else
 		{
@@ -55,7 +74,7 @@ client.on('messageCreate',async function(message) {
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
 			try{
 				const file = await readFile('fetchedData.json', 'utf8');
-				scrap=JSON.parse(file);
+				const scrap=JSON.parse(file);
 				console.log(file);
 				var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 				var content="";
@@ -106,7 +125,6 @@ async function scrapNyaa(url,message){
 				const title=arr[1].substring(i1,i2);
 				var i1=arr[0].indexOf("title=\"")+7;
 				const dl="http://nyaa.si"+arr[2].substring(9,arr[2].indexOf("\"",11));
-				console.log(dl);
 				const size=arr[3];
 				const dateAdded=arr[4];
 				const seeds=arr[5];
