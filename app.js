@@ -8,6 +8,7 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const { table } = require('console');
 const http = require('http'); // or 'https' for https:// URLs
+const { getServers } = require('dns');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
@@ -43,8 +44,12 @@ client.on('messageCreate',async function(message) {
 				else{
 					ns=ns+s.charAt(i);
 				}
-			}			
-			var results=scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
+			}
+			var results=[];
+			async function getResults(){
+			results=await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
+			}
+			getResults();
 			console.log(results);
 			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 			var content="";
@@ -74,8 +79,7 @@ async function scrapNyaa(url,message){
 	var results=[];
 	const tabl = $(".table-responsive table tbody tr");
 	
-	tabl.each(await Promise.all({
-		async function(idx, el){
+	tabl.each(async function(idx, el){
 			const row= $(el).children("td");
 			const arr=[];
 			row.each(function(idx, el2){
@@ -95,7 +99,7 @@ async function scrapNyaa(url,message){
 			const leechers=arr[6];
 			const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 			results.push(result);
-	}}));
+	});
 
-	return results;
+	return results.map();
 }
