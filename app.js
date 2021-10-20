@@ -8,7 +8,7 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const { table } = require('console');
 const http = require('http'); // or 'https' for https:// URLs
-
+const results=[];
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
@@ -23,27 +23,6 @@ client.on('messageCreate',async function(message) {
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
 	if (message.content ==='help')
 		await message.channel.send({content: 'no'});
-	if (message.content === 'testEmbed')
-	{
-		const exampleEmbed = new MessageEmbed()
-		.setColor('#0099ff')
-		.setTitle('Some title')
-		.setURL('https://discord.js.org/')
-		.setAuthor('Some name', 'https://i.imgur.com/AfFp7pu.png', 'https://discord.js.org')
-		.setDescription('Some description here')
-			.setThumbnail('https://i.imgur.com/AfFp7pu.png')
-		.addFields(
-		{ name: 'Regular field title', value: 'Some value here' },
-		{ name: '\u200B', value: '\u200B' },
-		{ name: 'Inline field title', value: 'Some value here'},
-		{ name: 'Inline field title', value: 'Some value here'},
-		)
-		.addField('Inline field title', 'Some value here', true)
-		.setImage('https://i.imgur.com/AfFp7pu.png')
-		.setTimestamp()
-		.setFooter('Some footer text here', 'https://i.imgur.com/AfFp7pu.png');
-		message.channel.send({ embeds: [exampleEmbed] });
-	}
 	if (message.content.startsWith('nyaa'))
 	{	
 		
@@ -67,21 +46,33 @@ client.on('messageCreate',async function(message) {
 				}
 			}			
 			scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			//scrapNyaa('./temp.html',message);				
-		}
+			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+			var content="";
+			if(results.length==0)
+			message.channel.send({content: 'No results'});
+			else{
+				for(let c=i+1;c<i+16;c++)
+				{	
+					if(results.length>=c){
+					head=results[c-1];
+					content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
+					}
+					else
+					break;
+				}
+			output.setDescription(content);
+			message.channel.send({embeds : [output]});			
+			}
 
-	}})
+	}}})
 
 
 client.login(token);
 async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
-	const results=[];
+	results=[];
 	const tabl = $(".table-responsive table tbody tr");
-	var i=0;
-	var content="";
-	var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
     tabl.each(function(idx, el){
 			const row= $(el).children("td");
 			const arr=[];
@@ -100,23 +91,7 @@ async function scrapNyaa(url,message){
 			const dateAdded=arr[4];
 			const seeds=arr[5];
 			const leechers=arr[6];
-			const result={title: title,category: category ,mlink: mlink,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
+			const result={title: title,category: category,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 			results.push(result);
 	});
-	if(results.length==0)
-		message.channel.send({content: 'No results'});
-		else{
-	for(let c=i+1;c<i+16;c++)
-	{	
-		if(results.length>=c){
-		head=results[c-1];
-		content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
-		}
-		else
-		break;
-	}
-	output.setDescription(content);
-	message.channel.send({embeds : [output]});
-	
-}
 }
