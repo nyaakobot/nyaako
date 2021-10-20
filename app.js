@@ -17,7 +17,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_M
 client.once('ready', () => {
   console.log('Ready!');
 });
-
+var results=[];
 client.on('messageCreate',async function(message) {
 	if (message.content ==='hello')
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
@@ -45,7 +45,6 @@ client.on('messageCreate',async function(message) {
 					ns=ns+s.charAt(i);
 				}
 			}
-			var results=[];
 			async function getResults(){
 			results=await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
 			}
@@ -79,14 +78,14 @@ async function scrapNyaa(url,message){
 	var results=[];
 	const tabl = $(".table-responsive table tbody tr");
 	
-	tabl.each(async function(idx, el){
+	tabl.each(function(idx, el){
 			const row= $(el).children("td");
 			const arr=[];
 			row.each(function(idx, el2){
 				var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
 				if(temp.trim().length!=0){
-					arr.push(temp);		}
-				
+					arr.push(temp);		
+				}			
 			});
 			var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
 			var i2=arr[1].indexOf("\"",i1+2);
@@ -99,7 +98,7 @@ async function scrapNyaa(url,message){
 			const leechers=arr[6];
 			const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 			results.push(result);
+			console.log(result);
 	});
-
 	return results;
 }
