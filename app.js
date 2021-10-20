@@ -45,34 +45,34 @@ client.on('messageCreate',async function(message) {
 				}
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
-			var content="";
-			var file;
-			fs.readFile('fetchedData.json', 'utf8', function (err, data) {
+			
+			fs.readFile('fetchedData.json', 'utf8', async function (err, data) {
 				if (err) {
-					console.log(err)
+					console.log(err);
+					await message.channel.send({content: 'Some Error Occured'})
 				} else {
-					file = JSON.parse(data);	
-				}
-			});
-			const results=file.results;
-			fs.close();
-			console.log(results);
-			if(results.length==0)
-			await message.channel.send({content: 'No results'});
-			else{
-				for(let c=i+1;c<i+16;c++)
-				{	
-					if(results.length>=c){
-					head=results[c-1];
-					content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
+					const file = JSON.parse(data);	
+				
+				var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+				var content="";
+				const results=file.results;
+				fs.close();
+				console.log(results);
+				if(results.length==0)
+				await message.channel.send({content: 'No results'});
+				else{
+					for(let c=i+1;c<i+16;c++)
+					{	
+						if(results.length>=c){
+						head=results[c-1];
+						content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
+						}
+						else
+						break;
 					}
-					else
-					break;
-				}
-			output.setDescription(content);
-			await message.channel.send({embeds : [output]});			
-			}
+				output.setDescription(content);
+				await message.channel.send({embeds : [output]});			
+			}}});
 
 	}}
 })
@@ -83,48 +83,41 @@ async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
-	var file;
+
 	fs.readFile('fetchedData.json', 'utf8', function (err, data) {
 		if (err) {
 			console.log(err)
 		} else {
-			file = JSON.parse(data);	
+			const file = JSON.parse(data);	
 		}
-	});	
-	var json=JSON.stringify({results : []});
-	fs.writeFile('fetchedData.json', json, 'utf8', function(err){
-		if(err){ 
-			console.log(err); 
-		} else {
-			console.log("flush success");
-		}});	
-	tabl.each(async function(idx, el){
-			const row= $(el).children("td");
-			const arr=[];
-			row.each(function(idx, el2){
-				var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
-				if(temp.trim().length!=0){
-					arr.push(temp);		
-				}			
-			});
-			var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
-			var i2=arr[1].indexOf("\"",i1+2);
-			const title=arr[1].substring(i1,i2);
-			var i1=arr[0].indexOf("title=\"")+7;
-			//console.log(arr[2]);
-			const size=arr[3];
-			const dateAdded=arr[4];
-			const seeds=arr[5];
-			const leechers=arr[6];
-			const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
-			file.results.push(result);
-	});
-	json = JSON.stringify(file);			
-	fs.writeFile('fetchedData.json', json, 'utf8', function(err){
-		if(err){ 
-			console.log(err); 
-		} else {
-			console.log("fetch success");
-		}});	
+		tabl.each(async function(idx, el){
+				const row= $(el).children("td");
+				const arr=[];
+				row.each(function(idx, el2){
+					var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
+					if(temp.trim().length!=0){
+						arr.push(temp);		
+					}			
+				});
+				var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
+				var i2=arr[1].indexOf("\"",i1+2);
+				const title=arr[1].substring(i1,i2);
+				var i1=arr[0].indexOf("title=\"")+7;
+				//console.log(arr[2]);
+				const size=arr[3];
+				const dateAdded=arr[4];
+				const seeds=arr[5];
+				const leechers=arr[6];
+				const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
+				file.results.push(result);
+		});
+		const json = JSON.stringify(file);			
+		fs.writeFile('fetchedData.json', json, 'utf8', function(err){
+			if(err){ 
+				console.log(err); 
+			} else {
+				console.log("fetch success");
+			}});	
+		});
 	fs.close();
 }
