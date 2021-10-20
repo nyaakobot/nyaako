@@ -29,7 +29,7 @@ client.on('messageCreate',async function(message) {
 	{	
 
 		var s=message.content.substring(5);
-		if(s.trim().startsWith('-l '))
+		if(s.startsWith('-l '))
 		{
 			await message.channel.send({content: 'test log'+json.stringify(file.results[1])});
 		}
