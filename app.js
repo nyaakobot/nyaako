@@ -5,7 +5,7 @@ const path = require('path');
 const PORT = process.env.PORT || 5000;
 const axios = require("axios");
 const cheerio = require("cheerio");
-const fs = require("fs");
+const fs = require("fs").promises;
 const { table } = require('console');
 const http = require('http'); // or 'https' for https:// URLs
 const { getServers } = require('dns');
@@ -51,19 +51,17 @@ client.on('messageCreate',async function(message) {
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
 			
-			fs.readFile('fetchedData.json', 'utf8',function (err, data) {
-				if (err) {
-					console.log(err);
-					message.channel.send({content: 'Some Error Occured'});
-					return false;
-				} else {
-					file=JSON.parse(data);	
+			(async() =>  {
+				try {
+				file = await fs.readFile('fetchedData.json', 'utf8');
+				   console.log(file.results.length);
+				} catch(e) {
+				   console.error(e);
 				}
-			});	
+			 })();
 			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 			var content="";
 			const results=file.results;
-			console.log("READDDDDDDDDDDDDDDDD"+results.length);
 			if(results.length==0)
 			await message.channel.send({content: 'No results'});
 			else{
@@ -105,7 +103,7 @@ async function scrapNyaa(url,message){
 				var i2=arr[1].indexOf("\"",i1+2);
 				const title=arr[1].substring(i1,i2);
 				var i1=arr[0].indexOf("title=\"")+7;
-				const dl="http://nyaa.si"+arr[2].substring(10,arr[2].indexOf("\"",11));
+				const dl="http://nyaa.si"+arr[2].substring(9,arr[2].indexOf("\"",11));
 				console.log(dl);
 				const size=arr[3];
 				const dateAdded=arr[4];
