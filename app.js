@@ -51,36 +51,34 @@ client.on('messageCreate',async function(message) {
 				}
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			var file;
 			try{
-			file = await readFile('fetchedData.json', 'utf8');
-			console.log(file);
-			}catch (e) {
+				const file = await readFile('fetchedData.json', 'utf8');
+				console.log(file);
+				var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+				var content="";
+				const results=file.results;
+				if(results.length==0)
+				await message.channel.send({content: 'No results'});
+				else{
+					for(let c=i+1;c<i+16;c++)
+					{	
+						if(results.length>=c){
+						head=results[c-1];
+						content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
+						}
+						else
+						break;
+					}
+					output.setDescription(content);
+					await message.channel.send({embeds : [output]});
+					return true;
+				}
+			}
+			catch (e) {
 				console.error(e);
 			}
-			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
-			var content="";
-			const results=file.results;
-			if(results.length==0)
-			await message.channel.send({content: 'No results'});
-			else{
-				for(let c=i+1;c<i+16;c++)
-				{	
-					if(results.length>=c){
-					head=results[c-1];
-					content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
-					}
-					else
-					break;
-				}
-			output.setDescription(content);
-			await message.channel.send({embeds : [output]});
-			return true;			
-			}
-
-
-	}}
-})
+}
+}})
 
 
 client.login(token);
