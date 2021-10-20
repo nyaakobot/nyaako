@@ -7,6 +7,8 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
 const { table } = require('console');
+const http = require('http'); // or 'https' for https:// URLs
+
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
@@ -47,7 +49,10 @@ client.on('messageCreate',async function(message) {
 		
 		var s=message.content.substring(5);
 		if(s.trim().length==0)
-			await message.channel.send({content: 'no search parameters entered'});
+		{
+			await message.channel.send({content: 'https://64.media.tumblr.com/eff67a0dca33bdf7d1c56150859c75ba/tumblr_mm6p2zCCxR1ra0sfio1_500.gif'});
+			await message.channel.send({content: 'sup'});
+		}
 		else
 		{
 			var ns="";
@@ -90,9 +95,7 @@ async function scrapNyaa(url,message){
 			var i2=arr[1].indexOf("\"",i1+2);
 			const title=arr[1].substring(i1,i2);
 			var i1=arr[0].indexOf("title=\"")+7;
-			const category=arr[0].substring(i1,arr[0].indexOf("\"",i1+2));
-			var i1=arr[2].indexOf("\"magnet:")+1;
-			const mlink=arr[2].substring(i1,arr[2].indexOf("\"",i1+2));
+			console.log(arr[2]);
 			const size=arr[3];
 			const dateAdded=arr[4];
 			const seeds=arr[5];
@@ -103,7 +106,7 @@ async function scrapNyaa(url,message){
 	if(results.length==0)
 		message.channel.send({content: 'No results'});
 		else{
-	for(let c=i+1;c<i+15;c++)
+	for(let c=i+1;c<i+16;c++)
 	{	
 		if(results.length>=c){
 		head=results[c-1];
