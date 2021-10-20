@@ -48,7 +48,11 @@ client.on('messageCreate',async function(message) {
 				console.log(downl);
 				const torf = fs.createWriteStream(scrap.results[s2].title+".torrent");
 				const request = http.get(downl, function(response) {
-  				response.pipe(torf);			
+  				response.pipe(torf);	
+				  torf.on('finish', function() {
+					torf.close(cb);		
+				  });
+				
 				});
 				const att = new MessageAttachment(torf);
 				message.channel.send({files: [att]});
