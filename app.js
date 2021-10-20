@@ -56,7 +56,6 @@ client.on('messageCreate',async function(message) {
 				var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 				var content="";
 				const results=file.results;
-				fs.close();
 				console.log(results);
 				if(results.length==0)
 				await message.channel.send({content: 'No results'});
@@ -119,5 +118,4 @@ async function scrapNyaa(url,message){
 				console.log("fetch success");
 			}});	
 		});
-	fs.close();
 }
