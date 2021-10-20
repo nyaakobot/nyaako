@@ -18,13 +18,14 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate',async function(message) {
+	var file;
 	if (message.content ==='hello')
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
 	if (message.content ==='help')
 		await message.channel.send({content: 'no'});
 	if (message.content.startsWith('nyaa'))
 	{	
-		var file;
+
 		var s=message.content.substring(5);
 		if(s.startsWith('nyaa -l'))
 		{
@@ -50,13 +51,13 @@ client.on('messageCreate',async function(message) {
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
 			
-			file=fs.readFile('fetchedData.json', 'utf8',function (err, data) {
+			fs.readFile('fetchedData.json', 'utf8',function (err, data) {
 				if (err) {
 					console.log(err);
-					message.channel.send({content: 'Some Error Occured'})
-					return {results:[]};
+					message.channel.send({content: 'Some Error Occured'});
+					return false;
 				} else {
-					return JSON.parse(data);	
+					file=JSON.parse(data);	
 				}
 			});	
 			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
@@ -104,12 +105,13 @@ async function scrapNyaa(url,message){
 				var i2=arr[1].indexOf("\"",i1+2);
 				const title=arr[1].substring(i1,i2);
 				var i1=arr[0].indexOf("title=\"")+7;
-				console.log(arr[2]);
+				const dl="http://nyaa.si"+arr[2].substring(10,arr[2].indexOf("\"",11));
+				console.log(dl);
 				const size=arr[3];
 				const dateAdded=arr[4];
 				const seeds=arr[5];
 				const leechers=arr[6];
-				const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
+				const result={title: title,	dlink: dl,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 				file.results.push(result);
 		});
 		const json = JSON.stringify(file);			
