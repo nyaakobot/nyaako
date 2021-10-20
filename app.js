@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 5000;
 const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
 const { table } = require('console');
 const http = require('http'); // or 'https' for https:// URLs
 const { getServers } = require('dns');
@@ -18,7 +20,6 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate',async function(message) {
-	var file;
 	if (message.content ==='hello')
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
 	if (message.content ==='help')
@@ -50,11 +51,15 @@ client.on('messageCreate',async function(message) {
 				}
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			
-			file =fs.readFileSync('fetchedData.json', 'utf8');		
+			try{
+			const file = await readFile('fetchedData.json', 'utf8');
+			console.log(file);
 			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 			var content="";
 			const results=file.results;
+			}catch (e) {
+				console.error(e);
+			}
 			if(results.length==0)
 			await message.channel.send({content: 'No results'});
 			else{
