@@ -56,7 +56,7 @@ client.on('messageCreate',async function(message) {
 				var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 				var content="";
 				const results=file.results;
-				console.log(results);
+				console.log("READDDDDDDDDDDDDDDDD"+results);
 				if(results.length==0)
 				await message.channel.send({content: 'No results'});
 				else{
@@ -82,14 +82,8 @@ async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
-
-	fs.readFile('fetchedData.json', 'utf8', function (err, data) {
-		if (err) {
-			console.log(err)
-		} else {
-			const file = JSON.parse(data);	
-		}
-		tabl.each(async function(idx, el){
+	const file={results: []};
+		tabl.each(function(idx, el){
 				const row= $(el).children("td");
 				const arr=[];
 				row.each(function(idx, el2){
@@ -109,6 +103,7 @@ async function scrapNyaa(url,message){
 				const leechers=arr[6];
 				const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 				file.results.push(result);
+				console.log(file.results);
 		});
 		const json = JSON.stringify(file);			
 		fs.writeFile('fetchedData.json', json, 'utf8', function(err){
@@ -117,5 +112,4 @@ async function scrapNyaa(url,message){
 			} else {
 				console.log("fetch success");
 			}});	
-		});
 }
