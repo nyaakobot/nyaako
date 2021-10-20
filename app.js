@@ -54,7 +54,7 @@ client.on('messageCreate',async function(message) {
 				  });
 				
 				});
-				const att = new MessageAttachment(scrap.results[s2].title+".torrent");
+				const att = new MessageAttachment("./"scrap.results[s2].title+".torrent");
 				message.channel.send({files: [att]});
 			}
 			catch(e)
