@@ -10,7 +10,6 @@ const { table } = require('console');
 const http = require('http'); // or 'https' for https:// URLs
 const { getServers } = require('dns');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
-var results=[];
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
 
 
@@ -45,15 +44,22 @@ client.on('messageCreate',async function(message) {
 					ns=ns+s.charAt(i);
 				}
 			}
-			async function getResults(){
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			}
-			getResults();
-			console.log(results.length);
 			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 			var content="";
+			var file;
+			fs.readFile('fetchedData.json', 'utf8', function (err, data) {
+				if (err) {
+					console.log(err)
+				} else {
+					file = JSON.parse(data);	
+				}
+			});
+			const results=file.results;
+			fs.close();
+			console.log(results);
 			if(results.length==0)
-			message.channel.send({content: 'No results'});
+			await message.channel.send({content: 'No results'});
 			else{
 				for(let c=i+1;c<i+16;c++)
 				{	
@@ -65,20 +71,34 @@ client.on('messageCreate',async function(message) {
 					break;
 				}
 			output.setDescription(content);
-			message.channel.send({embeds : [output]});			
+			await message.channel.send({embeds : [output]});			
 			}
 
-	}}})
+	}}
+})
 
 
 client.login(token);
 async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
-	results=[];
 	const tabl = $(".table-responsive table tbody tr");
-	
-	tabl.each(function(idx, el){
+	var file;
+	fs.readFile('fetchedData.json', 'utf8', function (err, data) {
+		if (err) {
+			console.log(err)
+		} else {
+			file = JSON.parse(data);	
+		}
+	});	
+	var json=JSON.stringify({results : []});
+	fs.writeFile('fetchedData.json', json, 'utf8', function(err){
+		if(err){ 
+			console.log(err); 
+		} else {
+			console.log("flush success");
+		}});	
+	tabl.each(async function(idx, el){
 			const row= $(el).children("td");
 			const arr=[];
 			row.each(function(idx, el2){
@@ -97,8 +117,14 @@ async function scrapNyaa(url,message){
 			const seeds=arr[5];
 			const leechers=arr[6];
 			const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
-			results.push(result);
-			
+			file.results.push(result);
 	});
-	console.log(results.length);
+	json = JSON.stringify(file);			
+	fs.writeFile('fetchedData.json', json, 'utf8', function(err){
+		if(err){ 
+			console.log(err); 
+		} else {
+			console.log("fetch success");
+		}});	
+	fs.close();
 }
