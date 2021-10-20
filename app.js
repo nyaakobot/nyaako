@@ -101,5 +101,5 @@ async function scrapNyaa(url,message){
 			results.push(result);
 	});
 
-	return results.map();
+	return results;
 }
