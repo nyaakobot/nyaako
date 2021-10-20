@@ -26,6 +26,10 @@ client.on('messageCreate',async function(message) {
 	{	
 		var file;
 		var s=message.content.substring(5);
+		if(s.startsWith('nyaa -l'))
+		{
+			await message.channel.send({content: 'test log'+json.stringify(file.results[1])});
+		}
 		if(s.trim().length==0)
 		{
 			await message.channel.send({content: 'https://64.media.tumblr.com/eff67a0dca33bdf7d1c56150859c75ba/tumblr_mm6p2zCCxR1ra0sfio1_500.gif'});
@@ -46,10 +50,10 @@ client.on('messageCreate',async function(message) {
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
 			
-			file=fs.readFile('fetchedData.json', 'utf8', async function (err, data) {
+			file=fs.readFile('fetchedData.json', 'utf8',function (err, data) {
 				if (err) {
 					console.log(err);
-					await message.channel.send({content: 'Some Error Occured'})
+					message.channel.send({content: 'Some Error Occured'})
 					return {results:[]};
 				} else {
 					return JSON.parse(data);	
@@ -100,7 +104,7 @@ async function scrapNyaa(url,message){
 				var i2=arr[1].indexOf("\"",i1+2);
 				const title=arr[1].substring(i1,i2);
 				var i1=arr[0].indexOf("title=\"")+7;
-				//console.log(arr[2]);
+				console.log(arr[2]);
 				const size=arr[3];
 				const dateAdded=arr[4];
 				const seeds=arr[5];
