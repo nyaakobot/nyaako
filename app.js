@@ -24,7 +24,7 @@ client.on('messageCreate',async function(message) {
 		await message.channel.send({content: 'no'});
 	if (message.content.startsWith('nyaa'))
 	{	
-		
+		var file;
 		var s=message.content.substring(5);
 		if(s.trim().length==0)
 		{
@@ -46,32 +46,36 @@ client.on('messageCreate',async function(message) {
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
 			
-			fs.readFile('fetchedData.json', 'utf8', async function (err, data) {
+			file=fs.readFile('fetchedData.json', 'utf8', async function (err, data) {
 				if (err) {
 					console.log(err);
 					await message.channel.send({content: 'Some Error Occured'})
+					return {results:[]};
 				} else {
-					const file = JSON.parse(data);	
-				
-				var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
-				var content="";
-				const results=file.results;
-				console.log("READDDDDDDDDDDDDDDDD"+results);
-				if(results.length==0)
-				await message.channel.send({content: 'No results'});
-				else{
-					for(let c=i+1;c<i+16;c++)
-					{	
-						if(results.length>=c){
-						head=results[c-1];
-						content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
-						}
-						else
-						break;
+					return JSON.parse(data);	
+				}
+			});	
+			var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+			var content="";
+			const results=file.results;
+			console.log("READDDDDDDDDDDDDDDDD"+results.length);
+			if(results.length==0)
+			await message.channel.send({content: 'No results'});
+			else{
+				for(let c=i+1;c<i+16;c++)
+				{	
+					if(results.length>=c){
+					head=results[c-1];
+					content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
 					}
-				output.setDescription(content);
-				await message.channel.send({embeds : [output]});			
-			}}});
+					else
+					break;
+				}
+			output.setDescription(content);
+			await message.channel.send({embeds : [output]});
+			return true;			
+			}
+
 
 	}}
 })
@@ -103,7 +107,6 @@ async function scrapNyaa(url,message){
 				const leechers=arr[6];
 				const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 				file.results.push(result);
-				console.log(file.results);
 		});
 		const json = JSON.stringify(file);			
 		fs.writeFile('fetchedData.json', json, 'utf8', function(err){
