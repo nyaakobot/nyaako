@@ -73,26 +73,29 @@ async function scrapNyaa(url,message){
 	const $ = cheerio.load(data);
 	var results=[];
 	const tabl = $(".table-responsive table tbody tr");
-    tabl.each(async function(idx, el){
-			const row=  $(el).children("td");
+	
+	tabl.each(await Promise.all({
+		async function(idx, el){
+			const row= $(el).children("td");
 			const arr=[];
-			row.each(async function(idx, el2){
+			row.each(function(idx, el2){
 				var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
 				if(temp.trim().length!=0){
 					arr.push(temp);		}
 				
 			});
-			var i1=await arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
-			var i2=await arr[1].indexOf("\"",i1+2);
-			const title=await arr[1].substring(i1,i2);
-			var i1=await arr[0].indexOf("title=\"")+7;
+			var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
+			var i2=arr[1].indexOf("\"",i1+2);
+			const title=arr[1].substring(i1,i2);
+			var i1=arr[0].indexOf("title=\"")+7;
 			//console.log(arr[2]);
-			const size=await arr[3];
-			const dateAdded=await arr[4];
-			const seeds=await arr[5];
-			const leechers=await arr[6];
+			const size=arr[3];
+			const dateAdded=arr[4];
+			const seeds=arr[5];
+			const leechers=arr[6];
 			const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 			results.push(result);
-	});
+	}}));
+
 	return results;
 }
