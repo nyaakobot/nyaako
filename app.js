@@ -90,7 +90,7 @@ async function scrapNyaa(url,message){
 			const dateAdded=arr[4];
 			const seeds=arr[5];
 			const leechers=arr[6];
-			const result={title: title,category: category,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
+			const result={title: title,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 			results.push(result);
 	});
 	return results;
