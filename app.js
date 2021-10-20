@@ -9,7 +9,7 @@ const fs = require("fs");
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const { table } = require('console');
-const http = require('http'); // or 'https' for https:// URLs
+const http = require('http');
 const { getServers } = require('dns');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
@@ -21,6 +21,7 @@ client.once('ready', () => {
 
 client.on('messageCreate',async function(message) {
 	var scrap;
+	var i=0;
 	if (message.content ==='hello')
 		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
 	if (message.content ==='help')
@@ -41,7 +42,7 @@ client.on('messageCreate',async function(message) {
 		else
 		{
 			var ns="";
-			for(i=0;i<s.length;i++)
+			for(let i=0;i<s.length;i++)
 			{
 				if(s.charAt(i)==' ')
 				{
@@ -80,7 +81,9 @@ client.on('messageCreate',async function(message) {
 				console.error(e);
 			}
 }
-}})
+}
+console.log(scrap.length);
+})
 
 
 client.login(token);
