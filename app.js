@@ -119,4 +119,5 @@ async function scrapNyaa(url,message){
 			} else {
 				console.log("fetch success");
 			}});	
+		console.log(json.length);
 }
