@@ -13,7 +13,7 @@ const http = require('http');
 const { getServers } = require('dns');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
-
+const download = require('download');
 
 client.once('ready', () => {
   console.log('Ready!');
@@ -47,23 +47,26 @@ client.on('messageCreate',async function(message) {
 				const file = await readFile('fetchedData.json', 'utf8');
 				const scrap=JSON.parse(file);
 				const downl=scrap.results[s2].dlink;
-				console.log(downl);
-				http.get(url,async (res) => {
-					// Image will be stored at this path
-					const path1 = "${__dirname}/"+scrap.results[s2].title+".torrent"; 
-					const filePath = fs.createWriteStream(path1);
-					res.pipe(filePath);
-					filePath.on('finish',() => {
-						filePath.close();
-						console.log('Download Completed'); 
-					})
-					const att = new MessageAttachment(path1);
-					await message.channel.send({files: [att]});
+				await message.channel.send({files: [downl]});
+				/*const filePath = `/`;				
+				download(file,filePath)
+				.then(() => {
+					console.log('Download Completed');
 				})
 				
+				fs.readdir(('./'), (err, files) => {
+					files.forEach(file => {
+					console.log(file);
+					if(file.endsWith('.torrent')){
+						const att=new MessageAttachment(file);
+
+					}
+					});
+				});*/
 			}
 			catch(e)
 			{
+				console.log(e);
 				await message.channel.send({content: 'Errrrrrrr'});
 			}
 		}
