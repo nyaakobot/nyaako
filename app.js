@@ -48,17 +48,19 @@ client.on('messageCreate',async function(message) {
 				const scrap=JSON.parse(file);
 				const downl=scrap.results[s2].dlink;
 				console.log(downl);
-				const torf = fs.createWriteStream(scrap.results[s2].title+".torrent");
-				const request = http.get(downl, function(response) {
-  				response.pipe(torf);	
-				  torf.on('finish', function() {
-					torf.close(cb);		
-				  });
+				http.get(url,async (res) => {
+					// Image will be stored at this path
+					const path1 = "${__dirname}/"+scrap.results[s2].title+".torrent"; 
+					const filePath = fs.createWriteStream(path1);
+					res.pipe(filePath);
+					filePath.on('finish',() => {
+						filePath.close();
+						console.log('Download Completed'); 
+					})
+					const att = new MessageAttachment(path1);
+					await message.channel.send({files: [att]});
+				})
 				
-				});
-				const att = new MessageAttachment((scrap.results[s2].title+".torrent").substring(5));
-				console.log((scrap.results[s2].title+".torrent").substring(5));
-				await message.channel.send({files: [att]});
 			}
 			catch(e)
 			{
