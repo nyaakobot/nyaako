@@ -20,7 +20,6 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate',async function(message) {
-	var i=0;
 	if (message.content ==='nyaa logs')
 	{
 		const att = new MessageAttachment("fetchedData.json");
@@ -49,7 +48,7 @@ client.on('messageCreate',async function(message) {
 			try{
 				const file = await readFile('fetchedData.json', 'utf8');
 				const scrap=JSON.parse(file);
-				const downl=scrap.results[s2].dlink;
+				const downl=scrap.results[s2+1].dlink;
 				await message.channel.send({files: [downl]});
 			}
 			catch(e)
@@ -91,7 +90,7 @@ async function getResults(){
 		if(results.length==0)
 		await message.channel.send({content: 'No results'});
 		else{
-			for(let c=i+1;c<i+11;c++)
+			for(let c=scrap.counter+1;c<scrap.counter+11;c++)
 			{	
 				if(results.length>=c){
 				head=results[c-1];
