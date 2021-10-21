@@ -120,7 +120,7 @@ async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
-	const file={results: [],count: 0};
+	const file={results: [],counter: 0};
 		tabl.each(function(idx, el){
 				const row= $(el).children("td");
 				const arr=[];
