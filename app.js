@@ -28,7 +28,7 @@ client.on('messageCreate',async function(message) {
 	else if (message.content ==='help')
 		await message.channel.send({content: 'no'});
 	else if (message.content ==='more nyaa'){
-		await getResults();	
+		await getResults(message);	
 	}
 	else if (message.content.startsWith('nyaa '))
 	{	
@@ -71,7 +71,7 @@ client.on('messageCreate',async function(message) {
 				}
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			await getResults();
+			await getResults(message);
 			
 }
 }
@@ -79,7 +79,7 @@ else{
 	return true;
 }
 })
-async function getResults(){
+async function getResults(message){
 	try{
 		const file = await readFile('fetchedData.json', 'utf8');
 		const scrap=JSON.parse(file);
