@@ -100,7 +100,6 @@ async function getResults(message){
 			}
 			output.setDescription(content);
 			await message.channel.send({embeds : [output]});
-			return true;
 		}
 		scrap.counter=parseInt(scrap.counter)+10;
 		console.log(scrap.counter);
@@ -113,7 +112,6 @@ async function getResults(message){
 		}});	
 	}
 	catch (e) {
-		console.error(e);
 	}
 }
 
