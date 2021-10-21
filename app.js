@@ -21,21 +21,23 @@ client.once('ready', () => {
 
 client.on('messageCreate',async function(message) {
 	var i=0;
-	if (message.content ==='hello')
-		await message.channel.send({content: 'Hello Everynyan! How are you? Fine. Sankyu'});
-	if (message.content ==='help')
+	if (message.content ==='nyaa logs')
+	{
+		const att = new MessageAttachment("fetchedData.json");
+		await message.channel.send({files: [att]});
+	}
+	else if (message.content ==='help')
 		await message.channel.send({content: 'no'});
-	if (message.content.startsWith('nyaa '))
+	else if (message.content.startsWith('nyaa '))
 	{	
 
 		var s=message.content.substring(5);
 		if(s.startsWith('-l '))
 		{
-			await message.channel.send({content: 'test log'+json.stringify(file.results[1])});
+
 		}
 		if(s.trim().length==0)
 		{
-			await message.channel.send({content: 'https://64.media.tumblr.com/eff67a0dca33bdf7d1c56150859c75ba/tumblr_mm6p2zCCxR1ra0sfio1_500.gif'});
 			await message.channel.send({content: 'sup'});
 		}
 		else if(s.startsWith('-d '))
@@ -54,8 +56,9 @@ client.on('messageCreate',async function(message) {
 				  });
 				
 				});
-				const att = new MessageAttachment("./"+scrap.results[s2].title+".torrent");
-				message.channel.send({files: [att]});
+				const att = new MessageAttachment((scrap.results[s2].title+".torrent").substring(5));
+				console.log((scrap.results[s2].title+".torrent").substring(5));
+				await message.channel.send({files: [att]});
 			}
 			catch(e)
 			{
@@ -104,6 +107,9 @@ client.on('messageCreate',async function(message) {
 				console.error(e);
 			}
 }
+}
+else{
+	return true;
 }
 })
 
