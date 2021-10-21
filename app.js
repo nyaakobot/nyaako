@@ -46,7 +46,7 @@ client.on('messageCreate',async function(message) {
 			try{
 				const file = await readFile('fetchedData.json', 'utf8');
 				const scrap=JSON.parse(file);
-				const downl=scrap.results[parseInt(s2)+1].dlink;
+				const downl=scrap.results[parseInt(s2)-1].dlink;
 				await message.channel.send({files: [downl]});
 			}
 			catch(e)
