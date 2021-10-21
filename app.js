@@ -28,6 +28,9 @@ client.on('messageCreate',async function(message) {
 	}
 	else if (message.content ==='help')
 		await message.channel.send({content: 'no'});
+	else if (message.content ==='more nyaa'){
+		await getResults();	
+	}
 	else if (message.content.startsWith('nyaa '))
 	{	
 
@@ -48,21 +51,6 @@ client.on('messageCreate',async function(message) {
 				const scrap=JSON.parse(file);
 				const downl=scrap.results[s2].dlink;
 				await message.channel.send({files: [downl]});
-				/*const filePath = `/`;				
-				download(file,filePath)
-				.then(() => {
-					console.log('Download Completed');
-				})
-				
-				fs.readdir(('./'), (err, files) => {
-					files.forEach(file => {
-					console.log(file);
-					if(file.endsWith('.torrent')){
-						const att=new MessageAttachment(file);
-
-					}
-					});
-				});*/
 			}
 			catch(e)
 			{
@@ -84,47 +72,58 @@ client.on('messageCreate',async function(message) {
 				}
 			}
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
-			try{
-				const file = await readFile('fetchedData.json', 'utf8');
-				const scrap=JSON.parse(file);
-				console.log(file);
-				var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
-				var content="";
-				const results=scrap.results;
-				if(results.length==0)
-				await message.channel.send({content: 'No results'});
-				else{
-					for(let c=i+1;c<i+16;c++)
-					{	
-						if(results.length>=c){
-						head=results[c-1];
-						content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
-						}
-						else
-						break;
-					}
-					output.setDescription(content);
-					await message.channel.send({embeds : [output]});
-					return true;
-				}
-			}
-			catch (e) {
-				console.error(e);
-			}
+			await getResults();
+			
 }
 }
 else{
 	return true;
 }
 })
-
+async function getResults(){
+	try{
+		const file = await readFile('fetchedData.json', 'utf8');
+		const scrap=JSON.parse(file);
+		console.log(file);
+		var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+		var content="";
+		const results=scrap.results;
+		if(results.length==0)
+		await message.channel.send({content: 'No results'});
+		else{
+			for(let c=i+1;c<i+11;c++)
+			{	
+				if(results.length>=c){
+				head=results[c-1];
+				content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
+				}
+				else
+				break;
+			}
+			output.setDescription(content);
+			await message.channel.send({embeds : [output]});
+			return true;
+		}
+		scrap.counter+=10;
+		const json = JSON.stringify(scrap);			
+		fs.writeFile('fetchedData.json', json, 'utf8', function(err){
+		if(err){ 
+		console.log(err); 
+		} else {
+		console.log("fetch success");
+		}});	
+	}
+	catch (e) {
+		console.error(e);
+	}
+}
 
 client.login(token);
 async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
-	const file={results: []};
+	const file={results: [],count: 0};
 		tabl.each(function(idx, el){
 				const row= $(el).children("td");
 				const arr=[];
