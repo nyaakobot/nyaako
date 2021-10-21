@@ -13,8 +13,6 @@ const http = require('http');
 const { getServers } = require('dns');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
-const download = require('download');
-
 client.once('ready', () => {
   console.log('Ready!');
 });
@@ -48,7 +46,7 @@ client.on('messageCreate',async function(message) {
 			try{
 				const file = await readFile('fetchedData.json', 'utf8');
 				const scrap=JSON.parse(file);
-				const downl=scrap.results[s2+1].dlink;
+				const downl=scrap.results[parseInt(s2+1)].dlink;
 				await message.channel.send({files: [downl]});
 			}
 			catch(e)
@@ -79,18 +77,19 @@ else{
 	return true;
 }
 })
+
 async function getResults(message){
 	try{
 		const file = await readFile('fetchedData.json', 'utf8');
 		const scrap=JSON.parse(file);
-		console.log(file);
+		//console.log(file);
 		var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 		var content="";
 		const results=scrap.results;
 		if(results.length==0)
 		await message.channel.send({content: 'No results'});
 		else{
-			for(let c=scrap.counter+1;c<scrap.counter+11;c++)
+			for(let c=parseInt(scrap.counter+1);c<parseInt(scrap.counter+11);c++)
 			{	
 				if(results.length>=c){
 				head=results[c-1];
@@ -104,6 +103,7 @@ async function getResults(message){
 			return true;
 		}
 		scrap.counter+=10;
+		console.log(scrap.counter);
 		const json = JSON.stringify(scrap);			
 		fs.writeFile('fetchedData.json', json, 'utf8', function(err){
 		if(err){ 
