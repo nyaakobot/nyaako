@@ -31,24 +31,24 @@ client.on('messageCreate',async function(message) {
 		{
 			await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
 		}
-		else if (msg ==='help')
+		else if (msg ===';help')
 			await message.channel.send({content: 'no'});
-		else if (msg ==='more nyaa'){
+		else if (msg ===';more'){
 			await getResults(message);	
 		}
-		else if(msg.startsWith('nyaa -m '))
+		else if(msg.startsWith(';m '))
 		{
 			var s=msg.substring(5);
-			var s2=s.substring(s.indexOf('-d')+3);
+			var s2=s.substring(s.indexOf(';m')+3);
 			const file = await readFile('fetchedData.json', 'utf8');
 			const scrap=JSON.parse(file);
 			const templ=scrap.results[parseInt(s2)-1].mlink;
 			await message.channel.send({content: templ});
 		}
-		else if(msg.startsWith('nyaa -i '))
+		else if(msg.startsWith(';i '))
 		{
-			var s=msg.substring(5);
-			var s2=s.substring(s.indexOf('-d')+3);
+			var s=msg.substring(0);
+			var s2=s.substring(s.indexOf(';i')+3);
 			const file = await readFile('fetchedData.json', 'utf8');
 			const scrap=JSON.parse(file);
 			const templ=scrap.results[parseInt(s2)-1].dlink;
