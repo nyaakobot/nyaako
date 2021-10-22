@@ -46,11 +46,13 @@ client.on('messageCreate',async function(message) {
 				ns=ns+s.charAt(i);
 			}
 		}
-		if(msg.endsWith(' -p'))
+		if(msg.endsWith(' -p')){
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seedersd&o=desc",message);
-		else
+		}
+		else{
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=asc",message);
-		await getResults(message);	size
+		}
+		await getResults(message);
 	}
 	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -s')||msg.endsWith(' -s!')))
 	{	
@@ -69,10 +71,12 @@ client.on('messageCreate',async function(message) {
 				ns=ns+s.charAt(i);
 			}
 		}
-		if(msg.endsWith(' -s'))
+		if(msg.endsWith(' -s')){
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=desc",message);
-		else
+		}
+		else{
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=asc",message);
+		}
 		await getResults(message);	
 	}
 	else if (msg.startsWith('nyaa '))
