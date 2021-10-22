@@ -117,27 +117,21 @@ client.on('messageCreate',async function(message) {
 		else if (msg.startsWith('nyaa '))
 		{	
 			var s=msg.substring(5);
-			if(s.trim().length==0)
+			
+			var ns="";
+			for(let i=0;i<s.length;i++)
 			{
-				await message.channel.send({content: 'sup'});
-			}
-			else
-			{
-				var ns="";
-				for(let i=0;i<s.length;i++)
+				if(s.charAt(i)==' ')
 				{
-					if(s.charAt(i)==' ')
-					{
-						ns=ns+"+";
-					}
-					else{
-						ns=ns+s.charAt(i);
-					}
+					ns=ns+"+";
 				}
-				await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns,message);
-				await getResults(message);
-				
+				else{
+					ns=ns+s.charAt(i);
+				}
 			}
+			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns,message);
+			await getResults(message);
+			
 		}
 		else{
 		return true;
@@ -164,7 +158,7 @@ async function getResults(message){
 			{	
 				if(results.length>=c){
 				head=results[c-1];
-				content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\t*DateAdded:* "+head.dateAdded+"\n\n";
+				content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\t*Date:* "+head.dateAdded+"\n\n";
 				}
 				else
 				break;
