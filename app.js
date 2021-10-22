@@ -31,24 +31,24 @@ client.on('messageCreate',async function(message) {
 		{
 			await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
 		}
-		else if (msg ===';help')
+		else if (msg ==='help')
 			await message.channel.send({content: 'no'});
-		else if (msg ===';more'){
+		else if (msg ==='more nyaa'){
 			await getResults(message);	
 		}
-		else if(msg.startsWith(';m '))
+		else if(msg.startsWith('nyaa -m '))
 		{
 			var s=msg.substring(5);
-			var s2=s.substring(s.indexOf(';m')+3);
+			var s2=s.substring(s.indexOf('-d')+3);
 			const file = await readFile('fetchedData.json', 'utf8');
 			const scrap=JSON.parse(file);
 			const templ=scrap.results[parseInt(s2)-1].mlink;
 			await message.channel.send({content: templ});
 		}
-		else if(msg.startsWith(';i '))
+		else if(msg.startsWith('nyaa -i '))
 		{
-			var s=msg.substring(0);
-			var s2=s.substring(s.indexOf(';i')+3);
+			var s=msg.substring(5);
+			var s2=s.substring(s.indexOf('-d')+3);
 			const file = await readFile('fetchedData.json', 'utf8');
 			const scrap=JSON.parse(file);
 			const templ=scrap.results[parseInt(s2)-1].dlink;
@@ -193,9 +193,7 @@ async function getInfo(url,message)
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const html = $('#torrent-description').html();
-	const text = convert(html, {
- 	 wordwrap: 130
-	});
+	const text = convert(html);
 	console.log(text);
 	var output = new MessageEmbed().setTitle('Description').setFooter("Enter nyaa -c <id> for comments");
 	output.setDescription(text);
