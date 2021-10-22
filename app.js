@@ -36,7 +36,7 @@ client.on('messageCreate',async function(message) {
 		const file = await readFile('fetchedData.json', 'utf8');
 		const scrap=JSON.parse(file);
 		const templ=scrap.results[parseInt(s2)-1].mlink;
-		await message.channel.send({content: ["```"+templ+"```"]});
+		await message.channel.send({content: "magnet link: ```"+templ+"```"});
 		
 	}
 	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
@@ -194,6 +194,7 @@ async function scrapNyaa(url,message){
 				var i1=arr[0].indexOf("title=\"")+7;
 				const dl="http://nyaa.si"+arr[2].substring(9,arr[2].indexOf("\"",11));
 				const ml=arr[2].substring(arr[2].indexOf("magnet:"),arr[2].indexOf("\"",arr[2].indexOf("magnet:")+11));
+				console.log(ml);
 				const size=arr[3];
 				const dateAdded=arr[4];
 				const seeds=arr[5];
