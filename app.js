@@ -19,10 +19,14 @@ client.once('ready', () => {
 
 client.on('messageCreate',async function(message) {
 	var msg=message.content;
-	if (msg ==='nyaa logs')
+	if (msg ==='hello')
 	{
 		const att = new MessageAttachment("fetchedData.json");
-		await message.channel.send({files: [att]});
+		await message.channel.send({content: 'hello everynyan how are u fine sankyyu'});
+	}
+	else if (msg.includes('yo mom'))
+	{
+		await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
 	}
 	else if (msg ==='help')
 		await message.channel.send({content: 'no'});
@@ -36,8 +40,16 @@ client.on('messageCreate',async function(message) {
 		const file = await readFile('fetchedData.json', 'utf8');
 		const scrap=JSON.parse(file);
 		const templ=scrap.results[parseInt(s2)-1].mlink;
-		await message.channel.send({content: "magnet link: ```"+templ+"```"});
-		
+		await message.channel.send({content: templ});
+	}
+	else if(msg.startsWith('nyaa -i '))
+	{
+		var s=msg.substring(5);
+		var s2=s.substring(s.indexOf('-d')+3);
+		const scrap=JSON.parse(file);
+		const templ=scrap.results[parseInt(s2)-1].dlink;
+		var i1=templ.indexOf("download");
+
 	}
 	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
 	{	
@@ -140,7 +152,6 @@ async function getResults(message){
 	try{
 		const file = await readFile('fetchedData.json', 'utf8');
 		const scrap=JSON.parse(file);
-		//console.log(file);
 		var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
 		var content="";
 		const results=scrap.results;
@@ -194,7 +205,6 @@ async function scrapNyaa(url,message){
 				var i1=arr[0].indexOf("title=\"")+7;
 				const dl="http://nyaa.si"+arr[2].substring(9,arr[2].indexOf("\"",11));
 				const ml=arr[2].substring(arr[2].indexOf("magnet:"),arr[2].indexOf("\"",arr[2].indexOf("magnet:")+11));
-				console.log(ml);
 				const size=arr[3];
 				const dateAdded=arr[4];
 				const seeds=arr[5];
