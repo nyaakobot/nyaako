@@ -48,8 +48,8 @@ client.on('messageCreate',async function(message) {
 		var s2=s.substring(s.indexOf('-d')+3);
 		const scrap=JSON.parse(file);
 		const templ=scrap.results[parseInt(s2)-1].dlink;
-		var i1=templ.indexOf("download");
-
+		const link="https://nyaa.si/view/"+templ.substring(templ.indexOf("download")+9,templ.indexOf(".torrent"));
+		console.log(link);
 	}
 	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
 	{	
