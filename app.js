@@ -29,6 +29,16 @@ client.on('messageCreate',async function(message) {
 	else if (msg ==='more nyaa'){
 		await getResults(message);	
 	}
+	else if(s.startsWith('nyaa -m '))
+	{
+		var s=msg.substring(5);
+		var s2=s.substring(s.indexOf('-d')+3);
+		const file = await readFile('fetchedData.json', 'utf8');
+		const scrap=JSON.parse(file);
+		const templ=scrap.results[parseInt(s2)-1].mlink;
+		await message.channel.send({content: ["```"+templ+"```"]});
+		
+	}
 	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
 	{	
 		if(msg.endsWith(' -p'))
@@ -79,28 +89,28 @@ client.on('messageCreate',async function(message) {
 		}
 		await getResults(message);	
 	}
+	else if(msg.startsWith('nyaa -d '))
+	{
+		var s=msg.substring(5);
+		var s2=s.substring(s.indexOf('-d')+3);
+		try{
+			const file = await readFile('fetchedData.json', 'utf8');
+			const scrap=JSON.parse(file);
+			const downl=scrap.results[parseInt(s2)-1].dlink;
+			await message.channel.send({files: [downl]});
+		}
+		catch(e)
+		{
+			console.log(e);
+			await message.channel.send({content: 'Err'});
+		}
+	}
 	else if (msg.startsWith('nyaa '))
 	{	
-
 		var s=msg.substring(5);
 		if(s.trim().length==0)
 		{
 			await message.channel.send({content: 'sup'});
-		}
-		else if(s.startsWith('-d '))
-		{
-			var s2=s.substring(s.indexOf('-d')+3);
-			try{
-				const file = await readFile('fetchedData.json', 'utf8');
-				const scrap=JSON.parse(file);
-				const downl=scrap.results[parseInt(s2)-1].dlink;
-				await message.channel.send({files: [downl]});
-			}
-			catch(e)
-			{
-				console.log(e);
-				await message.channel.send({content: 'Errrrrrrr'});
-			}
 		}
 		else
 		{
@@ -118,12 +128,13 @@ client.on('messageCreate',async function(message) {
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns,message);
 			await getResults(message);
 			
-}
-}
-else{
+		}
+	}
+
+	else{
 	return true;
-}
-})
+	}
+});
 
 async function getResults(message){
 	try{
@@ -182,11 +193,12 @@ async function scrapNyaa(url,message){
 				const title=arr[1].substring(i1,i2);
 				var i1=arr[0].indexOf("title=\"")+7;
 				const dl="http://nyaa.si"+arr[2].substring(9,arr[2].indexOf("\"",11));
+				const ml=arr[2].substring(arr[2].indexOf("magnet:"),arr[2].indexOf("\"",arr[2].indexOf("magnet:")+11));
 				const size=arr[3];
 				const dateAdded=arr[4];
 				const seeds=arr[5];
 				const leechers=arr[6];
-				const result={title: title,	dlink: dl,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
+				const result={title: title,	dlink: dl,mlink: ml,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
 				file.results.push(result);
 		});
 		const json = JSON.stringify(file);			
