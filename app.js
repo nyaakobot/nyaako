@@ -29,7 +29,7 @@ client.on('messageCreate',async function(message) {
 	else if (msg ==='more nyaa'){
 		await getResults(message);	
 	}
-	else if(s.startsWith('nyaa -m '))
+	else if(msg.startsWith('nyaa -m '))
 	{
 		var s=msg.substring(5);
 		var s2=s.substring(s.indexOf('-d')+3);
