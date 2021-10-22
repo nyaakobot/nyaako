@@ -11,6 +11,8 @@ const readFile = util.promisify(fs.readFile);
 const { table } = require('console');
 const http = require('http');
 const { getServers } = require('dns');
+const { getCipherInfo } = require('crypto');
+const { convert } = require('html-to-text');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
 client.once('ready', () => {
@@ -52,6 +54,7 @@ client.on('messageCreate',async function(message) {
 			const templ=scrap.results[parseInt(s2)-1].dlink;
 			const link="https://nyaa.si/view/"+templ.substring(templ.indexOf("download")+9,templ.indexOf(".torrent"));
 			await message.channel.send({content: link});
+			await getInfo(link,message);
 		}
 		else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
 		{	
@@ -137,7 +140,6 @@ client.on('messageCreate',async function(message) {
 				
 			}
 		}
-
 		else{
 		return true;
 		}
@@ -187,7 +189,20 @@ async function getResults(message){
 	}
 }
 
-async function scrapNyaa(url,message){
+async function getInfo(url,messsage)
+{
+	const { data } = await axios.get(url);
+	const $ = cheerio.load(data);
+	const html = $('#torrent-description').html();
+	const text = convert(html, {
+ 	 wordwrap: 130
+	});
+	console.log(text);
+	var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter nyaa -c <id> for comments");
+	output.setDescription(text);
+}
+
+async function scrapNyaa(url){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
