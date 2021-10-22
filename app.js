@@ -18,115 +18,47 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate',async function(message) {
-	var msg=message.content;
-	if (msg ==='hello')
-	{
-		const att = new MessageAttachment("fetchedData.json");
-		await message.channel.send({content: 'hello everynyan how are u fine sankyyu'});
-	}
-	else if (msg.includes('yo mom'))
-	{
-		await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
-	}
-	else if (msg ==='help')
-		await message.channel.send({content: 'no'});
-	else if (msg ==='more nyaa'){
-		await getResults(message);	
-	}
-	else if(msg.startsWith('nyaa -m '))
-	{
-		var s=msg.substring(5);
-		var s2=s.substring(s.indexOf('-d')+3);
-		const file = await readFile('fetchedData.json', 'utf8');
-		const scrap=JSON.parse(file);
-		const templ=scrap.results[parseInt(s2)-1].mlink;
-		await message.channel.send({content: templ});
-	}
-	else if(msg.startsWith('nyaa -i '))
-	{
-		var s=msg.substring(5);
-		var s2=s.substring(s.indexOf('-d')+3);
-		const file = await readFile('fetchedData.json', 'utf8');
-		const scrap=JSON.parse(file);
-		const templ=scrap.results[parseInt(s2)-1].dlink;
-		const link="https://nyaa.si/view/"+templ.substring(templ.indexOf("download")+9,templ.indexOf(".torrent"));
-		await message.channel.send({content: link});
-	}
-	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
-	{	
-		if(msg.endsWith(' -p'))
-			var s=msg.substring(5,msg.length-3);
-		else
-			var s=msg.substring(5,msg.length-4);
-		var ns="";
-		for(let i=0;i<s.length;i++)
+	try{
+		var msg=message.content;
+		if (msg ==='hello')
 		{
-			if(s.charAt(i)==' ')
-			{
-				ns=ns+"+";
-			}
-			else{
-				ns=ns+s.charAt(i);
-			}
+			const att = new MessageAttachment("fetchedData.json");
+			await message.channel.send({content: 'hello everynyan how are u fine sankyyu'});
 		}
-		if(msg.endsWith(' -p')){
-			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=desc",message);
-		}
-		else{
-			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=asc",message);
-		}
-		await getResults(message);
-	}
-	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -s')||msg.endsWith(' -s!')))
-	{	
-		if(msg.endsWith(' -s'))
-			var s=msg.substring(5,msg.length-3);
-		else
-			var s=msg.substring(5,msg.length-4);
-		var ns="";
-		for(let i=0;i<s.length;i++)
+		else if (msg.includes('yo mom'))
 		{
-			if(s.charAt(i)==' ')
-			{
-				ns=ns+"+";
-			}
-			else{
-				ns=ns+s.charAt(i);
-			}
+			await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
 		}
-		if(msg.endsWith(' -s')){
-			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=desc",message);
+		else if (msg ==='help')
+			await message.channel.send({content: 'no'});
+		else if (msg ==='more nyaa'){
+			await getResults(message);	
 		}
-		else{
-			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=asc",message);
-		}
-		await getResults(message);	
-	}
-	else if(msg.startsWith('nyaa -d '))
-	{
-		var s=msg.substring(5);
-		var s2=s.substring(s.indexOf('-d')+3);
-		try{
+		else if(msg.startsWith('nyaa -m '))
+		{
+			var s=msg.substring(5);
+			var s2=s.substring(s.indexOf('-d')+3);
 			const file = await readFile('fetchedData.json', 'utf8');
 			const scrap=JSON.parse(file);
-			const downl=scrap.results[parseInt(s2)-1].dlink;
-			await message.channel.send({files: [downl]});
+			const templ=scrap.results[parseInt(s2)-1].mlink;
+			await message.channel.send({content: templ});
 		}
-		catch(e)
+		else if(msg.startsWith('nyaa -i '))
 		{
-			console.log(e);
-			await message.channel.send({content: 'Err'});
+			var s=msg.substring(5);
+			var s2=s.substring(s.indexOf('-d')+3);
+			const file = await readFile('fetchedData.json', 'utf8');
+			const scrap=JSON.parse(file);
+			const templ=scrap.results[parseInt(s2)-1].dlink;
+			const link="https://nyaa.si/view/"+templ.substring(templ.indexOf("download")+9,templ.indexOf(".torrent"));
+			await message.channel.send({content: link});
 		}
-	}
-	else if (msg.startsWith('nyaa '))
-	{	
-		var s=msg.substring(5);
-		if(s.trim().length==0)
-		{
-			await message.channel.send({content: 'sup'});
-		}
-		else
-		{
+		else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
+		{	
+			if(msg.endsWith(' -p'))
+				var s=msg.substring(5,msg.length-3);
+			else
+				var s=msg.substring(5,msg.length-4);
 			var ns="";
 			for(let i=0;i<s.length;i++)
 			{
@@ -138,14 +70,82 @@ client.on('messageCreate',async function(message) {
 					ns=ns+s.charAt(i);
 				}
 			}
-			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns,message);
+			if(msg.endsWith(' -p')){
+				await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=desc",message);
+			}
+			else{
+				await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=asc",message);
+			}
 			await getResults(message);
-			
+		}
+		else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -s')||msg.endsWith(' -s!')))
+		{	
+			if(msg.endsWith(' -s'))
+				var s=msg.substring(5,msg.length-3);
+			else
+				var s=msg.substring(5,msg.length-4);
+			var ns="";
+			for(let i=0;i<s.length;i++)
+			{
+				if(s.charAt(i)==' ')
+				{
+					ns=ns+"+";
+				}
+				else{
+					ns=ns+s.charAt(i);
+				}
+			}
+			if(msg.endsWith(' -s')){
+				await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=desc",message);
+			}
+			else{
+				await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=asc",message);
+			}
+			await getResults(message);	
+		}
+		else if(msg.startsWith('nyaa -d '))
+		{
+			var s=msg.substring(5);
+			var s2=s.substring(s.indexOf('-d')+3);
+			const file = await readFile('fetchedData.json', 'utf8');
+			const scrap=JSON.parse(file);
+			const downl=scrap.results[parseInt(s2)-1].dlink;
+			await message.channel.send({files: [downl]});
+		}
+		else if (msg.startsWith('nyaa '))
+		{	
+			var s=msg.substring(5);
+			if(s.trim().length==0)
+			{
+				await message.channel.send({content: 'sup'});
+			}
+			else
+			{
+				var ns="";
+				for(let i=0;i<s.length;i++)
+				{
+					if(s.charAt(i)==' ')
+					{
+						ns=ns+"+";
+					}
+					else{
+						ns=ns+s.charAt(i);
+					}
+				}
+				await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns,message);
+				await getResults(message);
+				
+			}
+		}
+
+		else{
+		return true;
 		}
 	}
-
-	else{
-	return true;
+	catch(e)
+	{
+		console.log(e);
+		await message.channel.send({content: 'Err'});
 	}
 });
 
@@ -182,10 +182,11 @@ async function getResults(message){
 		}});	
 	}
 	catch (e) {
+		console.log(e);
+		await message.channel.send({content: 'Err'});
 	}
 }
 
-client.login(token);
 async function scrapNyaa(url,message){
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
@@ -222,3 +223,5 @@ async function scrapNyaa(url,message){
 			}});	
 		console.log(json.length);
 }
+
+client.login(token);
