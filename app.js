@@ -155,7 +155,7 @@ async function getResults(message){
 	try{
 		const file = await readFile('fetchedData.json', 'utf8');
 		const scrap=JSON.parse(file);
-		var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter 'more nyaa' for more results");
+		var output = new MessageEmbed().setTitle('Search Results: ').setFooter("Enter 'more nyaa' for more results");
 		var content="";
 		const results=scrap.results;
 		if(results.length==0)
@@ -189,7 +189,7 @@ async function getResults(message){
 	}
 }
 
-async function getInfo(url,messsage)
+async function getInfo(url,message)
 {
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
@@ -198,8 +198,9 @@ async function getInfo(url,messsage)
  	 wordwrap: 130
 	});
 	console.log(text);
-	var output = new MessageEmbed().setTitle('Search Results: ').setColor('#3497ff').setFooter("Enter nyaa -c <id> for comments");
+	var output = new MessageEmbed().setTitle('Search Results: ').setFooter("Enter nyaa -c <id> for comments");
 	output.setDescription(text);
+	await message.channel.send({embeds : [output]});
 }
 
 async function scrapNyaa(url){
