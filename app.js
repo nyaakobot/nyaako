@@ -47,7 +47,7 @@ client.on('messageCreate',async function(message) {
 			}
 		}
 		if(msg.endsWith(' -p')){
-			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seedersd&o=desc",message);
+			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=desc",message);
 		}
 		else{
 			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=asc",message);
