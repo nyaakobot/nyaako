@@ -165,7 +165,7 @@ async function getResults(message){
 			{	
 				if(results.length>=c){
 				head=results[c-1];
-				content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\n\n";
+				content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\t*DateAdded:* "+head.dateAdded+"\n\n";
 				}
 				else
 				break;
@@ -198,7 +198,7 @@ async function getInfo(url,message)
  	 wordwrap: 130
 	});
 	console.log(text);
-	var output = new MessageEmbed().setTitle('Search Results: ').setFooter("Enter nyaa -c <id> for comments");
+	var output = new MessageEmbed().setTitle('Description').setFooter("Enter nyaa -c <id> for comments");
 	output.setDescription(text);
 	await message.channel.send({embeds : [output]});
 }
