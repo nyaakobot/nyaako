@@ -18,24 +18,67 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate',async function(message) {
-	if (message.content ==='nyaa logs')
+	var msg=message.content;
+	if (msg ==='nyaa logs')
 	{
 		const att = new MessageAttachment("fetchedData.json");
 		await message.channel.send({files: [att]});
 	}
-	else if (message.content ==='help')
+	else if (msg ==='help')
 		await message.channel.send({content: 'no'});
-	else if (message.content ==='more nyaa'){
+	else if (msg ==='more nyaa'){
 		await getResults(message);	
 	}
-	else if (message.content.startsWith('nyaa '))
+	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
+	{	
+		if(msg.endsWith(' -p'))
+			var s=msg.substring(5,msg.length-3);
+		else
+			var s=msg.substring(5,msg.length-4);
+		var ns="";
+		for(let i=0;i<s.length;i++)
+		{
+			if(s.charAt(i)==' ')
+			{
+				ns=ns+"+";
+			}
+			else{
+				ns=ns+s.charAt(i);
+			}
+		}
+		if(msg.endsWith(' -p'))
+			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seedersd&o=desc",message);
+		else
+			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=seeders&o=asc",message);
+		await getResults(message);	size
+	}
+	else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -s')||msg.endsWith(' -s!')))
+	{	
+		if(msg.endsWith(' -s'))
+			var s=msg.substring(5,msg.length-3);
+		else
+			var s=msg.substring(5,msg.length-4);
+		var ns="";
+		for(let i=0;i<s.length;i++)
+		{
+			if(s.charAt(i)==' ')
+			{
+				ns=ns+"+";
+			}
+			else{
+				ns=ns+s.charAt(i);
+			}
+		}
+		if(msg.endsWith(' -s'))
+			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=desc",message);
+		else
+			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns+"&s=size&o=asc",message);
+		await getResults(message);	
+	}
+	else if (msg.startsWith('nyaa '))
 	{	
 
-		var s=message.content.substring(5);
-		if(s.startsWith('-l '))
-		{
-
-		}
+		var s=msg.substring(5);
 		if(s.trim().length==0)
 		{
 			await message.channel.send({content: 'sup'});
@@ -68,7 +111,7 @@ client.on('messageCreate',async function(message) {
 					ns=ns+s.charAt(i);
 				}
 			}
-			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+s,message);
+			await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns,message);
 			await getResults(message);
 			
 }
