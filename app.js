@@ -53,7 +53,6 @@ client.on('messageCreate',async function(message) {
 			const scrap=JSON.parse(file);
 			const templ=scrap.results[parseInt(s2)-1].dlink;
 			const link="https://nyaa.si/view/"+templ.substring(templ.indexOf("download")+9,templ.indexOf(".torrent"));
-			await message.channel.send({content: link});
 			await getInfo(link,message);
 		}
 		else if (msg.startsWith('nyaa ')&&(msg.endsWith(' -p')||msg.endsWith(' -p!')))
