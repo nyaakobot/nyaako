@@ -1,5 +1,5 @@
 # nyaako
-A discord bot for fetching results from nyaa.si with a download feature.
+A discord bot that fetches results from nyaa.si with a download feature.
 
 # Commands
 ```
