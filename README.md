@@ -5,7 +5,7 @@ A discord bot that fetches results from nyaa.si with a download feature.
 ```
 nyaa <SearchQuery>       //fetch results from nyaa in default sorting order (By Date)
 nyaa <SearchQuery> -s    //fetch results from nyaa in sorting order - by Size (Descending)
-nyaa <SearchQuery> -p!   //fetch results from nyaa in sorting order - by Size (Ascending)
+nyaa <SearchQuery> -s!   //fetch results from nyaa in sorting order - by Size (Ascending)
 nyaa <SearchQuery> -p    //fetch results from nyaa in sorting order - by Seeds (Descending)
 nyaa <SearchQuery> -p!   //fetch results from nyaa in sorting order - by Seeds (Ascending)
 nyaa -i <no.>            //get more info about a torrent from the fetched results
