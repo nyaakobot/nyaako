@@ -102,9 +102,8 @@ async function execute(message){
     if (msg.endsWith('-d'))
     {
 	    
-        const file = await readFile('fetchedData.json', 'utf8');
-        const scrap=JSON.parse(file);
-        await message.channel.send({files: [scrap]});
+        const file = new MessageAttachment('fetchedData.json')
+        await message.channel.send({content: [file]});
     }
     else if (msg.includes('yo mom'))
     {
