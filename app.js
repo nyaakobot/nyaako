@@ -1,5 +1,5 @@
 const { Client, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
-const { token } = require('./config.json');
+const token = process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
