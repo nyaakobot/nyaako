@@ -4,7 +4,7 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
-
+const { Client, Intents, MessageEmbed, MessageAttachment, Collection } = require('discord.js');
 async function ping(message) {
     await message.reply({content: 'nyaan'})
 }
@@ -99,10 +99,12 @@ async function scrapNyaa(url){
 async function execute(message){
     try{
     var msg=message.content.substring(1);
-    if (msg ==='hello')
+    if (msg.endsWith('-d'))
     {
-        const att = new MessageAttachment("fetchedData.json");
-        await message.channel.send({content: 'hello everynyan how are u fine sankyyu'});
+	    
+        const file = await readFile('fetchedData.json', 'utf8');
+        const scrap=JSON.parse(file);
+        await message.channel.send({files: [scrap]});
     }
     else if (msg.includes('yo mom'))
     {
