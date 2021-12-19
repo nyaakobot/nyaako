@@ -106,12 +106,6 @@ async function execute(message){
         const file = new MessageAttachment('fetchedData.json')
         await message.channel.send({content: [file]});
     }
-    else if (msg.includes('yo mom'))
-    {
-        await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
-    }
-    else if (msg ==='help')
-        await message.channel.send({content: 'no'});
     else if (msg ==='more'){
         await getResults(message);	
     }
