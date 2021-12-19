@@ -30,7 +30,8 @@ bot.client.on('messageCreate',async function(message) {
 	 // get the first word (lowercase) and remove the prefix
 	 const command = args.shift().toLowerCase().slice(1)
 	 switch(command){
-		 case 'nyaa': botCommands.nyaa.execute(message); console.log("ping"); break;
+		 case 'nyaa': botCommands.nyaa.execute(message); break;
+		 case 'more': botCommands.nyaa.execute(message); break;
 	 }
 });
 

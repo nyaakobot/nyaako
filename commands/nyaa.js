@@ -56,7 +56,7 @@ async function getInfo(url,message)
 	const html = $('#torrent-description').html();
 	const text = convert(html);
 	console.log(text);
-	var output = new MessageEmbed().setTitle('Description').setFooter("Enter nyaa -c <id> for comments");
+	var output = new MessageEmbed().setTitle('Description');
 	output.setDescription(text);
 	await message.channel.send({embeds : [output]});
 }
@@ -115,19 +115,17 @@ async function execute(message){
     else if (msg ==='more'){
         await getResults(message);	
     }
-    else if(msg.startsWith('nyaa -m '))
+    else if(msg.startsWith('m '))
     {
-        var s=msg.substring(5);
-        var s2=s.substring(s.indexOf('-d')+3);
+        var s2=msg.substring(msg.indexOf('m')+2);
         const file = await readFile('fetchedData.json', 'utf8');
         const scrap=JSON.parse(file);
         const templ=scrap.results[parseInt(s2)-1].mlink;
         await message.channel.send({content: templ});
     }
-    else if(msg.startsWith('nyaa -i '))
+    else if(msg.startsWith('i '))
     {
-        var s=msg.substring(5);
-        var s2=s.substring(s.indexOf('-i')+3);
+        var s2=msg.substring(msg.indexOf('i')+2);
         const file = await readFile('fetchedData.json', 'utf8');
         const scrap=JSON.parse(file);
         const templ=scrap.results[parseInt(s2)-1].dlink;
@@ -184,10 +182,9 @@ async function execute(message){
         }
         await getResults(message);	
     }
-    else if(msg.startsWith('nyaa -d '))
+    else if(msg.startsWith('d '))
     {
-        var s=msg.substring(5);
-        var s2=s.substring(s.indexOf('-d')+3);
+        var s2=msg.substring(message.indexOf('d')+2);
         const file = await readFile('fetchedData.json', 'utf8');
         const scrap=JSON.parse(file);
         const downl=scrap.results[parseInt(s2)-1].dlink;
