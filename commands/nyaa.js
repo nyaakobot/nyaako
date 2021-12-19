@@ -104,7 +104,7 @@ async function execute(message){
     {
 	    
         const file = new MessageAttachment('fetchedData.json')
-        await message.channel.send({content: [file]});
+        await message.channel.send({files: [file]});
     }
     else if (msg ==='more'){
         await getResults(message);	
@@ -178,7 +178,7 @@ async function execute(message){
     }
     else if(msg.startsWith('d '))
     {
-        var s2=msg.substring(message.indexOf('d')+2);
+        var s2=msg.substring(msg.indexOf('d')+2);
         const file = await readFile('fetchedData.json', 'utf8');
         const scrap=JSON.parse(file);
         const downl=scrap.results[parseInt(s2)-1].dlink;
