@@ -45,12 +45,13 @@ async function getResults(message){
 	}
 	catch (e) {
 		console.log(e);
-		await message.channel.send({content: 'Err'});
+		await message.channel.send({content: e});
 	}
 }
 
 async function getInfo(url,message)
 {
+    try{
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const html = $('#torrent-description').html();
@@ -59,9 +60,15 @@ async function getInfo(url,message)
 	var output = new MessageEmbed().setTitle('Description');
 	output.setDescription(text);
 	await message.channel.send({embeds : [output]});
+    }
+    catch (e) {
+		console.log(e);
+		await message.channel.send({content: e});
+	}
 }
 
 async function scrapNyaa(url){
+    try{
 	const { data } = await axios.get(url);
 	const $ = cheerio.load(data);
 	const tabl = $(".table-responsive table tbody tr");
@@ -96,6 +103,10 @@ async function scrapNyaa(url){
 				console.log("fetch success");
 			}});	
 		console.log(json.length);
+        }catch (e) {
+            console.log(e);
+            await message.channel.send({content: e});
+        }
 }
 async function execute(message){
     try{
