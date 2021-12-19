@@ -126,7 +126,7 @@ async function execute(message){
     else if(msg.startsWith('nyaa -i '))
     {
         var s=msg.substring(5);
-        var s2=s.substring(s.indexOf('-d')+3);
+        var s2=s.substring(s.indexOf('-i')+3);
         const file = await readFile('fetchedData.json', 'utf8');
         const scrap=JSON.parse(file);
         const templ=scrap.results[parseInt(s2)-1].dlink;
