@@ -3,6 +3,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
 const util = require('util');
+const { convert } = require('html-to-text');
 const readFile = util.promisify(fs.readFile);
 const { Client, Intents, MessageEmbed, MessageAttachment, Collection } = require('discord.js');
 async function ping(message) {
