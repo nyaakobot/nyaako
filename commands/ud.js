@@ -12,7 +12,7 @@ async function execute(message){
           const ex=data.list[0].example.replace(/\[/g, '**').replace(/\]/g, '**');
           var output = new MessageEmbed().setTitle(query.toUpperCase()).setColor('#e3b811');
           output.setDescription(mean).addFields(
-		      { name: '*Example*', value: "\n"+ex });
+		      { name: '*Examples*', value: "\n"+ex });
           await message.reply({embeds: [output]});
         } catch (error) {
           console.log(error);
