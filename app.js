@@ -41,7 +41,7 @@ bot.client.on('messageCreate',async function(message) {
 			const mess= "`;anime <SearchQuery>`\tfind anime from Anilist.\n\
 			`;manga <SearchQuery>`\tfind manga from Anilist.\n\
 			`;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
-			`;nyaa <SearchQuery>`\tfind torrents from nyaa.si in default sorting order (By Date).\n\
+			`;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
 			`;nyaa <SearchQuery> -s`\tfind torrents from nyaa.si by Size (Descending).\n\
 			`;nyaa <SearchQuery> -s!`\tfind torrents from nyaa.si by Size (Ascending).\n\
 			`;nyaa <SearchQuery> -p`\tfind torrents from nyaa.si by Seeds (Descending).\n\
