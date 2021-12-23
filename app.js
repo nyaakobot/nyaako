@@ -7,12 +7,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
 const util = require('util');
-const readFile = util.promisify(fs.readFile);
-const { table } = require('console');
 const http = require('http');
-const { getServers } = require('dns');
-const { getCipherInfo } = require('crypto');
-const { convert } = require('html-to-text');
 const botCommands = require('./commands/index');
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const prefix=';';
@@ -45,15 +40,15 @@ bot.client.on('messageCreate',async function(message) {
 		case 'help':
 			const mess= "`;anime <SearchQuery>`\tfind anime from Anilist.\n\
 			`;manga <SearchQuery>`\tfind manga from Anilist.\n\
-			`;ud <SearchQuery>`\tget definitions from Urban Dictionary.\n\
-			`;nyaa <SearchQuery>`\tfetch results from nyaa in default sorting order (By Date).\n\
-			`;nyaa <SearchQuery> -s`\tfetch results from nyaa by Size (Descending).\n\
-			`;nyaa <SearchQuery> -s!`\tfetch results from nyaa by Size (Ascending).\n\
-			`;nyaa <SearchQuery> -p`\tfetch results from nyaa by Seeds (Descending).\n\
-			`;nyaa <SearchQuery> -p!`\tfetch results from nyaa by Seeds (Ascending).\n\
-			`;i <no.>`\tget more info about a torrent from the fetched results.\n\
-			`;m <no.>`\tget magnet link of a torrent from the fetched results.\n\
-			`;d <no.>`\tdownload a torrent from the fetched results."
+			`;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
+			`;nyaa <SearchQuery>`\tfind torrents from nyaa.si in default sorting order (By Date).\n\
+			`;nyaa <SearchQuery> -s`\tfind torrents from nyaa.si by Size (Descending).\n\
+			`;nyaa <SearchQuery> -s!`\tfind torrents from nyaa.si by Size (Ascending).\n\
+			`;nyaa <SearchQuery> -p`\tfind torrents from nyaa.si by Seeds (Descending).\n\
+			`;nyaa <SearchQuery> -p!`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
+			`;i <no.>`\tget more info about a torrent from the search results.\n\
+			`;m <no.>`\tget magnet link of a torrent from the search results.\n\
+			`;d <no.>`\tdownload a torrent from the search results."
 			var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
 			await message.channel.send({embeds:[output]});
 			break;
