@@ -18,7 +18,6 @@ const bot = {
 }
 
 bot.client.on('messageCreate',async function(message) {
-	 // ignore all other messages without our prefix
 	 if (message.content=== 'nyaa')
 		await botCommands.nyaa.ping(message);
 	 else if (message.content.includes('yo mom'))
@@ -26,7 +25,6 @@ bot.client.on('messageCreate',async function(message) {
 	 else if (!message.content.startsWith(prefix)) return
 
 	 const args = message.content.split(/ +/)
-	 // get the first word (lowercase) and remove the prefix
 	 const command = args.shift().toLowerCase().slice(1)
 	 switch(command){
 	    case 'nyaa':
