@@ -5,7 +5,7 @@ const fs = require("fs");
 const util = require('util');
 const { convert } = require('html-to-text');
 const readFile = util.promisify(fs.readFile);
-const { Client, Intents, MessageEmbed, MessageAttachment, Collection } = require('discord.js');
+const { MessageEmbed, MessageAttachment} = require('discord.js');
 async function ping(message) {
     await message.reply({content: 'nyaan'})
 }
@@ -30,7 +30,7 @@ async function getResults(message){
 				else
 				break;
 			}
-			output.setDescription(content);
+			output.setDescription(content).setColor('#e3b811');
 			await message.channel.send({embeds : [output]});
 		}
 		scrap.counter=parseInt(scrap.counter)+10;
@@ -57,7 +57,7 @@ async function getInfo(url,message)
 	const html = $('#torrent-description').html();
 	const text = convert(html);
 	console.log(text);
-	var output = new MessageEmbed().setTitle('Description');
+	var output = new MessageEmbed().setTitle('Description').setColor('#e3b811');
 	output.setDescription(text);
 	await message.channel.send({embeds : [output]});
     }
@@ -226,5 +226,5 @@ catch(e)
 }
 
 module.exports = {
-    execute,
+    execute,ping
 }
