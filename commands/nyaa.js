@@ -56,7 +56,6 @@ async function getInfo(url,message)
 	const $ = cheerio.load(data);
 	const html = $('#torrent-description').html();
 	const text = convert(html);
-	console.log(text);
 	var output = new MessageEmbed().setTitle('Description').setColor('#e3b811');
 	output.setDescription(text);
 	await message.channel.send({embeds : [output]});
