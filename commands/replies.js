@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const uri =process.env.MongoSecret
-const Replies=require('../models/base')
+const Replies=require('../models/replies')
 mongoose.connect(uri,
   {
     useNewUrlParser: true,
