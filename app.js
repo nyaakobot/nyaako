@@ -1,5 +1,5 @@
 const { Client, Intents, MessageEmbed, MessageAttachment, Collection } = require('discord.js');
-const token =process.env.DiscordToken;
+const token ="ODk5MjI0MDA1NjMzMDA3NjU2.YWvpnQ.yr8eaxvVSgc3LQOSb2Z8uVkpvvI"//process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
@@ -8,8 +8,26 @@ const cheerio = require("cheerio");
 const fs = require("fs");
 const util = require('util');
 const http = require('http');
+
 const botCommands = require('./commands/index');
+
+const mess= "`;addreply <Keyword> -r <ReplyMessage>`\tadd a custom bot reply.\n\
+`;deletereply <Keyword>`\tdelete a custom bot reply.\n\
+`;addreact <Keyword> -r <:emote>`\tadd a custom bot reaction.\n\
+`;deletereact <Keyword>`\tdelete a custom bot reaction.\n\
+`;anime <SearchQuery>`\tfind anime from Anilist.\n\
+`;manga <SearchQuery>`\tfind manga from Anilist.\n\
+`;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
+`;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
+`;nyaa <SearchQuery> -s`\tfind torrents from nyaa.si by Size (Descending).\n\
+`;nyaa <SearchQuery> -s!`\tfind torrents from nyaa.si by Size (Ascending).\n\
+`;nyaa <SearchQuery> -p`\tfind torrents from nyaa.si by Seeds (Descending).\n\
+`;nyaa <SearchQuery> -p!`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
+`;i <no.>`\tget more info about a torrent from the search results.\n\
+`;m <no.>`\tget magnet link of a torrent from the search results.\n\
+`;d <no.>`\tdownload a torrent from the search results."
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
 const prefix=';';
 
 const bot = {
@@ -24,38 +42,29 @@ bot.client.on('messageCreate',async function(message) {
 	// }
 	if (message.content=== 'nyaa')
 		await botCommands.nyaa.ping(message);
-	 else if (message.content.includes('yo mom'))
+	if (message.content.includes('yo mom'))
 		await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
-	 else if (!message.content.startsWith(prefix)) return
-
-	 const args = message.content.split(/ +/)
-	 const command = args.shift().toLowerCase().slice(1)
-	 switch(command){
-	    case 'nyaa':
+	const args = message.content.split(/ +/)
+	const command = args.shift().toLowerCase().slice(1)
+	switch(command){
+		case 'nyaa':
 		case 'more':
 		case 'd':
 		case 'i':
-		case 'm':
-			await botCommands.nyaa.execute(message);break;
+		case 'm': await botCommands.nyaa.execute(message);break;
 		case 'anime':
 		case 'manga': await botCommands.al.execute(message);break;
+		case 'addreply': await botCommands.replies.add(message);break;
+		case 'deletereply': await botCommands.replies.remove(message);break;
+		case 'addreact': await botCommands.replies.addReactions(message);break;
+		case 'deletereact': await botCommands.replies.removeReactions(message);break
 		case 'help':
-			const mess= "`;anime <SearchQuery>`\tfind anime from Anilist.\n\
-			`;manga <SearchQuery>`\tfind manga from Anilist.\n\
-			`;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
-			`;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
-			`;nyaa <SearchQuery> -s`\tfind torrents from nyaa.si by Size (Descending).\n\
-			`;nyaa <SearchQuery> -s!`\tfind torrents from nyaa.si by Size (Ascending).\n\
-			`;nyaa <SearchQuery> -p`\tfind torrents from nyaa.si by Seeds (Descending).\n\
-			`;nyaa <SearchQuery> -p!`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
-			`;i <no.>`\tget more info about a torrent from the search results.\n\
-			`;m <no.>`\tget magnet link of a torrent from the search results.\n\
-			`;d <no.>`\tdownload a torrent from the search results."
 			var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
 			await message.channel.send({embeds:[output]});
 			break;
 		case 'ud': await botCommands.ud.execute(message);break;	
-	 }
+	}
+	await botCommands.replies.check(message);
 });
 
 bot.load = function load() {

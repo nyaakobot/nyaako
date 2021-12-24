@@ -1,6 +1,7 @@
 const nyaa = require('./nyaa.js')
 const ud = require('./ud.js')
 const al = require('./al.js')
+const replies = require('./replies.js')
 module.exports = {
-    nyaa,ud,al
+    nyaa,ud,al,replies
 }
