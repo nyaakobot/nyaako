@@ -1,5 +1,7 @@
 const { Client, Intents, MessageEmbed, MessageAttachment, Collection } = require('discord.js');
-const token =process.env.DiscordToken;
+const token =
+
+process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
@@ -11,10 +13,10 @@ const http = require('http');
 
 const botCommands = require('./commands/index');
 
-const mess= "`;addreply <Keyword> -r <ReplyMessage>`\tadd a custom bot reply.\n\
-`;deletereply <Keyword>`\tdelete a custom bot reply.\n\
-`;addreact <Keyword> -r <:emote>`\tadd a custom bot reaction.\n\
-`;deletereact <Keyword>`\tdelete a custom bot reaction.\n\
+const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd a custom bot reply.\n\
+`;deletereply <Keywords>`\tdelete a custom bot reply.\n\
+`;addreact <Keywords> -r <:emote>`\tadd a custom bot reaction.\n\
+`;deletereact <Keywords>`\tdelete a custom bot reaction.\n\
 `;anime <SearchQuery>`\tfind anime from Anilist.\n\
 `;manga <SearchQuery>`\tfind manga from Anilist.\n\
 `;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\

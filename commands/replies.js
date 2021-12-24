@@ -31,12 +31,12 @@ async function add(message){
         arr=query.pairs;
         const check=arr.find(item=>{return item.mess===mess})
         if(check){
-            await message.reply('custom reply message already exists for keyword "'+mess+'"')
+            await message.reply('custom reply message already exists for keywords "'+mess+'"')
             return;
         }
         arr.push({mess,rep});
         query=await Replies.findOneAndUpdate({serverid:sid},{pairs:arr})
-        message.reply("added custom reply message for keyword \""+mess+"\"");
+        message.reply("added custom reply message for keywords \""+mess+"\"");
     }catch(e){
         console.log(e)
     }
@@ -48,14 +48,14 @@ async function remove(message){
         const sid=message.guild.id;
         var query=await Replies.findOne({serverid:sid})
         if(!query){
-            await message.reply('custom reply message doesnt exist for keyword "'+mess+'"');
+            await message.reply('custom reply message doesnt exist for keywords "'+mess+'"');
         }
         var arr=query.pairs;
         console.log(arr)
         const check=arr.find(item=>{return item.mess===mess})
         console.log(check)
         if(!check){
-            await message.reply('custom reply message doesnt exist for keyword "'+mess+'"');
+            await message.reply('custom reply message doesnt exist for keywords "'+mess+'"');
             return;
         }
         var narr=[]
@@ -64,7 +64,7 @@ async function remove(message){
                 narr.push(element)
         });
         query=await Replies.findOneAndUpdate({serverid:sid},{pairs:narr})
-        await message.reply('custom reply message removed for keyword "'+mess+'"');
+        await message.reply('custom reply message removed for keywords "'+mess+'"');
     }catch(e){
         console.log(e)
     }
@@ -87,12 +87,12 @@ async function addReactions(message){
         arr=query.rpairs;
         const check=arr.find(item=>{return item.mess===mess})
         if(check){
-            await message.reply('custom bot reaction already exists for keyword "'+mess+'"')
+            await message.reply('custom bot reaction already exists for keywords "'+mess+'"')
             return;
         }
         arr.push({mess,rep});
         query=await Replies.findOneAndUpdate({serverid:sid},{rpairs:arr})
-        message.reply("added custom reaction for keyword \""+mess+"\"");
+        message.reply("added custom reaction for keywords \""+mess+"\"");
     }catch(e){
         console.log(e)
     }
@@ -104,14 +104,14 @@ async function removeReactions(message){
         const sid=message.guild.id;
         var query=await Replies.findOne({serverid:sid})
         if(!query){
-            await message.reply('custom reaction doesnt exist for keyword "'+mess+'"')
+            await message.reply('custom reaction doesnt exist for keywords "'+mess+'"')
         }
         var arr=query.rpairs;
         console.log(arr)
         const check=arr.find(item=>{return item.mess===mess})
         console.log(check)
         if(!check){
-            await message.reply('custom reaction doesnt exist for keyword "'+mess+'"')
+            await message.reply('custom reaction doesnt exist for keywords "'+mess+'"')
             return;
         }
         var narr=[]
@@ -120,7 +120,7 @@ async function removeReactions(message){
                 narr.push(element)
         });
         query=await Replies.findOneAndUpdate({serverid:sid},{rpairs:narr})
-        await message.reply('custom reaction removed for keyword "'+mess+'"');
+        await message.reply('custom reaction removed for keywords "'+mess+'"');
     }catch(e){
         console.log(e)
     }
