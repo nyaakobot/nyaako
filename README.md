@@ -1,17 +1,11 @@
 # Commands
-add a custom bot reply.
-;addreply <Keywords> -r <ReplyMessage>
-delete a custom bot reply.
-;deletereply <Keywords>
-add a custom bot reaction
-;addreact <Keywords> -r <:emote>
-delete a custom bot reaction.
-;deletereact <Keywords> 
-find anime from Anilist.
-;anime <SearchQuery>      
-find manga from Anilist.
-;manga <SearchQuery>     
-get definitions from Urban Dictionary. 
+| add a custom bot reply | ;addreply <Keywords> -r <ReplyMessage>
+| delete a custom bot reply | ;deletereply <Keywords>
+| add a custom bot reaction | ;addreact <Keywords> -r <:emote>
+| delete a custom bot reaction. | ;deletereact <Keywords> 
+| find anime from Anilist. | ;anime <SearchQuery>      
+| find manga from Anilist. | ;manga <SearchQuery>     
+| get definitions from Urban Dictionary. |
 ;ud <SearchQuery>         
 find torrents from nyaa.
 ;nyaa <SearchQuery>       
