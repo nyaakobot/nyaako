@@ -1,4 +1,5 @@
 # Commands
+|Description             |Command                     
 |------------------------|----------------------------
 | add a custom bot reply | ;addreply <Keywords> -r <ReplyMessage>
 | delete a custom bot reply | ;deletereply <Keywords>
