@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const uri ="mongodb+srv://admin:4imfKup6D4tiFZa@cluster0.fxmhw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" //process.env.MongoSecret
+const uri =process.env.MongoSecret
 const Replies=require('../models/base')
 mongoose.connect(uri,
   {
