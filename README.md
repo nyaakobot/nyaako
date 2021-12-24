@@ -1,23 +1,31 @@
 # Commands
-find anime from Anilist - 
+add a custom bot reply.
+;addreply <Keywords> -r <ReplyMessage>
+delete a custom bot reply.
+;deletereply <Keywords>
+add a custom bot reaction
+;addreact <Keywords> -r <:emote>
+delete a custom bot reaction.
+;deletereact <Keywords> 
+find anime from Anilist.
 ;anime <SearchQuery>      
-find manga from Anilist - 
+find manga from Anilist.
 ;manga <SearchQuery>     
-get definitions from Urban Dictionary -  
+get definitions from Urban Dictionary. 
 ;ud <SearchQuery>         
-find torrents from nyaa - 
+find torrents from nyaa.
 ;nyaa <SearchQuery>       
-find torrents from nyaa by Size (Descending) - 
+find torrents from nyaa by Size (Descending).
 ;nyaa <SearchQuery> -s    
-find torrents from nyaa by Size (Ascending) - 
+find torrents from nyaa by Size (Ascending).
 ;nyaa <SearchQuery> -s!   
-find torrents from nyaa by Seeds (Descending) -  
+find torrents from nyaa by Seeds (Descending). 
 ;nyaa <SearchQuery> -p    
-find torrents from nyaa by Seeds (Ascending) - 
+find torrents from nyaa by Seeds (Ascending).
 ;nyaa <SearchQuery> -p!   
-get more info about a torrent from the search results - 
+get more info about a torrent from the search results.
 ;i <no.>  
-get magnet link of a torrent from the search results - 
+get magnet link of a torrent from the search results.
 ;m <no.>  
-download a torrent from the search results - 
+download a torrent from the search results.
 ;d <no.>  
