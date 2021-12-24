@@ -18,7 +18,11 @@ const bot = {
 }
 
 bot.client.on('messageCreate',async function(message) {
-	 if (message.content=== 'nyaa')
+	if(message.content.startsWith('∞-')){
+		var num=parseInt(message.content.substring(2))+1;
+		message.channel.send('∞-'+num);
+	}
+	 else if (message.content=== 'nyaa')
 		await botCommands.nyaa.ping(message);
 	 else if (message.content.includes('yo mom'))
 		await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
