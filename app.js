@@ -42,29 +42,27 @@ bot.client.on('messageCreate',async function(message) {
 	// 	var num=parseInt(message.content.substring(2))+1;
 	// 	message.channel.send('∞-'+num);
 	// }
-	if (message.content=== 'nyaa')
-		await botCommands.nyaa.ping(message);
-	if (message.content.includes('yo mom'))
-		await message.channel.send({content : 'https://imgur.com/3HbEeOA'});
-	const args = message.content.split(/ +/)
-	const command = args.shift().toLowerCase().slice(1)
-	switch(command){
-		case 'nyaa':
-		case 'more':
-		case 'd':
-		case 'i':
-		case 'm': await botCommands.nyaa.execute(message);break;
-		case 'anime':
-		case 'manga': await botCommands.al.execute(message);break;
-		case 'addreply': await botCommands.replies.add(message);break;
-		case 'deletereply': await botCommands.replies.remove(message);break;
-		case 'addreact': await botCommands.replies.addReactions(message);break;
-		case 'deletereact': await botCommands.replies.removeReactions(message);break
-		case 'help':
-			var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
-			await message.channel.send({embeds:[output]});
-			break;
-		case 'ud': await botCommands.ud.execute(message);break;	
+	if(message.content.startsWith(prefix)){
+		const args = message.content.split(/ +/)
+		const command = args.shift().toLowerCase().slice(1)
+		switch(command){
+			case 'nyaa':
+			case 'more':
+			case 'd':
+			case 'i':
+			case 'm': await botCommands.nyaa.execute(message);break;
+			case 'anime':
+			case 'manga': await botCommands.al.execute(message);break;
+			case 'addreply': await botCommands.replies.add(message);break;
+			case 'deletereply': await botCommands.replies.remove(message);break;
+			case 'addreact': await botCommands.replies.addReactions(message);break;
+			case 'deletereact': await botCommands.replies.removeReactions(message);break
+			case 'help':
+				var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
+				await message.channel.send({embeds:[output]});
+				break;
+			case 'ud': await botCommands.ud.execute(message);break;	
+		}
 	}
 	await botCommands.replies.check(message);
 });
