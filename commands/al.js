@@ -32,7 +32,9 @@ async function execute(message){
         meanScore
         source
         studios{
-            edges
+            edges{
+                0
+            }
         }
         tags
         startDate{
