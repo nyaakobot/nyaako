@@ -31,7 +31,6 @@ async function execute(message){
         chapters
         meanScore
         source
-        tags
         startDate{
             year
         }
