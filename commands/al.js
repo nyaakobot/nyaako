@@ -30,6 +30,9 @@ async function execute(message){
         episodes
         chapters
         meanScore
+        source
+        studios
+        tags
         startDate{
             year
         }
@@ -74,7 +77,8 @@ async function execute(message){
     }
 
     async function handleData(data) {
-        const results = data.data.Page.media[0]
+        const results = data.data.Page.media[0];
+        console.log(results.studios);
         const emb=new MessageEmbed().setTitle(results.title.romaji).setURL('https://anilist.co/'+type.toLowerCase()+'/'+results.id).setThumbnail(results.coverImage.large).setImage(results.bannerImage).setDescription(results.description.replace(/<[^>]+>/g, '')+"\n**Format**: "+results.format+"\n**Status**: "+results.status+"\n**Episodes**: "+results.episodes+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore).setColor('#e3b811');
         if(results.status === 'FINISHED'){
             if(type==='ANIME')
