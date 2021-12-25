@@ -31,11 +31,6 @@ async function execute(message){
         chapters
         meanScore
         source
-        studios{
-            edges{
-                0
-            }
-        }
         tags
         startDate{
             year
@@ -92,9 +87,9 @@ async function execute(message){
         }
         else{
             if(type==='ANIME')
-        emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore)
+        emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore)
         else
-        emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
+        emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
         }
         await message.channel.send({embeds: [emb]});
     }
