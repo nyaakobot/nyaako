@@ -3,7 +3,6 @@ const {MessageEmbed} = require('discord.js');
 async function execute(message){
     const query=message.content.substring(4)
     let i=0;
-    console.log(i);
     const url=('https://api.urbandictionary.com/v0/define?term='+query)
     const response = await axios.get(url);
     const data = response.data;
@@ -39,7 +38,6 @@ async function execute(message){
         i=parseInt(length)+parseInt(i);
         if(i>parseInt(length)-1)
         i=0;
-        console.log("new "+i)
         const mean=data.list[i].definition.replace(/\[/g, '**').replace(/\]/g, '**')+"\n\n"
         const ex=data.list[i].example.replace(/\[/g, '**').replace(/\]/g, '**');
         var output = new MessageEmbed().setTitle(query.toUpperCase()).setColor('#e3b811');
