@@ -31,6 +31,14 @@ async function execute(message){
         chapters
         meanScore
         source
+        studios{
+            edges{
+                isMain
+                node{
+                    name
+                }
+            }
+        }
         startDate{
             year
         }
@@ -43,7 +51,7 @@ async function execute(message){
     var variables = {
         search: sQ,
         page: 1,
-        perPage: 3
+        perPage: 20
     };
     // Here we define our query as a multi-line string
     // Storing it in a separate .graphql/.gql file is also possible
@@ -75,22 +83,56 @@ async function execute(message){
     }
 
     async function handleData(data) {
-        const results = data.data.Page.media[0];
-        console.log(results.studios);
-        const emb=new MessageEmbed().setTitle(results.title.romaji).setURL('https://anilist.co/'+type.toLowerCase()+'/'+results.id).setThumbnail(results.coverImage.large).setImage(results.bannerImage).setDescription(results.description.replace(/<[^>]+>/g, '')+"\n**Format**: "+results.format+"\n**Status**: "+results.status+"\n**Episodes**: "+results.episodes+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore).setColor('#e3b811');
-        if(results.status === 'FINISHED'){
-            if(type==='ANIME')
-            emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Episodes**: "+results.episodes+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
+        let i=0;
+        const length=data.data.Page.media.length;
+        if(length==0)
+        await message.reply('No results')
+        const emb=await getresults(i);
+        const msg=await message.channel.send({embeds: [emb]});
+        if(parseInt(length)==1)
+        return;
+        await msg.react('◀️')
+        await msg.react('▶️')     
+        const filter = (reaction, user) => {
+            return reaction.emoji.name === '▶️'||reaction.emoji.name === '◀️' && user.id === message.author.id;
+        };
+          
+        const collector = msg.createReactionCollector({ filter, time: 60000 });
+          
+        collector.on('collect', async (reaction, user) => {
+            switch(reaction.emoji.name){
+              case '▶️':output=await getresults(++i);await msg.edit({embeds:[output]});break;
+              case '◀️':output=await getresults(--i);await msg.edit({embeds:[output]});break;
+            }
+          });
+        async function getresults(i){  
+            if(i<0)
+            i=parseInt(length)+parseInt(i);
+            if(i>parseInt(length)-1)
+            i=0;
+            const results = data.data.Page.media[i];
+            const studios=[]
+            results.studios.edges.forEach(element => {
+                if(element.isMain==true)
+                studios.push("**"+element.node.name+"**")
+                else
+                studios.push(element.node.name)
+            });
+            const emb=new MessageEmbed().setTitle(results.title.romaji).setURL('https://anilist.co/'+type.toLowerCase()+'/'+results.id).setThumbnail(results.coverImage.large).setImage(results.bannerImage).setColor('#e3b811');
+            if(results.status === 'FINISHED'){
+                if(type==='ANIME')
+                emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Produced by**: "+new Intl.ListFormat().format(studios)+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Episodes**: "+results.episodes+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
+                else
+                emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Chapters**: "+results.chapters+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
+            }
+            else{
+                if(type==='ANIME')
+                emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+"\n**Produced by**: "+new Intl.ListFormat().format(studios)+results.format+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore)
             else
-            emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Chapters**: "+results.chapters+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
+                emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
+            }
+            return emb;
         }
-        else{
-            if(type==='ANIME')
-        emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore)
-        else
-        emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);
-        }
-        await message.channel.send({embeds: [emb]});
     }
     async function handleError(error) {
 

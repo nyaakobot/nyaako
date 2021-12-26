@@ -55,6 +55,7 @@ bot.client.on('messageCreate',async function(message) {
 			case 'deletereply': await botCommands.replies.remove(message);break;
 			case 'addreact': await botCommands.replies.addReactions(message);break;
 			case 'deletereact': await botCommands.replies.removeReactions(message);break
+			case 'character': await botCommands.character.execute(message);break
 			case 'help':
 				var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
 				await message.channel.send({embeds:[output]});
