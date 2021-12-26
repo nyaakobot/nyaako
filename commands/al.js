@@ -97,7 +97,7 @@ async function execute(message){
             return reaction.emoji.name === '▶️'||reaction.emoji.name === '◀️' && user.id === message.author.id;
         };
           
-        const collector = msg.createReactionCollector({ filter, time: 60000 });
+        const collector = msg.createReactionCollector({ filter, time: 120000 });
           
         collector.on('collect', async (reaction, user) => {
             switch(reaction.emoji.name){
