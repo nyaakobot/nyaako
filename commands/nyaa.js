@@ -173,7 +173,7 @@ async function execute(message){
         let i=0;
         const data=await getResults(query,sortBy,order);
         const embeds=await buildEmbeds(data,i);
-        await message.channel.send({embeds:[embeds]})
+        const msg=await message.channel.send({embeds:[embeds]})
         if(parseInt(data.data.length)==1)
         return;
         await msg.react('◀️')
