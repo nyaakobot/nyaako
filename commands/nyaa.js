@@ -173,21 +173,21 @@ async function execute(message){
         let i=0;
         const data=await getResults(query,sortBy,order);
         const embeds=await buildEmbeds(data,i);
-        const msg=await message.channel.send({embeds:[embeds]})
+        const rem=await message.channel.send({embeds:[embeds]})
         if(parseInt(data.data.length)==1)
         return;
-        await msg.react('◀️')
-        await msg.react('▶️')     
+        await rem.react('◀️')
+        await rem.react('▶️')     
         const filter = (reaction, user) => {
             return reaction.emoji.name === '▶️'||reaction.emoji.name === '◀️' && user.id === message.author.id;
         };
           
-        const collector = msg.createReactionCollector({ filter, time: 120000 });
+        const collector = rem.createReactionCollector({ filter, time: 120000 });
           
         collector.on('collect', async (reaction, user) => {
             switch(reaction.emoji.name){
-              case '▶️':output=await getresults(++i);await msg.edit({embeds:[output]});break;
-              case '◀️':output=await getresults(--i);await msg.edit({embeds:[output]});break;
+              case '▶️':output=i=i+10;await buildEmbeds(i);await rem.edit({embeds:[output]});break;
+              case '◀️':output=i=i-10;await buildEmbeds(i);await rem.edit({embeds:[output]});break;
             }
         });
     }
