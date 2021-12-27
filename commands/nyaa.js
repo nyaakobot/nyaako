@@ -52,17 +52,16 @@ async function getInfo(url,message)
 async function execute(message){
     try{
     var msg=message.content.substring(1);
+    var data
     // if (msg ==='more'){
     //     await getResults(message);	
     // }
-    // else if(msg.startsWith('m '))
-    // {
-    //     var s2=msg.substring(msg.indexOf('m')+2);
-    //     const file = await readFile('fetchedData.json', 'utf8');
-    //     const scrap=JSON.parse(file);
-    //     const templ=scrap.results[parseInt(s2)-1].mlink;
-    //     await message.channel.send({content: templ});
-    // }
+    if(msg.startsWith('m '))
+    {
+        var s2=msg.substring(msg.indexOf('m')+2);
+        const templ=data.data.results[parseInt(s2)-1].mlink;
+        await message.channel.send({content: templ});
+    }
     // else if(msg.startsWith('i '))
     // {
     //     var s2=msg.substring(msg.indexOf('i')+2);
@@ -130,8 +129,7 @@ async function execute(message){
     //     const downl=scrap.results[parseInt(s2)-1].dlink;
     //     await message.channel.send({files: [downl]});
     // }
-    if (msg.startsWith('nyaa '))
-    {	
+    if (msg.startsWith('nyaa ')){
         var query=null,sortBy=null,order=null;
         var params=msg.split(" ");
         if(params[1].startsWith("-")){
@@ -146,7 +144,7 @@ async function execute(message){
         else
         query=params.slice(1).join(' ');
         let i=0;
-        const data=await getResults(query,sortBy,order);
+        data=await getResults(query,sortBy,order);
         var embeds=await buildEmbeds(data);
         const rem=await message.channel.send({embeds:[embeds]})
         if(parseInt(data.data.length)==1)
@@ -175,7 +173,7 @@ async function execute(message){
                 if(results.length==0)
                 await message.channel.send({content: 'No results'});	
                 else{
-                    var output = new MessageEmbed().setTitle('Search Results: ').setFooter("';more' for more results");
+                    var output = new MessageEmbed().setTitle('Search Results: ');
                     var content="";
                     for(let c=parseInt(i)+1;c<parseInt(i)+11;c++)
                     {	
@@ -193,11 +191,9 @@ async function execute(message){
                     console.log(e);
                     return
                 }
-        }        
+            }        
+        }
     }
-    else
-    return true;
-}
 catch(e)
 {
     console.log(e);

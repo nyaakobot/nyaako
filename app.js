@@ -19,10 +19,10 @@ const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd a custom bot reply.\n
 `;manga <SearchQuery>`\tfind manga from Anilist.\n\
 `;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
 `;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
-`;nyaa <SearchQuery> -s`\tfind torrents from nyaa.si by Size (Descending).\n\
-`;nyaa <SearchQuery> -s!`\tfind torrents from nyaa.si by Size (Ascending).\n\
-`;nyaa <SearchQuery> -p`\tfind torrents from nyaa.si by Seeds (Descending).\n\
-`;nyaa <SearchQuery> -p!`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
+`;nyaa -s <SearchQuery>`\tfind torrents from nyaa.si by Size (Descending).\n\
+`;nyaa -s! <SearchQuery>`\tfind torrents from nyaa.si by Size (Ascending).\n\
+`;nyaa -p <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Descending).\n\
+`;nyaa -p! <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
 `;i <no.>`\tget more info about a torrent from the search results.\n\
 `;m <no.>`\tget magnet link of a torrent from the search results.\n\
 `;d <no.>`\tdownload a torrent from the search results."
