@@ -31,31 +31,6 @@ async function getResults(query,sortBy,order){
     }catch(e){console.error(e)
     }
 }
-async function buildEmbeds(data,i){
-    try{
-		const results=data.data;
-		if(results.length==0)
-		await message.channel.send({content: 'No results'});	
-        else{
-            var output = new MessageEmbed().setTitle('Search Results: ').setFooter("';more' for more results");
-		    var content="";
-			for(let c=parseInt(i)+1;c<parseInt(i)+11;c++)
-			{	
-				if(results.length>=c){
-				head=results[c-1];
-				content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\t*Date:* "+head.dateAdded+"\n\n";
-				}
-				else
-				break;
-			}
-			output.setDescription(content).setColor('#e3b811');
-			return output;
-		}}
-	catch (e) {
-		console.log(e);
-		return
-	}
-}
 
 async function getInfo(url,message)
 {
@@ -172,7 +147,7 @@ async function execute(message){
         query=params.slice(1).join(' ');
         let i=0;
         const data=await getResults(query,sortBy,order);
-        const embeds=await buildEmbeds(data,i);
+        var embeds=await buildEmbeds(data);
         const rem=await message.channel.send({embeds:[embeds]})
         if(parseInt(data.data.length)==1)
         return;
@@ -186,10 +161,39 @@ async function execute(message){
           
         collector.on('collect', async (reaction, user) => {
             switch(reaction.emoji.name){
-              case '▶️':output=i=i+10;await buildEmbeds(i);await rem.edit({embeds:[output]});break;
-              case '◀️':output=i=i-10;await buildEmbeds(i);await rem.edit({embeds:[output]});break;
+              case '▶️':i=i+10;embeds=await buildEmbeds(data);await rem.edit({embeds:[output]});break;
+              case '◀️':i=i-10;embeds=await buildEmbeds(data);await rem.edit({embeds:[output]});break;
             }
         });
+        async function buildEmbeds(data){
+            try{
+                const results=data.data;
+                if(i<0)
+                    i=parseInt(results.length)+parseInt(i);
+                if(i>parseInt(results.length)-1)
+                    i=0;
+                if(results.length==0)
+                await message.channel.send({content: 'No results'});	
+                else{
+                    var output = new MessageEmbed().setTitle('Search Results: ').setFooter("';more' for more results");
+                    var content="";
+                    for(let c=parseInt(i)+1;c<parseInt(i)+11;c++)
+                    {	
+                        if(results.length>=c){
+                        head=results[c-1];
+                        content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\t*Date:* "+head.dateAdded+"\n\n";
+                        }
+                        else
+                        break;
+                    }
+                    output.setDescription(content).setColor('#e3b811');
+                    return output;
+                }}
+                catch (e) {
+                    console.log(e);
+                    return
+                }
+        }        
     }
     else
     return true;
