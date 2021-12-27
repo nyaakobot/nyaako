@@ -35,7 +35,7 @@ bot.client.on('messageCreate',async function(message) {
 		setTimeout(async ()=>{
 			var num=parseInt(message.content.substring(2))+1;
 			message.channel.send('∞-'+num);	
-		},'666')
+		},'3000')
 		}
 	if(message.content.startsWith(prefix)){
 		const args = message.content.split(/ +/)
