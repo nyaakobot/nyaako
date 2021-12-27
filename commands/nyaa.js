@@ -134,7 +134,7 @@ async function execute(message){
                     {	
                         if(results.length>=c){
                         head=results[c-1];
-                        content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* "+head.seeders+"\t*Leeches:* "+head.leechers+"\t*Size:* "+head.size+"\t*Date:* "+head.dateAdded+"\n\n";
+                        content=content+"**"+c+". "+head.title+"**\n"+"*Seeds:* **"+head.seeders+"**\t*Leeches:* **"+head.leechers+"**\t*Size:* **"+head.size+"**\t*Date:* **"+head.dateAdded+"**\n\n";
                         }
                         else
                         break;

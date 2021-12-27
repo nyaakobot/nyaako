@@ -3,11 +3,6 @@ const token =process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
-const axios = require("axios");
-const cheerio = require("cheerio");
-const fs = require("fs");
-const util = require('util');
-const http = require('http');
 
 const botCommands = require('./commands/index');
 
@@ -36,10 +31,10 @@ const bot = {
 }
 
 bot.client.on('messageCreate',async function(message) {
-	// if(message.content.startsWith('∞-')){
-	// 	var num=parseInt(message.content.substring(2))+1;
-	// 	message.channel.send('∞-'+num);
-	// }
+	if(message.content.startsWith('∞-')){
+		var num=parseInt(message.content.substring(2))+1;
+		message.channel.send('∞-'+num);
+	}
 	if(message.content.startsWith(prefix)){
 		const args = message.content.split(/ +/)
 		const command = args.shift().toLowerCase().slice(1)
