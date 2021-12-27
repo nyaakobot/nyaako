@@ -5,7 +5,7 @@ async function ping(message) {
     await message.reply({content: 'nyaan'})
 }
 
-async function getResults(query,sortBy,order){
+async function getResults(message,query,sortBy,order){
 	try{
         var results=null
         await fetch('https://nscrap.herokuapp.com/api/results',{ 
@@ -25,14 +25,12 @@ async function getResults(query,sortBy,order){
         });
         }
         async function handleData(data) {
-            results=data;   
+            await sendEmbed(message,data,i);
         }
-        console.log(results.length);
-        return results;
     }catch(e){console.error(e)
     }
 }
-async function sendEmbed(data,i){
+async function sendEmbed(message,data,i){
     try{
 		const results=data;
 		if(results.length==0)
@@ -159,8 +157,7 @@ async function execute(message){
     if (msg.startsWith('nyaa '))
     {	
         var query=msg.substring(5);
-        const data=await getResults(query);
-        await sendEmbed(data,0);
+        const data=await getResults(message,query,null,null);
     }
     else
     return true;
