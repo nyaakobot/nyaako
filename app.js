@@ -1,4 +1,4 @@
-const { Client, Intents, MessageEmbed, MessageAttachment, Collection } = require('discord.js');
+const { Client, Intents, MessageEmbed, MessageAttachment, Collection, VoiceChannel } = require('discord.js');
 const token =process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
@@ -31,7 +31,7 @@ express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 const prefix=';';
 
 const bot = {
-    client: new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS]}),
+    client: new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS,Intents.FLAGS.GUILD_VOICE_STATES]}),
     log: console.log,
 }
 
@@ -56,6 +56,7 @@ bot.client.on('messageCreate',async function(message) {
 			case 'addreact': await botCommands.replies.addReactions(message);break;
 			case 'deletereact': await botCommands.replies.removeReactions(message);break
 			case 'character': await botCommands.character.execute(message);break
+			case 'play': await botCommands.player.execute(message,VoiceChannel);break;
 			case 'help':
 				var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
 				await message.channel.send({embeds:[output]});

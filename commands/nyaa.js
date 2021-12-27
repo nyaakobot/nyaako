@@ -1,27 +1,47 @@
 const path = require('path');
-const axios = require("axios");
-const cheerio = require("cheerio");
-const fs = require("fs");
-const util = require('util');
-const { convert } = require('html-to-text');
-const readFile = util.promisify(fs.readFile);
+const fetch=require('node-fetch')
 const { MessageEmbed, MessageAttachment} = require('discord.js');
 async function ping(message) {
     await message.reply({content: 'nyaan'})
 }
 
-async function getResults(message){
+async function getResults(query,sortBy,order){
 	try{
-
-		const file = await readFile('fetchedData.json', 'utf8');
-		const scrap=JSON.parse(file);
-		var output = new MessageEmbed().setTitle('Search Results: ').setFooter("';more' for more results");
-		var content="";
-		const results=scrap.results;
+        var results=null
+        await fetch('https://nscrap.herokuapp.com/api/results',{ 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query,sortBy,order
+            })
+        }).then(handleResponse)
+        .then(handleData)
+        .catch(handleError);
+        async function handleResponse(response) {
+        return response.json().then(function (json) {
+        return response.ok ? json : Promise.reject(json);
+        });
+        }
+        async function handleData(data) {
+            results=data;   
+        }
+        console.log(results.length);
+        return results;
+    }catch(e){console.error(e)
+    }
+}
+async function sendEmbed(data,i){
+    try{
+		const results=data;
 		if(results.length==0)
-		await message.channel.send({content: 'No results'});
-		else{
-			for(let c=parseInt(scrap.counter)+1;c<parseInt(scrap.counter)+11;c++)
+		await message.channel.send({content: 'No results'});	
+        else{
+            var output = new MessageEmbed().setTitle('Search Results: ').setFooter("';more' for more results");
+		    var content="";
+			for(let c=parseInt(i)+1;c<parseInt(i)+11;c++)
 			{	
 				if(results.length>=c){
 				head=results[c-1];
@@ -32,17 +52,7 @@ async function getResults(message){
 			}
 			output.setDescription(content).setColor('#e3b811');
 			await message.channel.send({embeds : [output]});
-		}
-		scrap.counter=parseInt(scrap.counter)+10;
-		console.log(scrap.counter);
-		const json = JSON.stringify(scrap);			
-		fs.writeFile('fetchedData.json', json, 'utf8', function(err){
-		if(err){ 
-		console.log(err); 
-		} else {
-		console.log("fetch success");
-		}});	
-	}
+		}}
 	catch (e) {
 		console.log(e);
 		await message.channel.send({content: e});
@@ -66,57 +76,10 @@ async function getInfo(url,message)
 	}
 }
 
-async function scrapNyaa(url){
-    try{
-	const { data } = await axios.get(url);
-	const $ = cheerio.load(data);
-	const tabl = $(".table-responsive table tbody tr");
-	const file={results: [],counter: 0};
-		tabl.each(function(idx, el){
-				const row= $(el).children("td");
-				const arr=[];
-				row.each(function(idx, el2){
-					var temp=$(el2).html().replace(/(\r\n|\n|\r)/gm, "").replace(/(\r\t|\t|\r)/gm, "");
-					if(temp.trim().length!=0){
-						arr.push(temp);		
-					}			
-				});
-				var i1=arr[1].indexOf("title=\"",arr[1].indexOf("fa fa-comments"))+7;
-				var i2=arr[1].indexOf("\"",i1+2);
-				const title=arr[1].substring(i1,i2);
-				var i1=arr[0].indexOf("title=\"")+7;
-				const dl="http://nyaa.si"+arr[2].substring(9,arr[2].indexOf("\"",11));
-				const ml=arr[2].substring(arr[2].indexOf("magnet:"),arr[2].indexOf("\"",arr[2].indexOf("magnet:")+11));
-				const size=arr[3];
-				const dateAdded=arr[4];
-				const seeds=arr[5];
-				const leechers=arr[6];
-				const result={title: title,	dlink: dl,mlink: ml,size: size,dateAdded: dateAdded,seeders: seeds,leechers: leechers};
-				file.results.push(result);
-		});
-		const json = JSON.stringify(file);			
-		fs.writeFile('fetchedData.json', json, 'utf8', function(err){
-			if(err){ 
-				console.log(err); 
-			} else {
-				console.log("fetch success");
-			}});	
-		console.log(json.length);
-        }catch (e) {
-            console.log(e);
-            await message.channel.send({content: e});
-        }
-}
 async function execute(message){
     try{
     var msg=message.content.substring(1);
-    if (msg.endsWith('-d'))
-    {
-	    
-        const file = new MessageAttachment('fetchedData.json')
-        await message.channel.send({files: [file]});
-    }
-    else if (msg ==='more'){
+    if (msg ==='more'){
         await getResults(message);	
     }
     else if(msg.startsWith('m '))
@@ -196,26 +159,12 @@ async function execute(message){
     }
     else if (msg.startsWith('nyaa '))
     {	
-        var s=msg.substring(5);
-        
-        var ns="";
-        for(let i=0;i<s.length;i++)
-        {
-            if(s.charAt(i)==' ')
-            {
-                ns=ns+"+";
-            }
-            else{
-                ns=ns+s.charAt(i);
-            }
-        }
-        await scrapNyaa("https://nyaa.si/?f=0&c=0_0&q="+ns,message);
-        await getResults(message);
-        
+        var query=msg.substring(5);
+        const data=await getResults(query);
+        await sendEmbed(data,0);
     }
-    else{
+    else
     return true;
-    }
 }
 catch(e)
 {
