@@ -53,7 +53,6 @@ async function getInfo(id)
         });
         }
         async function handleData(data) {
-            console.log(data.data.length+" records fetched")
             return data;
         }
         return res;
@@ -129,7 +128,7 @@ async function execute(message){
                 if(results.length==0)
                 await message.channel.send({content: 'No results'});	
                 else{
-                    var output = new MessageEmbed().setTitle('Search Results: ');
+                    var output = new MessageEmbed().setTitle('SEARCH RESULTS ');
                     var content="";
                     for(let c=parseInt(i)+1;c<parseInt(i)+11;c++)
                     {	
