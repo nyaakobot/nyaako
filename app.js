@@ -32,9 +32,11 @@ const bot = {
 
 bot.client.on('messageCreate',async function(message) {
 	if(message.content.startsWith('∞-')){
-		var num=parseInt(message.content.substring(2))+1;
-		message.channel.send('∞-'+num);
-	}
+		setTimeout(async ()=>{
+			var num=parseInt(message.content.substring(2))+1;
+			message.channel.send('∞-'+num);	
+		},'666')
+		}
 	if(message.content.startsWith(prefix)){
 		const args = message.content.split(/ +/)
 		const command = args.shift().toLowerCase().slice(1)
