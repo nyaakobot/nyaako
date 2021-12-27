@@ -25,7 +25,7 @@ async function getResults(message,query,sortBy,order,i){
         });
         }
         async function handleData(data) {
-            console.log(data)
+            console.log(data.data.length+" records fetched")
             await sendEmbed(message,data,i);
         }
     }catch(e){console.error(e)
@@ -157,8 +157,21 @@ async function execute(message){
     // }
     if (msg.startsWith('nyaa '))
     {	
-        var query=msg.substring(5);
-        const data=await getResults(message,query,null,null,0);
+        var query=null,sortBy=null,order=null;
+        var params=msg.split(" ");
+        if(params[1].startsWith("-")){
+            switch(params[1]){
+                case '-p':order='desc';sortBy='seeders';break;
+                case '-p!':order='asc';sortBy='seeders';break;
+                case '-s':order='desc';sortBy='size';break;
+                case '-s!':order='asc';sortBy='size';break;
+            }
+            query=params.slice(2).join(' ');
+        }
+        else
+        query=params.slice(1).join(' ');
+        let i=0;
+        const data=await getResults(message,query,sortBy,order,i);
     }
     else
     return true;
