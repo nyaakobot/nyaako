@@ -161,8 +161,8 @@ async function execute(message){
           
         collector.on('collect', async (reaction, user) => {
             switch(reaction.emoji.name){
-              case '▶️':i=i+10;embeds=await buildEmbeds(data);await rem.edit({embeds:[output]});break;
-              case '◀️':i=i-10;embeds=await buildEmbeds(data);await rem.edit({embeds:[output]});break;
+              case '▶️':i=i+10;embeds=await buildEmbeds(data);await rem.edit({embeds:[embeds]});break;
+              case '◀️':i=i-10;embeds=await buildEmbeds(data);await rem.edit({embeds:[embeds]});break;
             }
         });
         async function buildEmbeds(data){
