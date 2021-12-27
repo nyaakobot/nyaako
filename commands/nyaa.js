@@ -5,10 +5,9 @@ async function ping(message) {
     await message.reply({content: 'nyaan'})
 }
 
-async function getResults(message,query,sortBy,order,i){
+async function getResults(query,sortBy,order){
 	try{
-        var results=null
-        await fetch('https://nscrap.herokuapp.com/api/results',{ 
+        var results=await fetch('https://nscrap.herokuapp.com/api/results',{ 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,12 +25,13 @@ async function getResults(message,query,sortBy,order,i){
         }
         async function handleData(data) {
             console.log(data.data.length+" records fetched")
-            await sendEmbed(message,data,i);
+            return data;
         }
+        return results;
     }catch(e){console.error(e)
     }
 }
-async function sendEmbed(message,data,i){
+async function buildEmbeds(data,i){
     try{
 		const results=data.data;
 		if(results.length==0)
@@ -49,11 +49,11 @@ async function sendEmbed(message,data,i){
 				break;
 			}
 			output.setDescription(content).setColor('#e3b811');
-			await message.channel.send({embeds : [output]});
+			return output;
 		}}
 	catch (e) {
 		console.log(e);
-		await message.channel.send({content: e});
+		return
 	}
 }
 
@@ -171,7 +171,25 @@ async function execute(message){
         else
         query=params.slice(1).join(' ');
         let i=0;
-        const data=await getResults(message,query,sortBy,order,i);
+        const data=await getResults(query,sortBy,order);
+        const embeds=await buildEmbeds(data,i);
+        await message.channel.send({embeds:[embeds]})
+        if(parseInt(data.data.length)==1)
+        return;
+        await msg.react('◀️')
+        await msg.react('▶️')     
+        const filter = (reaction, user) => {
+            return reaction.emoji.name === '▶️'||reaction.emoji.name === '◀️' && user.id === message.author.id;
+        };
+          
+        const collector = msg.createReactionCollector({ filter, time: 120000 });
+          
+        collector.on('collect', async (reaction, user) => {
+            switch(reaction.emoji.name){
+              case '▶️':output=await getresults(++i);await msg.edit({embeds:[output]});break;
+              case '◀️':output=await getresults(--i);await msg.edit({embeds:[output]});break;
+            }
+        });
     }
     else
     return true;
