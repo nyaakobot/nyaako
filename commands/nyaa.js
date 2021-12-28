@@ -74,7 +74,7 @@ async function execute(message){
         var s2=msg.substring(msg.indexOf('i')+2);
         const id=data.data[parseInt(s2)-1].id;
         const res=await getInfo(id);
-        var output = new MessageEmbed().setTitle('Description').setColor('#e3b811');
+        var output = new MessageEmbed().setTitle(data.data[parseInt(s2)-1].title).setColor('#e3b811');
 	    output.setDescription(res.description);
 	    await message.channel.send({embeds : [output]});
     }
@@ -83,17 +83,39 @@ async function execute(message){
         const id=data.data[parseInt(s2)-1].id;
         const res=await getInfo(id);
         let i=0;
-        var output = new MessageEmbed().setTitle('Comments').setColor('#e3b811');
-	    const comments=res.comments;
-        //async function loadComments(i){
-            var list="\n\n";
-            const set=comments.slice(i,i+10)
+        var output = new MessageEmbed().setTitle('Comments on "'+data.data[parseInt(s2)-1].title+'"').setColor('#e3b811');
+        await loadComments(i);
+        const sm=await message.channel.send({embeds : [output]});
+        if(parseInt(res.comments.length)<10)
+        return;
+        await sm.react('◀️')
+        await sm.react('▶️')     
+        const filter = (reaction, user) => {
+            return reaction.emoji.name === '▶️'||reaction.emoji.name === '◀️' && user.id === message.author.id;
+        };
+          
+        const collector = sm.createReactionCollector({ filter, time: 120000 });
+          
+        collector.on('collect', async (reaction, user) => {
+            switch(reaction.emoji.name){
+              case '▶️':i=i+10;await loadComments();await sm.edit({embeds:[output]});break;
+              case '◀️':i=i-10;await loadComments();await sm.edit({embeds:[output]});break;
+            }
+        });
+        async function loadComments(){
+            if(i<0)
+                i=parseInt(res.comments.length)+parseInt(i);
+            if(i>parseInt(res.comments.length)-1)
+                i=0;
+            if(res.comments.length==0)
+                await message.channel.send({content: 'No results'});	
+            var list="\n\n\n";
+            const set=res.comments.slice(i,i+10)
             set.forEach(element => {
                 list=list+"**"+element.user+"**"+"\n> "+element.comment.replace(/\n/,"\n> ")+"\n\n";
             });
             output.setDescription(list);
-        
-	    await message.channel.send({embeds : [output]});
+        }
         
     }
     else if(msg.startsWith('d '))
