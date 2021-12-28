@@ -89,7 +89,7 @@ async function execute(message){
             var list="\n\n";
             const set=comments.slice(i,i+10)
             set.forEach(element => {
-                list=list+"**"+element.user+"**"+"\n> "+element.comment+"\n\n";
+                list=list+"**"+element.user+"**"+"\n> "+element.comment.replace(/\n/,"\n> ")+"\n\n";
             });
             output.setDescription(list);
         
