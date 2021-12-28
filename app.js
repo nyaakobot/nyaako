@@ -1,4 +1,4 @@
-const { Client, Intents, MessageEmbed, MessageAttachment, Collection, VoiceChannel } = require('discord.js');
+const { Client, Intents, MessageEmbed, VoiceChannel } = require('discord.js');
 const token =process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
@@ -55,6 +55,7 @@ bot.client.on('messageCreate',async function(message) {
 			case 'addreact': await botCommands.replies.addReactions(message);break;
 			case 'deletereact': await botCommands.replies.removeReactions(message);break
 			case 'character': await botCommands.character.execute(message);break
+			case 'romaji': await botCommands.nihon.execute(message);break;
 			case 'play': await botCommands.player.execute(message,VoiceChannel);break;
 			case 'help':
 				var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');

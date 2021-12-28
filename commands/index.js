@@ -4,6 +4,7 @@ const al = require('./al.js')
 const replies = require('./replies.js')
 const character = require('./character.js')
 const player = require('./player.js')
+const nihon=require('./nihon.js')
 module.exports = {
-    nyaa,ud,al,replies,character,player
+    nyaa,ud,al,replies,character,player,nihon
 }
