@@ -3,7 +3,7 @@
 |------------------------|----------------------------
 | add a custom bot reply | ;addreply [Keywords] -r [ReplyMessage]
 | delete a custom bot reply | ;deletereply [Keywords]
-| add a custom bot reaction | ;addreact [Keywords] -r [:emote]
+| add a custom bot reaction | ;addreact [Keywords] -r [Emote]
 | delete a custom bot reaction. | ;deletereact [Keywords] 
 | find anime from Anilist. | ;anime [SearchQuery]      
 | find manga from Anilist. | ;manga [SearchQuery]     
