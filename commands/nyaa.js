@@ -78,6 +78,24 @@ async function execute(message){
 	    output.setDescription(res.description);
 	    await message.channel.send({embeds : [output]});
     }
+    else if(msg.startsWith('c ')){
+        var s2=msg.substring(msg.indexOf('i')+2);
+        const id=data.data[parseInt(s2)-1].id;
+        const res=await getInfo(id);
+        let i=0;
+        var output = new MessageEmbed().setTitle('Comments').setColor('#e3b811');
+	    const comments=res.comments;
+        //async function loadComments(i){
+            var list="\n\n";
+            const set=comments.slice(i,i+10)
+            set.forEach(element => {
+                list=list+"**"+element.user+"**"+"\n> "+element.comment+"\n\n";
+            });
+            output.setDescription(list);
+        
+	    await message.channel.send({embeds : [output]});
+        
+    }
     else if(msg.startsWith('d '))
     {
         var s2=msg.substring(msg.indexOf('d')+2);
