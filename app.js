@@ -45,6 +45,7 @@ bot.client.on('messageCreate',async function(message) {
 			case 'more':
 			case 'd':
 			case 'i':
+			case 'c':
 			case 'm': await botCommands.nyaa.execute(message);break;
 			case 'anime':
 			case 'manga': await botCommands.al.execute(message);break;
