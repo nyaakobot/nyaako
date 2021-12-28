@@ -6,10 +6,10 @@ const PORT = process.env.PORT || 5000;
 
 const botCommands = require('./commands/index');
 
-const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd a custom bot reply.\n\
-`;deletereply <Keywords>`\tdelete a custom bot reply.\n\
-`;addreact <Keywords> -r <:emote>`\tadd a custom bot reaction.\n\
-`;deletereact <Keywords>`\tdelete a custom bot reaction.\n\
+const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd custom bot reply.\n\
+`;deletereply <Keywords>`\tdelete custom bot reply.\n\
+`;addreact <Keywords> -r <:emote>`\tadd custom bot reaction.\n\
+`;deletereact <Keywords>`\tdelete custom bot reaction.\n\
 `;anime <SearchQuery>`\tfind anime from Anilist.\n\
 `;manga <SearchQuery>`\tfind manga from Anilist.\n\
 `;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
@@ -18,9 +18,10 @@ const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd a custom bot reply.\n
 `;nyaa -s! <SearchQuery>`\tfind torrents from nyaa.si by Size (Ascending).\n\
 `;nyaa -p <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Descending).\n\
 `;nyaa -p! <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
-`;i <no.>`\tget more info about a torrent from the search results.\n\
-`;m <no.>`\tget magnet link of a torrent from the search results.\n\
-`;d <no.>`\tdownload a torrent from the search results."
+`;i <no.>`\tget more info about torrent.\n\
+`;c <no.>`\tview comments on torrent.\n\
+`;m <no.>`\tget magnet link of torrent.\n\
+`;d <no.>`\tdownload torrent."
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const prefix=';';
