@@ -18,10 +18,10 @@ const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd custom bot reply.\n\
 `;nyaa -s! <SearchQuery>`\tfind torrents from nyaa.si by Size (Ascending).\n\
 `;nyaa -p <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Descending).\n\
 `;nyaa -p! <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
-`;i <no.>`\tget more info about torrent.\n\
-`;c <no.>`\tview comments on torrent.\n\
-`;m <no.>`\tget magnet link of torrent.\n\
-`;d <no.>`\tdownload torrent."
+`;i <no.>`\tview description.\n\
+`;c <no.>`\tview comments.\n\
+`;m <no.>`\tget magnet link.\n\
+`;d <no.>`\tdownload."
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const prefix=';';
