@@ -93,7 +93,7 @@ async function execute(message){
             const results = data.data.Page.characters[i];
             const emb=new MessageEmbed().setTitle(results.name.full.toUpperCase()).setURL('https://anilist.co/character/'+results.id).setThumbnail(results.image.large).setImage(results.image.large);
             if(results.description) emb.setDescription("\n\n"+results.description.replace(/<[^>]+>/g, '').replace(/~!/g,'||').replace(/!~/g,'||')+"\n\n\n").setColor('#e3b811');        
-            if(sQ.equalsIgnoreCase('agni'))emb.setImage('https://i.kym-cdn.com/photos/images/newsfeed/001/867/878/32d.png')
+            if(sQ===('agni'))emb.setImage('https://i.kym-cdn.com/photos/images/newsfeed/001/867/878/32d.png')
             
             return emb;
         }    
