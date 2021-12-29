@@ -12,6 +12,7 @@ const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd custom bot reply.\n\
 `;deletereact <Keywords>`\tdelete custom bot reaction.\n\
 `;anime <SearchQuery>`\tfind anime from Anilist.\n\
 `;manga <SearchQuery>`\tfind manga from Anilist.\n\
+`;romaji <SearchQuery>`\tfind romaji word meanings.\n\
 `;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
 `;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
 `;nyaa -s <SearchQuery>`\tfind torrents from nyaa.si by Size (Descending).\n\

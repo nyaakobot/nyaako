@@ -3,8 +3,15 @@ const {MessageEmbed,MessageAttachment } = require('discord.js');
 async function execute(message){
     const type=message.content.split(/ +/).shift().toUpperCase().slice(1);
     console.log(type)
-    const sQ=message.content.substring(7);
-    var query = `
+    var tags=null
+    if(message.content.includes('-t')){
+        const temp=message.content.substring(message.content.indexOf('-t')+3);
+        tags=temp.split(',')
+    }
+    var sQ=message.content.substring(7);
+    if(tags!=null)
+    sQ=message.content.substring(7,message.content.indexOf('-t')-1);
+    var query=`
     query ($id: Int, $page: Int, $perPage: Int, $search: String) {
     Page (page: $page, perPage: $perPage) {
         pageInfo {
@@ -47,12 +54,20 @@ async function execute(message){
     }
     }
     `;
+    if(tags!=null){
+    query = `
+    query($page:Int = 1 $id:Int $type:MediaType $isAdult:Boolean = false $search:String $format:[MediaFormat]$status:MediaStatus $countryOfOrigin:CountryCode $source:MediaSource $season:MediaSeason $seasonYear:Int $year:String $onList:Boolean $yearLesser:FuzzyDateInt $yearGreater:FuzzyDateInt $episodeLesser:Int $episodeGreater:Int $durationLesser:Int $durationGreater:Int $chapterLesser:Int $chapterGreater:Int $volumeLesser:Int $volumeGreater:Int $licensedBy:[String]$isLicensed:Boolean $genres:[String]$excludedGenres:[String]$tags:[String]$excludedTags:[String]$minimumTagRank:Int $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC]){Page(page:$page,perPage:20){pageInfo{total perPage currentPage lastPage hasNextPage}media(id:$id type:$type season:$season format_in:$format status:$status countryOfOrigin:$countryOfOrigin source:$source search:$search onList:$onList seasonYear:$seasonYear startDate_like:$year startDate_lesser:$yearLesser startDate_greater:$yearGreater episodes_lesser:$episodeLesser episodes_greater:$episodeGreater duration_lesser:$durationLesser duration_greater:$durationGreater chapters_lesser:$chapterLesser chapters_greater:$chapterGreater volumes_lesser:$volumeLesser volumes_greater:$volumeGreater licensedBy_in:$licensedBy isLicensed:$isLicensed genre_in:$genres genre_not_in:$excludedGenres tag_in:$tags tag_not_in:$excludedTags minimumTagRank:$minimumTagRank sort:$sort isAdult:$isAdult){id title{romaji}coverImage{extraLarge large color}startDate{year month day}endDate{year month day}bannerImage season description type format status(version:2)episodes duration chapters volumes genres source meanScore isAdult averageScore popularity nextAiringEpisode{airingAt timeUntilAiring episode}mediaListEntry{id status}studios(isMain:true){edges{isMain node{id name}}}}}}
+    `;};
 
     var variables = {
         search: sQ,
         page: 1,
         perPage: 20
     };
+    if(tags!=null){
+        variables={page:1,type:type,tag:tags,sort:"SCORE_DESC"}
+    }
+    console.log(variables)
     // Here we define our query as a multi-line string
     // Storing it in a separate .graphql/.gql file is also possible
 
@@ -85,8 +100,10 @@ async function execute(message){
     async function handleData(data) {
         let i=0;
         const length=data.data.Page.media.length;
-        if(length==0)
+        if(length==0){
         await message.reply('No results')
+        return;
+        }
         const emb=await getresults(i);
         const msg=await message.channel.send({embeds: [emb]});
         if(parseInt(length)==1)
