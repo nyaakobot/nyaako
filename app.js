@@ -15,20 +15,19 @@ const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
  **ANILIST**\n\
 `;anime <SearchQuery>`\tfind anime from Anilist.\n\
 `;manga <SearchQuery>`\tfind manga from Anilist.\n\
-*Parameters (to be used after search query)*\n\
+*Parameters* (to be used after search query)*\n\
 `-g <genre1,genre2,...>`\tfilter results by genres.\n\
 `-t <tag1,tag2,...>`\tfilter results by tags.\n\
-`-p`\tsort results by popularity.\n\
+`-p`\tsort results by popularity.(default)\n\
 `-s`\tsort results by score.\n\
 \n\
 **DICTIONARY**\n\
 `;romaji <SearchQuery>`\tfind romaji word meanings.\n\
 `;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
-`;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
 \n\
 **NYAA.SI SEARCH**\n\
 `;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
-*Parameters\n\
+*Parameters(to be used before search query)*\n\
 `-s`\tsort results by Size (Descending).\n\
 `-s!`\tsort results by Size (Ascending).\n\
 `-p`\tsort results by Seeders (Descending).\n\
