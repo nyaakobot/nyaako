@@ -4,69 +4,35 @@ async function execute(message){
     const type=message.content.split(/ +/).shift().toUpperCase().slice(1);
     console.log(type)
     var tags=null
+    var genres=null;
+    var sort=null;
+    if(message.content.includes('-s'))
+        sort="SCORE_DESC";
+    if(message.content.includes('-p'))
+        sort="POPULARITY_DESC";
     if(message.content.includes('-t')){
-        const temp=message.content.substring(message.content.indexOf('-t')+3);
+        var temp=message.content.substring(message.content.indexOf('-t')+3);
         tags=temp.split(',')
+        if(temp.includes('-'))
+        tags=temp.substring(0,temp.indexOf('-')).split(',')
     }
-    var sQ=message.content.substring(7);
-    if(tags!=null)
-    sQ=message.content.substring(7,message.content.indexOf('-t')-1);
-    var query=`
-    query ($id: Int, $page: Int, $perPage: Int, $search: String) {
-    Page (page: $page, perPage: $perPage) {
-        pageInfo {
-        total
-        currentPage
-        lastPage
-        hasNextPage
-        perPage
-        }
-        media (id: $id, search: $search, type: `+type+`) {
-        id
-        title {
-            romaji
-            english
-        }
-        coverImage{
-            large
-        }
-        description
-        bannerImage
-        format
-        status
-        episodes
-        chapters
-        meanScore
-        source
-        studios{
-            edges{
-                isMain
-                node{
-                    name
-                }
-            }
-        }
-        startDate{
-            year
-        }
-        genres
-        }
+    if(message.content.includes('-g')){
+        var temp=message.content.substring(message.content.indexOf('-g')+3);
+        genres=temp.split(',')
+        if(temp.includes('-'))
+        genres=temp.substring(0,temp.indexOf('-')).split(',')
     }
-    }
+        
+    var search=message.content.substring(7);
+    if(tags||genres||sort)
+    search=message.content.substring(7,message.content.indexOf('-')).trim();;
+    if(search.length===0)
+    search=null;
+    var page=1
+    var query = `
+    query($page:Int = 1 $id:Int $type:MediaType $search:String $format:[MediaFormat]$status:MediaStatus $source:MediaSource $genres:[String]$excludedGenres:[String]$tags:[String]$excludedTags:[String] $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC]){Page(page:$page,perPage:50){pageInfo{total perPage currentPage lastPage hasNextPage}media(id:$id type:$type format_in:$format status:$status source:$source search:$search genre_in:$genres genre_not_in:$excludedGenres tag_in:$tags tag_not_in:$excludedTags sort:$sort){id title{romaji}coverImage{extraLarge color}startDate{year month day}endDate{year month day}bannerImage season description type format status(version:2)episodes duration chapters volumes meanScore source genres isAdult averageScore popularity nextAiringEpisode{airingAt timeUntilAiring episode}studios(isMain:true){edges{isMain node{id name}}}}}}
     `;
-    if(tags!=null){
-    query = `
-    query($page:Int = 1 $id:Int $type:MediaType $isAdult:Boolean = false $search:String $format:[MediaFormat]$status:MediaStatus $countryOfOrigin:CountryCode $source:MediaSource $season:MediaSeason $seasonYear:Int $year:String $onList:Boolean $yearLesser:FuzzyDateInt $yearGreater:FuzzyDateInt $episodeLesser:Int $episodeGreater:Int $durationLesser:Int $durationGreater:Int $chapterLesser:Int $chapterGreater:Int $volumeLesser:Int $volumeGreater:Int $licensedBy:[String]$isLicensed:Boolean $genres:[String]$excludedGenres:[String]$tags:[String]$excludedTags:[String]$minimumTagRank:Int $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC]){Page(page:$page,perPage:20){pageInfo{total perPage currentPage lastPage hasNextPage}media(id:$id type:$type season:$season format_in:$format status:$status countryOfOrigin:$countryOfOrigin source:$source search:$search onList:$onList seasonYear:$seasonYear startDate_like:$year startDate_lesser:$yearLesser startDate_greater:$yearGreater episodes_lesser:$episodeLesser episodes_greater:$episodeGreater duration_lesser:$durationLesser duration_greater:$durationGreater chapters_lesser:$chapterLesser chapters_greater:$chapterGreater volumes_lesser:$volumeLesser volumes_greater:$volumeGreater licensedBy_in:$licensedBy isLicensed:$isLicensed genre_in:$genres genre_not_in:$excludedGenres tag_in:$tags tag_not_in:$excludedTags minimumTagRank:$minimumTagRank sort:$sort isAdult:$isAdult){id title{romaji}coverImage{extraLarge large color}startDate{year month day}endDate{year month day}bannerImage season description type format status(version:2)episodes duration chapters volumes genres source meanScore isAdult averageScore popularity nextAiringEpisode{airingAt timeUntilAiring episode}mediaListEntry{id status}studios(isMain:true){edges{isMain node{id name}}}}}}
-    `;};
-
-    var variables = {
-        search: sQ,
-        page: 1,
-        perPage: 20
-    };
-    if(tags!=null){
-        variables={page:1,type:type,tag:tags,sort:"SCORE_DESC"}
-    }
+    variables={search,page,type,tags,sort,genres}
     console.log(variables)
     // Here we define our query as a multi-line string
     // Storing it in a separate .graphql/.gql file is also possible
@@ -135,7 +101,10 @@ async function execute(message){
                 else
                 studios.push(element.node.name)
             });
-            const emb=new MessageEmbed().setTitle(results.title.romaji).setURL('https://anilist.co/'+type.toLowerCase()+'/'+results.id).setThumbnail(results.coverImage.large).setImage(results.bannerImage).setColor('#e3b811');
+            const emb=new MessageEmbed().setTitle(results.title.romaji).setURL('https://anilist.co/'+type.toLowerCase()+'/'+results.id).setThumbnail(results.coverImage.extraLarge).setImage(results.bannerImage).setColor(results.coverImage.color);
+            if(!results.description){
+                results.description="No description."
+            }
             if(results.status === 'FINISHED'){
                 if(type==='ANIME')
                 emb.setDescription(results.description.replace(/<[^>]+>/g, '')+"\n\n**Format**: "+results.format+"\n**Produced by**: "+new Intl.ListFormat().format(studios)+"\n**Source**: "+results.source+"\n**Status**: "+results.status+"\n**Episodes**: "+results.episodes+"\n**Started On**: "+results.startDate.year+"\n**Genres**: "+new Intl.ListFormat().format(results.genres)+"\n**Mean Score**: "+results.meanScore);

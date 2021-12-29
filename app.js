@@ -6,19 +6,34 @@ const PORT = process.env.PORT || 5000;
 
 const botCommands = require('./commands/index');
 
-const mess= "`;addreply <Keywords> -r <ReplyMessage>`\tadd custom bot reply.\n\
+const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
+`;addreply <Keywords> -r <ReplyMessage>`\tadd custom bot reply.\n\
 `;deletereply <Keywords>`\tdelete custom bot reply.\n\
 `;addreact <Keywords> -r <:emote>`\tadd custom bot reaction.\n\
 `;deletereact <Keywords>`\tdelete custom bot reaction.\n\
+\n\
+ **ANILIST**\n\
 `;anime <SearchQuery>`\tfind anime from Anilist.\n\
 `;manga <SearchQuery>`\tfind manga from Anilist.\n\
+*Parameters (to be used after search query)*\n\
+`-g <genre1,genre2,...>`\tfilter results by genres.\n\
+`-t <tag1,tag2,...>`\tfilter results by tags.\n\
+`-p`\tsort results by popularity.\n\
+`-s`\tsort results by score.\n\
+\n\
+**DICTIONARY**\n\
 `;romaji <SearchQuery>`\tfind romaji word meanings.\n\
 `;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
 `;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
-`;nyaa -s <SearchQuery>`\tfind torrents from nyaa.si by Size (Descending).\n\
-`;nyaa -s! <SearchQuery>`\tfind torrents from nyaa.si by Size (Ascending).\n\
-`;nyaa -p <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Descending).\n\
-`;nyaa -p! <SearchQuery>`\tfind torrents from nyaa.si by Seeds (Ascending).\n\
+\n\
+**NYAA.SI SEARCH**\n\
+`;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
+*Parameters\n\
+`-s`\tsort results by Size (Descending).\n\
+`-s!`\tsort results by Size (Ascending).\n\
+`-p`\tsort results by Seeders (Descending).\n\
+`-p!`\tsort results by Seeders (Ascending).\n\
+*Options*\n\
 `;i <no.>`\tview description.\n\
 `;c <no.>`\tview comments.\n\
 `;m <no.>`\tget magnet link.\n\
