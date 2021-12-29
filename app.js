@@ -25,7 +25,7 @@ const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
 `;romaji <SearchQuery>`\tfind romaji word meanings.\n\
 `;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
 \n\
-**NYAA.SI SEARCH**\n\
+**NYAA.SI**\n\
 `;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
 *Parameters (to be used before search query)\n\
 `-s`\tsort results by Size (Descending).\n\
