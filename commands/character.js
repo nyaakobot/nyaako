@@ -91,7 +91,7 @@ async function execute(message){
             if(i>parseInt(length)-1)
             i=0;
             const results = data.data.Page.characters[i];
-            if(sQ.equalsIgnoreCase('agni'))
+            if(sQ===('agni'))
                 emb.setImage('https://i.kym-cdn.com/photos/images/newsfeed/001/867/878/32d.png')
             const emb=new MessageEmbed().setTitle(results.name.full.toUpperCase()).setURL('https://anilist.co/character/'+results.id).setThumbnail(results.image.large).setImage(results.image.large);
             if(results.description) emb.setDescription("\n\n"+results.description.replace(/<[^>]+>/g, '').replace(/~!/g,'||').replace(/!~/g,'||')+"\n\n\n").setColor('#e3b811');        
