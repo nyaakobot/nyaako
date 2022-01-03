@@ -55,9 +55,8 @@ async function execute(message){
                 if(i>parseInt(length)-1)
                 i=0;
                 output = new MessageEmbed().setTitle(query.toUpperCase()).setColor('#e3b811');
-                if(results[i])
-                output.addFields(
-                { name:'*'+(i+1)+'. '+results[i].tags+'*', value:results[i].meaning+"\n" });
+                console.log(results[i])
+                output.setDescription('> '+results[i].meaning+"\n" );
               }catch(error){
                 console.log(error)
               }
