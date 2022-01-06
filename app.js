@@ -39,7 +39,7 @@ const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
 `;d <no.>`\tdownload."
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-const prefix=';';
+const prefix=',';
 
 const bot = {
     client: new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS,Intents.FLAGS.GUILD_VOICE_STATES]}),
