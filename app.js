@@ -6,40 +6,9 @@ const PORT = process.env.PORT || 5000;
 
 const botCommands = require('./commands/index');
 
-const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
-`;addreply <Keywords> -r <ReplyMessage>`\tadd custom bot reply.\n\
-`;deletereply <Keywords>`\tdelete custom bot reply.\n\
-`;addreact <Keywords> -r <:emote>`\tadd custom bot reaction.\n\
-`;deletereact <Keywords>`\tdelete custom bot reaction.\n\
-\n\
- **ANILIST**\n\
-`;anime <SearchQuery>`\tfind anime from Anilist.\n\
-`;manga <SearchQuery>`\tfind manga from Anilist.\n\
-*Parameters (to be used after search query)*\n\
-`-g <genre1,genre2,...>`\tfilter results by genres.\n\
-`-t <tag1,tag2,...>`\tfilter results by tags.\n\
-`-p`\tsort results by popularity.(default)\n\
-`-s`\tsort results by score.\n\
-\n\
-**DICTIONARY**\n\
-`;romaji <SearchQuery>`\tfind romaji word meanings.\n\
-`;ud <SearchQuery>`\tfind definitions from Urban Dictionary.\n\
-\n\
-**NYAA.SI**\n\
-`;nyaa <SearchQuery>`\tfind torrents from nyaa.si.\n\
-*Parameters (to be used before search query)\n\
-`-s`\tsort results by Size (Descending).\n\
-`-s!`\tsort results by Size (Ascending).\n\
-`-p`\tsort results by Seeders (Descending).\n\
-`-p!`\tsort results by Seeders (Ascending).\n\
-*Options*\n\
-`;i <no.>`\tview description.\n\
-`;c <no.>`\tview comments.\n\
-`;m <no.>`\tget magnet link.\n\
-`;d <no.>`\tdownload."
 express().listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-const prefix=';';
+const prefix='`';
 
 const bot = {
     client: new Client({ intents: [Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS,Intents.FLAGS.GUILD_VOICE_STATES]}),
@@ -71,11 +40,9 @@ bot.client.on('messageCreate',async function(message) {
 			case 'deletereact': await botCommands.replies.removeReactions(message);break
 			case 'character': await botCommands.character.execute(message);break
 			case 'romaji': await botCommands.nihon.execute(message);break;
+			case 'whats': await botCommands.english.execute(message);break;
 			case 'play': await botCommands.player.execute(message,VoiceChannel);break;
-			case 'help':
-				var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
-				await message.channel.send({embeds:[output]});
-				break;
+			case 'help': await botCommands.help.execute(message);break;
 			case 'ud': await botCommands.ud.execute(message);break;	
 		}
 	}

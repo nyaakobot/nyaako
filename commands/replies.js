@@ -71,15 +71,26 @@ async function remove(message){
 }
 async function addReactions(message){
     try{
+        let contents=message.content.trim().split(" ");
+        if(contents.length>4){
+            message.reply("Syntax err");
+            return
+        }
         if(message.content.includes(' -r ')==false)
         {
             message.reply("Syntax err");
             return
         }
-        const mess=message.content.substring(10,message.content.indexOf('-r')-1);
-        const rep=message.content.substring(message.content.indexOf('-r')+3);
+        if(message.content.includes('><')||message.content.includes('> <')||message.content.includes('::')||message.content.includes('::'))
+        {
+            message.reply("Syntax err");
+            return
+        }
+        const mess=contents[1];
+        const rep=contents[3];
         const sid=message.guild.id;
         var arr=[];
+        let emojis = rep.split(",");
         var query=await Replies.findOne({serverid:sid})
         if(!query){
             query=await Replies.create({serverid:sid})
@@ -90,7 +101,7 @@ async function addReactions(message){
             await message.reply('custom bot reaction already exists for keywords "'+mess+'"')
             return;
         }
-        arr.push({mess,rep});
+        arr.push({mess,rep:emojis});
         query=await Replies.findOneAndUpdate({serverid:sid},{rpairs:arr})
         message.reply("added custom reaction for keywords \""+mess+"\"");
     }catch(e){
@@ -105,6 +116,7 @@ async function removeReactions(message){
         var query=await Replies.findOne({serverid:sid})
         if(!query){
             await message.reply('custom reaction doesnt exist for keywords "'+mess+'"')
+            return;
         }
         var arr=query.rpairs;
         console.log(arr)
@@ -140,8 +152,10 @@ async function check(message){
                 return item.rep
             }
             })
-        if(reply)
+        if(reply){
         message.reply(reply.rep)
+            return;
+        }
         arr=query.rpairs;
         const react=arr.find(item=>{
             if(item.mess===mess){
@@ -149,8 +163,14 @@ async function check(message){
                 return item.rep
             }
             })
-        if(react)
-        message.react(react.rep);
+        if(react){
+            react.rep.forEach(async element => {
+                try{
+                 await message.react(element)
+                }catch(e){console.log(e)}
+            });
+        }
+        
     }catch(e){
         console.log(e)
     }
