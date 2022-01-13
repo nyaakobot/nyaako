@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
-    
     serverid: {
         type: String,
         required: true,
