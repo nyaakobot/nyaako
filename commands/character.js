@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
-const {MessageEmbed,MessageAttachment } = require('discord.js');
-async function execute(message){
-    const type=message.content.split(/ +/).shift().toUpperCase().slice(1);
-    const sQ=message.content.substring(11);
+const { MessageEmbed, MessageAttachment } = require('discord.js');
+async function execute(message) {
+    const type = message.content.split(/ +/).shift().toUpperCase().slice(1);
+    const sQ = message.content.substring(11);
     var query = `
     query ($id: Int, $page: Int, $perPage: Int, $search: String) {
     Page (page: $page, perPage: $perPage) {
@@ -52,8 +52,8 @@ async function execute(message){
 
     // Make the HTTP Api request
     await fetch(url, options).then(handleResponse)
-                    .then(handleData)
-                    .catch(handleError);
+        .then(handleData)
+        .catch(handleError);
 
     async function handleResponse(response) {
         return response.json().then(function (json) {
@@ -62,41 +62,41 @@ async function execute(message){
     }
 
     async function handleData(data) {
-        let i=0;
-        const length=data.data.Page.characters.length;
+        let i = 0;
+        const length = data.data.Page.characters.length;
         console.log(length);
-        if(length==0)
-        message.reply("No results")
-        const emb=await getresults(i);
-        const msg=await message.channel.send({embeds:[emb]});
-        if(parseInt(length)==1)
-        return;
+        if (length == 0)
+            message.reply("No results")
+        const emb = await getresults(i);
+        const msg = await message.channel.send({ embeds: [emb] });
+        if (parseInt(length) == 1)
+            return;
         await msg.react('◀️')
-        await msg.react('▶️')     
+        await msg.react('▶️')
         const filter = (reaction, user) => {
-            return reaction.emoji.name === '▶️'||reaction.emoji.name === '◀️' && user.id === message.author.id;
+            return reaction.emoji.name === '▶️' || reaction.emoji.name === '◀️' && user.id === message.author.id;
         };
-          
+
         const collector = msg.createReactionCollector({ filter, time: 120000 });
-          
+
         collector.on('collect', async (reaction, user) => {
-            switch(reaction.emoji.name){
-              case '▶️':output=await getresults(++i);await msg.edit({embeds:[output]});break;
-              case '◀️':output=await getresults(--i);await msg.edit({embeds:[output]});break;
+            switch (reaction.emoji.name) {
+                case '▶️': output = await getresults(++i); await msg.edit({ embeds: [output] }); break;
+                case '◀️': output = await getresults(--i); await msg.edit({ embeds: [output] }); break;
             }
-          });
-        async function getresults(i){
-            if(i<0)
-            i=parseInt(length)+parseInt(i);
-            if(i>parseInt(length)-1)
-            i=0;
+        });
+        async function getresults(i) {
+            if (i < 0)
+                i = parseInt(length) + parseInt(i);
+            if (i > parseInt(length) - 1)
+                i = 0;
             const results = data.data.Page.characters[i];
-            const emb=new MessageEmbed().setTitle(results.name.full.toUpperCase()).setURL('https://anilist.co/character/'+results.id).setThumbnail(results.image.large).setImage(results.image.large);
-            if(results.description) emb.setDescription("\n\n"+results.description.replace(/<[^>]+>/g, '').replace(/~!/g,'||').replace(/!~/g,'||')+"\n\n\n").setColor('#e3b811');        
-            if(sQ===('agni'))emb.setImage('https://i.kym-cdn.com/photos/images/newsfeed/001/867/878/32d.png')
-            
+            const emb = new MessageEmbed().setTitle(results.name.full.toUpperCase()).setURL('https://anilist.co/character/' + results.id).setThumbnail(results.image.large).setImage(results.image.large);
+            if (results.description) emb.setDescription("\n\n" + results.description.replace(/<[^>]+>/g, '').replace(/~!/g, '||').replace(/!~/g, '||') + "\n\n\n").setColor('#e3b811');
+            if (sQ === ('agni')) emb.setImage('https://i.kym-cdn.com/photos/images/newsfeed/001/867/878/32d.png')
+
             return emb;
-        }    
+        }
     }
     async function handleError(error) {
         console.error(error);

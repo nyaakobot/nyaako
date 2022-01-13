@@ -3,16 +3,16 @@ const UserSchema = new mongoose.Schema({
     serverid: {
         type: String,
         required: true,
-        unique:true,
+        unique: true,
     },
     pairs: {
         type: Array,
     },
-    rpairs:{
+    rpairs: {
         type: Array,
     },
-  });
-  
-  const Replies = mongoose.model("replies", UserSchema);
-  
-  module.exports = Replies;
+});
+
+const Replies = mongoose.model("replies", UserSchema);
+
+module.exports = Replies;
