@@ -22,7 +22,6 @@ async function fetchIndex() {
     }
     async function handleError(e) {
         console.log(e)
-        await message.reply("Not found")
     }
 }
 
@@ -32,8 +31,9 @@ module.exports = {
         const query = message.content.substring(4).trim();
         const results = [];
         index.forEach(async element => {
-            if (element[1]) if (element[1].toLowerCase().includes(query)) results.push(element);
-            if (element[2]) if (element[2].toLowerCase().includes(query)) results.push(element);
+            if (element[1]) if (element[1].includes("Anime Index")) return;
+            if (element[1]) if (element[1].toLowerCase().includes(query)) { results.push(element); return; }
+            if (element[2]) if (element[2].toLowerCase().includes(query)) { results.push(element); return; }
         });
         const length = results.length;
         if (length == 0) {

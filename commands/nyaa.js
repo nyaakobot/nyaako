@@ -138,8 +138,12 @@ async function execute(message) {
                 query = params.slice(1).join(' ');
             let i = 0;
             data = await getResults(query, sortBy, order);
+            if (data.data.length == 0) {
+                await message.channel.send({ content: 'No results' });
+                return;
+            }
             var embeds = await buildEmbeds(data);
-            const rem = await message.channel.send({ embeds: [embeds] })
+            const rem = await message.channel.send({ embeds: [embeds] });
             if (parseInt(data.data.length) == 1)
                 return;
             await rem.react('◀️')
@@ -163,8 +167,6 @@ async function execute(message) {
                         i = parseInt(results.length) + parseInt(i);
                     if (i > parseInt(results.length) - 1)
                         i = 0;
-                    if (results.length == 0)
-                        await message.channel.send({ content: 'No results' });
                     else {
                         var output = new MessageEmbed().setTitle('SEARCH RESULTS ');
                         var content = "";
