@@ -30,7 +30,11 @@ const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
 `;i <no.>`\tview description.\n\
 `;c <no.>`\tview comments.\n\
 `;m <no.>`\tget magnet link.\n\
-`;d <no.>`\tdownload."
+`;d <no.>`\tdownload.\n\
+\n\
+**MISC**\n\
+`;ud <SearchQuery>`\tfind best releases from SeaSmoke's Index.\n\
+"
 async function execute(message){
     var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
     await message.channel.send({embeds:[output]});

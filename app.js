@@ -43,6 +43,7 @@ bot.client.on('messageCreate', async function (message) {
 			case 'whats': await botCommands.english.execute(message); break;
 			case 'play': await botCommands.player.execute(message, VoiceChannel); break;
 			case 'help': await botCommands.help.execute(message); break;
+			case 'br': await botCommands.br.execute(message); break;
 			case 'ud': await botCommands.ud.execute(message); break;
 		}
 	}
@@ -55,7 +56,8 @@ bot.load = function load() {
 	this.log('Connecting...')
 	this.client.login(token)
 }
-bot.client.on('ready', () => {
+bot.client.on('ready', async () => {
 	console.log("Ready")
+	await botCommands.br.fetchIndex();
 })
 bot.load();
