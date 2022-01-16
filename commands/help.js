@@ -33,7 +33,7 @@ const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
 `;d <no.>`\tdownload.\n\
 \n\
 **MISC**\n\
-`;ud <SearchQuery>`\tfind best releases from SeaSmoke's Index.\n\
+`;br <SearchQuery>`\tfind best releases from SeaSmoke's Index.\n\
 "
 async function execute(message){
     var output = new MessageEmbed().setDescription(mess).setColor('#e3b811');
