@@ -97,19 +97,7 @@ async function execute(message) {
             });
             const emb = new MessageEmbed().setTitle(results.title.romaji).setURL(`https://anilist.co/${type.toLowerCase()}/${results.id}`).setThumbnail(results.coverImage.extraLarge).setImage(results.bannerImage).setColor(results.coverImage.color);
             const embDescribe = ({ description, format, source, status, episodes, chapters, duration, startDate, genres, meanScore }) => {
-                emb.setDescription(`
-                ${(!description || description.length >= 3000) ? `` : `${description.replace(/<[^>]+>/g, '')}\n\n`}\
-                ${(format) ? `**Format**: ${format}\n` : ``}\
-                ${(source) ? `**Source**: ${source}\n` : ``}\
-                ${(studiosList.length != 0) ? `**Studios**: ${new Intl.ListFormat().format(studiosList)}\n` : ``}\
-                ${(status) ? `**Status**: ${status}\n` : ``}\
-                ${(episodes) ? `**Episodes**: ${episodes}\n` : ``}\
-                ${(chapters) ? `**Chapters**: ${chapters}\n` : ``}\
-                ${(duration) ? `**Duration**: ${duration}mins\n` : ``}\
-                ${(startDate.year) ? `**Year of Release**: ${startDate.year}\n` : ``}\
-                ${(genres) ? `**Genres**: ${new Intl.ListFormat().format(genres)}\n` : ``}\
-                ${(meanScore) ? `**Mean Score**: ${meanScore}\n` : ``}\
-            `)
+                emb.setDescription(`${(!description || description.length >= 3000) ? `` : `${description.replace(/<[^>]+>/g, '')}\n\n`}${(format) ? `**Format**: ${format}\n` : ``}${(source) ? `**Source**: ${source}\n` : ``}${(studiosList.length != 0) ? `**Studios**: ${new Intl.ListFormat().format(studiosList)}\n` : ``}${(status) ? `**Status**: ${status}\n` : ``}${(episodes) ? `**Episodes**: ${episodes}\n` : ``}${(chapters) ? `**Chapters**: ${chapters}\n` : ``}${(duration) ? `**Duration**: ${duration} mins\n` : ``}${(startDate.year) ? `**Year of Release**: ${startDate.year}\n` : ``}${(genres) ? `**Genres**: ${new Intl.ListFormat().format(genres)}\n` : ``}${(meanScore) ? `**Mean Score**: ${meanScore}\n` : ``}`)
             };
             embDescribe(results);
             return emb;
