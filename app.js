@@ -1,9 +1,8 @@
-const { Client, Intents, MessageEmbed, VoiceChannel } = require('discord.js');
+const { Client, Intents } = require('discord.js');
 const token = process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
-
 const botCommands = require('./commands/index');
 
 express().listen(PORT, () => console.log(`Listening on ${PORT}`));
@@ -31,6 +30,7 @@ bot.client.on('messageCreate', async function (message) {
 			case 'd':
 			case 'i':
 			case 'c':
+			case 'af':
 			case 'm': await botCommands.nyaa.execute(message); break;
 			case 'anime':
 			case 'manga': await botCommands.al.execute(message); break;
@@ -41,7 +41,6 @@ bot.client.on('messageCreate', async function (message) {
 			case 'character': await botCommands.character.execute(message); break
 			case 'romaji': await botCommands.nihon.execute(message); break;
 			case 'whats': await botCommands.english.execute(message); break;
-			case 'play': await botCommands.player.execute(message, VoiceChannel); break;
 			case 'help': await botCommands.help.execute(message); break;
 			case 'br': await botCommands.br.execute(message); break;
 			case 'ud': await botCommands.ud.execute(message); break;

@@ -26,7 +26,9 @@ const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
 `-s!`\tsort results by Size (Ascending).\n\
 `-p`\tsort results by Seeders (Descending).\n\
 `-p!`\tsort results by Seeders (Ascending).\n\
+`-f <filter>`\tfilter results.\n\
 *Options*\n\
+`;af <no.>`\tview available filters.\n\
 `;i <no.>`\tview description.\n\
 `;c <no.>`\tview comments.\n\
 `;m <no.>`\tget magnet link.\n\

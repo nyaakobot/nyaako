@@ -2,11 +2,30 @@ const path = require('path');
 const fetch = require('node-fetch')
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 var data = null;
+const availableFilters = {
+    "AMV": "1_1",
+    "Anime": "1_2",
+    "AnimeNonEnglish": "1_3",
+    "AnimeRaw": "1-4",
+    "MusicLossless": "2_1",
+    "MusicLossy": "2_2",
+    "Literature": "3_1",
+    "LiteratureNonEnglish": "3_2",
+    "LiteratureRaw": "3_3",
+    "LiveAction": "4_1",
+    "LiveActionNonEnglish": "4_3",
+    "LiveActionRaw": "4_4",
+    "PV": "4_2",
+    "Artworks": "5_1",
+    "Pictures": "5_2",
+    "Apps": "6_1",
+    "Games": "6_2"
+}
 async function ping(message) {
     await message.reply({ content: 'nyaan' })
 }
 
-async function getResults(query, sortBy, order) {
+async function getResults(query, sortBy, order, filters) {
     try {
         var results = await fetch('https://nscrap.herokuapp.com/api/results', {
             method: 'POST',
@@ -15,7 +34,7 @@ async function getResults(query, sortBy, order) {
                 'Accept': 'application/json',
             },
             body: JSON.stringify({
-                query, sortBy, order
+                query, sortBy, order, filters
             })
         }).then(handleResponse)
             .then(handleData);
@@ -64,7 +83,18 @@ async function getInfo(id) {
 async function execute(message) {
     try {
         var msg = message.content.substring(1);
-        if (msg.startsWith('m ')) {
+        if (msg === 'af') {
+            let output = new MessageEmbed().setTitle("AVAILABLE FILTERS").setColor('#e3b811');
+            let keys = Object.keys(availableFilters)
+            console.log(keys)
+            let desc="";
+            keys.forEach(e=>{
+                desc=desc+`\`${e}\` ,`;
+            })
+            output.setDescription(desc.substring(0,desc.length-2));
+            await message.channel.send({embeds:[output]})
+        }
+        else if (msg.startsWith('m ')) {
             var s2 = msg.substring(msg.indexOf('m') + 2);
             const templ = data.data[parseInt(s2) - 1].mlink;
             await message.channel.send({ content: templ });
@@ -123,21 +153,39 @@ async function execute(message) {
             await message.channel.send({ files: [downl] });
         }
         else if (msg.startsWith('nyaa ')) {
-            var query = null, sortBy = null, order = null;
+            var query = null, sortBy = null, order = null, filters = null;
             var params = msg.split(" ");
-            if (params[1].startsWith("-")) {
+            let c = 0;
+            if (params[1].startsWith('-')) {
                 switch (params[1]) {
-                    case '-p': order = 'desc'; sortBy = 'seeders'; break;
-                    case '-p!': order = 'asc'; sortBy = 'seeders'; break;
-                    case '-s': order = 'desc'; sortBy = 'size'; break;
-                    case '-s!': order = 'asc'; sortBy = 'size'; break;
+                    case '-p': order = 'desc'; sortBy = 'seeders'; c++; break;
+                    case '-p!': order = 'asc'; sortBy = 'seeders'; c++; break;
+                    case '-s': order = 'desc'; sortBy = 'size'; c++; break;
+                    case '-s!': order = 'asc'; sortBy = 'size'; c++; break;
+                    case '-f': filters = params[2]; c = c + 2; break;
                 }
-                query = params.slice(2).join(' ');
             }
-            else
-                query = params.slice(1).join(' ');
+            if (params[2].startsWith('-')) {
+                switch (params[2]) {
+                    case '-p': order = 'desc'; sortBy = 'seeders'; c++; break;
+                    case '-p!': order = 'asc'; sortBy = 'seeders'; c++; break;
+                    case '-s': order = 'desc'; sortBy = 'size'; c++; break;
+                    case '-s!': order = 'asc'; sortBy = 'size'; c++; break;
+                    case '-f': filters = params[3]; c = c + 2; break;
+                }
+            }
+            if (params[3].startsWith('-')) {
+                switch (params[3]) {
+                    case '-p': order = 'desc'; sortBy = 'seeders'; c++; break;
+                    case '-p!': order = 'asc'; sortBy = 'seeders'; c++; break;
+                    case '-s': order = 'desc'; sortBy = 'size'; c++; break;
+                    case '-s!': order = 'asc'; sortBy = 'size'; c++; break;
+                }
+            }
+            query = params.slice(c + 1).join(' ');
             let i = 0;
-            data = await getResults(query, sortBy, order);
+            console.log(availableFilters[filters])
+            data = await getResults(query, sortBy, order, availableFilters[filters]);
             if (data.data.length == 0) {
                 await message.channel.send({ content: 'No results' });
                 return;
