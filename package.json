@@ -4,7 +4,9 @@
   "description": "nyaako discord bot",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "logger":"heroku logs -a nyaako -t"
   },
   "author": "kskarthik5",
   "license": "ISC",
@@ -18,11 +20,12 @@
     "discord.js": "^13.2.0",
     "download": "^8.0.0",
     "express": "^4.17.1",
+    "heroku": "^7.33.3",
     "html-to-text": "^8.0.0",
     "mongoose": "^6.1.3",
     "node": "^16.11.1",
     "node-fetch": "^2.6.6",
-    "nodemon": "^2.0.13",
+    "nodemon": "^2.0.15",
     "path": "^0.12.7",
     "pretty": "^2.0.0"
   },

@@ -165,7 +165,7 @@ async function execute(message) {
                     case '-f': filters = params[2]; c = c + 2; break;
                 }
             }
-            if (params[2].startsWith('-')) {
+            if (params[2]) if (params[2].startsWith('-')) {
                 switch (params[2]) {
                     case '-p': order = 'desc'; sortBy = 'seeders'; c++; break;
                     case '-p!': order = 'asc'; sortBy = 'seeders'; c++; break;
@@ -174,7 +174,7 @@ async function execute(message) {
                     case '-f': filters = params[3]; c = c + 2; break;
                 }
             }
-            if (params[3].startsWith('-')) {
+            if (params[3]) if (params[3].startsWith('-')) {
                 switch (params[3]) {
                     case '-p': order = 'desc'; sortBy = 'seeders'; c++; break;
                     case '-p!': order = 'asc'; sortBy = 'seeders'; c++; break;
