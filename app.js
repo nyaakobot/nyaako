@@ -28,6 +28,7 @@ bot.client.on('messageCreate', async function (message) {
 	}
 	if (message.content.startsWith(prefix)) {
 		const args = message.content.split(/ +/)
+		console.log(message.channelId)
 		const command = args.shift().toLowerCase().slice(1)
 		switch (command) {
 			case 'nyaa':
@@ -64,6 +65,6 @@ bot.load = function load() {
 bot.client.on('ready', async () => {
 	console.log("Ready")
 	await botCommands.br.fetchIndex();
-	await bot.client.channels.fetch('937736243876352083').then(channel => channel.send('beep'))
+	await bot.client.channels.fetch('937798021712859156').then(channel => channel.send('beep'))
 })
 bot.load();

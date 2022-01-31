@@ -32,6 +32,7 @@ module.exports={
         const time=createdTimestamp+parseInt(params[1])
         console.log(channelId,time,userId);
         var query=await Reminders.create({channelId,userId,time,msg})
+        console.log(query)
     }
         
 }
