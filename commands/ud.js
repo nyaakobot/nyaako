@@ -7,8 +7,10 @@ async function execute(message) {
   const response = await axios.get(url);
   const data = response.data;
   var length = data.list.length
-  if (parseInt(length) < 1)
+  if (parseInt(length) < 1){
     message.reply("No results")
+    return;
+  }
   var output = await getresults(i);
   try {
     const msg = await message.reply({ embeds: [output] })

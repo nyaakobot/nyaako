@@ -3,11 +3,26 @@ const token = process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
-const botCommands = require('./commands/index');                          
+const botCommands = require('./commands/index');
 const cp = require('child_process')
+var child = cp.fork('./workers/worker1.js');
+child.on('message', async (queries) => {
+	try {
+		for (const i of queries) {
+			await bot.client.channels.fetch(i.channelId).then(channel => channel.send(`<@${i.userId}> ${i.msg}`))
+			console.log(i.userId, "reminded msg=>", i.msg)
+		}
+	}
+	catch (e) {
+		console.log(e)
+	}
+});
+child.on('close', (code) => {
+	console.log(`child process exited with code ${code}`);
+});
 express().listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-const prefix = ';';
+const prefix = '`';
 
 const bot = {
 	client: new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_VOICE_STATES] }),
@@ -33,6 +48,7 @@ bot.client.on('messageCreate', async function (message) {
 			case 'af':
 			case 'm': await botCommands.nyaa.execute(message); break;
 			case 'remindme': await botCommands.reminders.create(message); break;
+			case 'reminders': await botCommands.reminders.view(message);break;
 			case 'anime':
 			case 'manga': await botCommands.al.execute(message); break;
 			case 'addreply': await botCommands.replies.add(message); break;
@@ -57,10 +73,7 @@ bot.load = function load() {
 bot.client.on('ready', async () => {
 	console.log("Ready")
 	await botCommands.br.fetchIndex();
-	var child = cp.fork('./workers/worker1.js');
-	child.send({message: "start"});
-	child.on('close', (code) => {
-		console.log(`child process exited with code ${code}`);
-	});
+	child.send({ message: "start" });
+
 })
 bot.load();

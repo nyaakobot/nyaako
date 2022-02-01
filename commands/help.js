@@ -5,6 +5,12 @@ const mess= "**CUSTOM MESSAGES/REACTIONS**\n\
 `;addreact <Keywords> -r <:emote>`\tadd custom bot reaction.(emotes seperated by commas for multiple reactions)\n\
 `;deletereact <Keywords>`\tdelete custom bot reaction.\n\
 \n\
+**REMINDER**\n\
+`;remindme <milliseconds> <message>`\n\
+`;remindme <time> <message>`\n\
+`;remindme in/on <time> to/that <message>`\tset a reminder\n\
+`;reminders`\t view your reminders\n\
+\n\
  **ANILIST**\n\
 `;anime <SearchQuery>`\tfind anime from Anilist.\n\
 `;manga <SearchQuery>`\tfind manga from Anilist.\n\

@@ -14,7 +14,10 @@ const ReminderSchema = new mongoose.Schema({
     },
     msg:{
         type:String,
-    }
+    },
+    msgId:{
+        type:String,
+    },
 });
 
 const Reminders = mongoose.model("reminders", ReminderSchema);
