@@ -20,7 +20,6 @@ module.exports={
         for(const i of queries)
             await client.channels.fetch(i.channelId).then(channel => channel.send(`<@${i.userId}> ${i.msg}`))
         var query2=await Reminders.remove({time:{$lte:currentTime}})
-        console.log(query2,currentTime)    
     },
 
     create:async (message)=>{
