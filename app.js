@@ -3,13 +3,7 @@ const token = process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
-const botCommands = require('./commands/index');
-const checkUser = (id) => {
-	const wl = ['899224005633007656', '925691274751774720', '457483972277174272']
-	return wl.find((e) => {
-		if (id === e) return true
-	})
-}
+const botCommands = require('./commands/index');                          
 const cp = require('child_process')
 express().listen(PORT, () => console.log(`Listening on ${PORT}`));
 
@@ -57,8 +51,6 @@ bot.client.on('messageCreate', async function (message) {
 });
 
 bot.load = function load() {
-	this.log('Loading commands...')
-	console.log(botCommands);
 	this.log('Connecting...')
 	this.client.login(token)
 }
