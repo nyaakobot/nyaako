@@ -86,19 +86,36 @@ module.exports = {
         console.log(query)
     },
     view: async (message) => {
-        var queries = await Reminders.find({ userId: message.author.id }).sort({time:1})
-        var output = new MessageEmbed().setColor('#e3b811');
-        var title = `<@${message.author.id}>**'s Reminders**\n`
+        var results = await Reminders.find({ userId: message.author.id }).sort({ time: 1 })
         var desc = "\n"
-        for (const i of queries) {
-            let cdate=(new Date(i.time))
-            let ctime=cdate.getHours()+" "+cdate.getMinutes()
-            desc = desc + `**${i.msg}**\n*${cdate}*\n\n`
-        }
-        if (desc.trim().length <= 0) await message.reply("None");
-        else {
-            output.setDescription(title + desc);
-            message.reply({ embeds: [output] })
+        if (results.length <= 0) { await message.reply("None"); return; }
+        let i = 0;
+        const sent = await message.reply({ embeds: [await buildEmbeds()] })
+        async function buildEmbeds() {
+            try {
+                if (i < 0)
+                    i = parseInt(results.length) + parseInt(i);
+                if (i > parseInt(results.length) - 1)
+                    i = 0;
+                else {
+                    var output = new MessageEmbed().setTitle('Your Upcoming Reminders');
+                    var desc = "";
+                    for (let c = parseInt(i) + 1; c < parseInt(i) + 11; c++) {
+                        if (results.length > c) {
+                            let cdate = (new Date(results[c].time))
+                            let ctime = cdate.getHours() + " " + cdate.getMinutes()
+                            desc = desc + `**${c}. ${results[c].msg}**\n*${cdate}*\n\n`                        }
+                        else
+                            break;
+                    }
+                    output.setDescription(desc).setColor('#e3b811');
+                    return output;
+                }
+            }
+            catch (e) {
+                console.log(e);
+                return
+            }
         }
     }
 }
