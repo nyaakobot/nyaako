@@ -192,7 +192,7 @@ async function execute(message) {
             }
             var embeds = await buildEmbeds(data);
             const rem = await message.channel.send({ embeds: [embeds] });
-            if (parseInt(data.data.length) == 1)
+            if (parseInt(data.data.length) <= 10)
                 return;
             await rem.react('◀️')
             await rem.react('▶️')
@@ -215,7 +215,6 @@ async function execute(message) {
                         i = parseInt(results.length) + parseInt(i);
                     if (i > parseInt(results.length) - 1)
                         i = 0;
-                    else {
                         var output = new MessageEmbed().setTitle('SEARCH RESULTS ');
                         var content = "";
                         for (let c = parseInt(i) + 1; c < parseInt(i) + 11; c++) {
@@ -228,7 +227,6 @@ async function execute(message) {
                         }
                         output.setDescription(content).setColor('#e3b811');
                         return output;
-                    }
                 }
                 catch (e) {
                     console.log(e);

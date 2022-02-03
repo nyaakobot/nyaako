@@ -86,36 +86,50 @@ module.exports = {
         console.log(query)
     },
     view: async (message) => {
-        var results = await Reminders.find({ userId: message.author.id }).sort({ time: 1 })
-        var desc = "\n"
-        if (results.length <= 0) { await message.reply("None"); return; }
-        let i = 0;
-        const sent = await message.reply({ embeds: [await buildEmbeds()] })
-        async function buildEmbeds() {
-            try {
+        try {
+            var results = await Reminders.find({ userId: message.author.id }).sort({ time: 1 })
+            var desc = "\n"
+            if (results.length <= 0) { await message.reply("None"); return; }
+            let i = 0;
+            const sent = await message.reply({ embeds: [await buildEmbeds()] })
+            if (parseInt(results.length) <= 10)
+                return;
+            await sent.react('◀️')
+            await sent.react('▶️')
+            const filter = (reaction, user) => {
+                return reaction.emoji.name === '▶️' || reaction.emoji.name === '◀️' && user.id === message.author.id;
+            };
+
+            const collector = sent.createReactionCollector({ filter, time: 120000 });
+
+            collector.on('collect', async (reaction, user) => {
+                switch (reaction.emoji.name) {
+                    case '▶️': i = i + 10; await sent.edit({ embeds: [await buildEmbeds()] }); break;
+                    case '◀️': i = i - 10; await sent.edit({ embeds: [await buildEmbeds()] }); break;
+                }
+            });
+            async function buildEmbeds() {
                 if (i < 0)
                     i = parseInt(results.length) + parseInt(i);
                 if (i > parseInt(results.length) - 1)
                     i = 0;
-                else {
-                    var output = new MessageEmbed().setTitle('Your Upcoming Reminders');
-                    var desc = "";
-                    for (let c = parseInt(i) + 1; c < parseInt(i) + 11; c++) {
-                        if (results.length > c) {
-                            let cdate = (new Date(results[c].time))
-                            let ctime = cdate.getHours() + " " + cdate.getMinutes()
-                            desc = desc + `**${c}. ${results[c].msg}**\n*${cdate}*\n\n`                        }
-                        else
-                            break;
+                var output = new MessageEmbed().setTitle('Your Upcoming Reminders');
+                var desc = "";
+                for (let c = parseInt(i) + 1; c < parseInt(i) + 11; c++) {
+                    if (results.length > c) {
+                        let cdate = (new Date(results[c].time))
+                        let ctime = cdate.getHours() + " " + cdate.getMinutes()
+                        desc = desc + `**${c}. ${results[c].msg}**\n*${cdate}*\n\n`
                     }
-                    output.setDescription(desc).setColor('#e3b811');
-                    return output;
+                    else
+                        break;
                 }
+                output.setDescription(desc).setColor('#e3b811');
+                return output;
             }
-            catch (e) {
-                console.log(e);
-                return
-            }
+        }
+        catch (e) {
+            console.error(e)
         }
     }
 }
