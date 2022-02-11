@@ -20,6 +20,8 @@ child.on('message', async (queries) => {
 child.on('close', (code) => {
 	console.log(`child process exited with code ${code}`);
 });
+var gdu = cp.fork('./workers/gamedbupdater.js');
+
 express().listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const prefix = ';';
@@ -74,6 +76,6 @@ bot.client.on('ready', async () => {
 	console.log("Ready")
 	await botCommands.br.fetchIndex();
 	child.send({ message: "start" });
-
+	gdu.send({ message: "start" });
 })
 bot.load();
