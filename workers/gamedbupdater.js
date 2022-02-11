@@ -12,7 +12,7 @@ process.on('message', async ({ message }) => {
     const AppList = await axios.get('http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json').then(async (res) => await res.data.applist.apps)
     console.log("GameDB Updater running")
     const recent = await GameDB.find({}).sort({ _id: -1 }).limit(1);
-    let index = 600
+    let index = 2800
     console.log('INDEX STARTING FROM ', index)
     const Q = AppList.slice(index);
     const l = AppList.length
@@ -27,7 +27,7 @@ process.on('message', async ({ message }) => {
                 await GameDB.create({ appid: el.appid, name: el.name }).then(() => console.log(el)).catch(e => console.log("mongo err"))
             }
         }
-    }, '2000');
+    }, '1500');
 });
 async function task(el) {
     setTimeout(() => {
