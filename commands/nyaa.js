@@ -27,7 +27,7 @@ async function ping(message) {
 
 async function getResults(query, sortBy, order, filters) {
     try {
-        var results = await fetch('https://nyscrap.herokuapp.com/api/results', {
+        var results = await fetch(process.env.NScrapURL+'/api/results', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ async function getResults(query, sortBy, order, filters) {
 
 async function getInfo(id) {
     try {
-        var res = await fetch('https://nyscrap.herokuapp.com/api/torrentData', {
+        var res = await fetch(process.env.NScrapURL+'/api/torrentData', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

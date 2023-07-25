@@ -1,4 +1,5 @@
 const { Client, Intents } = require('discord.js');
+require('dotenv').config()
 const token = process.env.DiscordToken;
 const express = require('express');
 const path = require('path');
